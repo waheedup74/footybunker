@@ -1,55 +1,66 @@
 <script setup>
 import { ref } from "vue";
-
 let tab_id = ref("A");
 // let showAd = ref(true);
+// const { data: team, error } = useFetch(
+//   "https://soccer.sportmonks.com/api/v2.0/teams/14?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J"
+// );
+
+// const { data: teams, error: testError } = useFetch(
+//   "https://soccer.sportmonks.com/api/v2.0/standings/season/19734?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J"
+// );
 
 const changeTabs = (tab) => {
   tab_id.value = tab;
 };
 </script>
 <template>
+  <!-- {{ teams }}
+  {{ testError }} -->
   <div class="w-full sm:px-2 md:px-4 lg:px-12 py-8">
-    <div
-      class="bg-rose-500 text-white rounded-lg py-2 px-2 mb-5 transition delay-150 duration-300 ease-in-out"
-    >
-      <div class="flex justify-between py-5">
-        <p class="text-3xl">Add display here</p>
-      </div>
+    <div class="flex justify-start text-gray-600">
+      <a href="" class="flex self-center mr-3"
+        ><img src="@/assets/home.png" alt="" class="opacity-50"
+      /></a>
+      <span class="mr-3 self-center">
+        <img src="@/assets/right.png" class="opacity-50" alt="" />
+      </span>
+      <a href="" class="self-center"> Premier League</a>
     </div>
-
     <div
       class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible"
     >
+      <!-- Team and league section -->
       <div class="mt-4 md:mt-4 border rounded-md p-2 mb-5">
         <div class="grid md:grid-cols-2">
           <div class="flex justify-start">
             <img
               src="https://cdn.sportmonks.com/images/soccer/teams/19/19.png"
-              class="self-center w-24 md:w-36"
+              class="self-center w-12 md:w-16"
               alt=""
             />
             <h1
-              class="inline-block text-xl md:text-2xl self-center font-extrabold text-gray-900 tracking-tight capitalize"
+              class="inline-block text-xl md:text-2xl self-center font-medium text-gray-900 tracking-tight capitalize"
             >
               Arsenal
+              <!-- {{ team.data.name }} -->
             </h1>
           </div>
           <div class="flex justify-start">
             <img
               src="https://cdn.sportmonks.com/images/soccer/leagues/8/8.png"
-              class="self-center w-24 md:w-36"
+              class="self-center w-12 md:w-16"
               alt=""
             />
             <h1
-              class="inline-block text-xl md:text-2xl self-center font-extrabold text-gray-900 tracking-tight capitalize"
+              class="inline-block text-xl md:text-2xl self-center font-medium text-gray-900 tracking-tight capitalize"
             >
               Premier
             </h1>
           </div>
         </div>
 
-        <div class="flex items-center mt-6">
+        <!-- <div class="flex items-center mt-6">
           <select
             id="statsFilter"
             data-url="https://playerstats.football/premier-league/liverpool/shots-on-target"
@@ -63,8 +74,19 @@ const changeTabs = (tab) => {
             </option>
             <option value="last-10" data-type="period">2022/2023</option>
           </select>
+        </div> -->
+      </div>
+      <!-- Team and league section -->
+
+      <!-- add section -->
+      <div
+        class="bg-rose-500 text-white rounded-lg py-2 px-2 mb-5 transition delay-150 duration-300 ease-in-out"
+      >
+        <div class="flex justify-between py-5">
+          <p class="text-3xl">Add display here</p>
         </div>
       </div>
+      <!-- add section -->
 
       <!-- tabs section -->
       <div class="mb-6">
@@ -315,6 +337,127 @@ const changeTabs = (tab) => {
       </div>
       <!-- tabs section -->
 
+      <!-- checkbox section -->
+      <div class="mt-4 md:mt-7">
+        <div class="mb-4">
+          <h5
+            class="text-gray-600 font-bold text-xs uppercase mr-5 w-32 mb-2 2xl:mb-0"
+          >
+            Competitions
+          </h5>
+          <div class="grid grid-cols-2 gap-2 md:grid-cols-5 lg:grid-cols-7">
+            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+              <input
+                id="leagueCheck1"
+                name="leagueCheck1"
+                type="checkbox"
+                class="h-4 w-4 border-gray-300 rounded league-filter"
+                data-league-id="30"
+              />
+              <label
+                for="leagueCheck1"
+                class="ml-2 block text-sm text-gray-700"
+              >
+                Premier League
+              </label>
+            </div>
+            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+              <input
+                id="leagueCheck2"
+                name="leagueCheck2"
+                type="checkbox"
+                class="h-4 w-4 border-gray-300 rounded league-filter"
+                data-league-id="30"
+              />
+              <label
+                for="leagueCheck2"
+                class="ml-2 block text-sm text-gray-700"
+              >
+                FA Cup
+              </label>
+            </div>
+            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+              <input
+                id="leagueCheck3"
+                name="leagueCheck3"
+                type="checkbox"
+                class="h-4 w-4 border-gray-300 rounded league-filter"
+                data-league-id="31"
+              />
+              <label
+                for="leagueCheck3"
+                class="ml-2 block text-sm text-gray-700"
+              >
+                Carabao Cup
+              </label>
+            </div>
+            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+              <input
+                id="leagueCheck4"
+                name="leagueCheck4"
+                type="checkbox"
+                class="h-4 w-4 border-gray-300 rounded league-filter"
+                data-league-id="27"
+              />
+              <label
+                for="leagueCheck4"
+                class="ml-2 block text-sm text-gray-700"
+              >
+                Champions League
+              </label>
+            </div>
+            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+              <input
+                id="leagueCheck5"
+                name="leagueCheck5"
+                type="checkbox"
+                class="h-4 w-4 border-gray-300 rounded league-filter"
+                data-league-id="29"
+              />
+              <label
+                for="leagueCheck5"
+                class="ml-2 block text-sm text-gray-700"
+              >
+                Community Shield
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <h5
+            class="text-gray-600 font-bold text-xs uppercase mr-5 w-32 mb-2 2xl:mb-0"
+          >
+            Venue
+          </h5>
+          <div class="grid grid-cols-2 gap-2 md:grid-cols-5 lg:grid-cols-7">
+            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+              <input
+                id="venueCheck1"
+                name="venueCheck1"
+                type="checkbox"
+                class="h-4 w-4 border-gray-300 rounded venue-filter"
+                data-venue-id="h"
+              />
+              <label for="venueCheck1" class="ml-2 block text-sm text-gray-700">
+                Home
+              </label>
+            </div>
+            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+              <input
+                id="venueCheck2"
+                name="venueCheck2"
+                type="checkbox"
+                class="h-4 w-4 border-gray-300 rounded venue-filter"
+                data-venue-id="a"
+              />
+              <label for="venueCheck2" class="ml-2 block text-sm text-gray-700">
+                Away
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- checkbox section -->
       <div class="overflow-x-scroll pb-16 text-xs">
         <div class="relative border rounded mt-8 w-[5700px]">
           <!-- <div class="flex relative">
@@ -685,7 +828,7 @@ const changeTabs = (tab) => {
                 v-for="index in 30"
                 :key="index"
               >
-                45%
+                100%
               </div>
             </div>
           </div>
