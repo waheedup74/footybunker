@@ -1,31 +1,38 @@
 <script setup>
 import { ref } from "vue";
+const route = useRouter();
 let tab_id = ref("A");
-// let showAd = ref(true);
-// const { data: team, error } = useFetch(
-//   "https://soccer.sportmonks.com/api/v2.0/teams/14?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J"
-// );
 
-// const { data: teams, error: testError } = useFetch(
-//   "https://soccer.sportmonks.com/api/v2.0/standings/season/19734?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J"
-// );
+// GET SQUAD using Season Id and Team Id
+const { data: players, error: testError } = useFetch(
+  () =>
+    "https://soccer.sportmonks.com/api/v2.0/squad/season/19734/team/19?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=player"
+);
+
+// GET Team stats using and Team Id
+const { data: allStats, error: statsError } = useFetch(
+  () =>
+    "https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-01-31/19?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam"
+);
 
 const changeTabs = (tab) => {
   tab_id.value = tab;
 };
+
+// console.log($route.params);
 </script>
 <template>
-  <!-- {{ teams }}
-  {{ testError }} -->
+  {{ route.params.teamId }}
+  {{ statsError }}
   <div class="w-full sm:px-2 md:px-4 lg:px-12 py-8">
     <div class="flex justify-start text-gray-600">
-      <a href="" class="flex self-center mr-3"
+      <a href="/" class="flex self-center mr-3"
         ><img src="@/assets/home.png" alt="" class="opacity-50"
       /></a>
       <span class="mr-3 self-center">
         <img src="@/assets/right.png" class="opacity-50" alt="" />
       </span>
-      <a href="" class="self-center"> Premier League</a>
+      <a href="" class="self-center">Premier League</a>
     </div>
     <div
       class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible"
@@ -55,7 +62,7 @@ const changeTabs = (tab) => {
             <h1
               class="inline-block text-xl md:text-2xl self-center font-medium text-gray-900 tracking-tight capitalize"
             >
-              Premier
+              Premier League
             </h1>
           </div>
         </div>
@@ -243,7 +250,6 @@ const changeTabs = (tab) => {
           </div>
         </div>
         <div v-if="tab_id === 'C'">
-          this is tab three
           <div
             class="grid gap-2 grid-cols-3 md:grid-cols-5 lg:grid-cols-7 justify-between items-center"
           >
@@ -421,6 +427,21 @@ const changeTabs = (tab) => {
                 Community Shield
               </label>
             </div>
+            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+              <input
+                id="leagueCheck5"
+                name="leagueCheck5"
+                type="checkbox"
+                class="h-4 w-4 border-gray-300 rounded league-filter"
+                data-league-id="29"
+              />
+              <label
+                for="leagueCheck5"
+                class="ml-2 block text-sm text-gray-700"
+              >
+                Next Opponent
+              </label>
+            </div>
           </div>
         </div>
         <div class="">
@@ -460,375 +481,387 @@ const changeTabs = (tab) => {
       <!-- checkbox section -->
       <div class="overflow-x-scroll pb-16 text-xs">
         <div class="relative border rounded mt-8 w-[5700px]">
-          <!-- <div class="flex relative">
-            <div class="w-44"></div>
+          <div class="bg-gray-400 p-5 text-3xl">Table 1</div>
+          <div v-if="players">
+            <div class="flex relative">
+              <div class="w-44 border"></div>
 
-            <div class="data-cell p-1" v-for="index in 30" :key="index">
-              22/23
-            </div>
-          </div> -->
-          <div class="flex relative">
-            <div class="w-44 border"></div>
-
-            <div class="data-cell p-1" v-for="index in 30" :key="index">
-              <img
-                src="https://cdn.sportmonks.com/images/soccer/leagues/8/8.png"
-                class="w-4 md:w-5"
-                alt=""
-              />
-            </div>
-          </div>
-          <div class="flex relative">
-            <div class="w-44 border"></div>
-
-            <div
-              class="data-cell relative p-1"
-              v-for="index in 30"
-              :key="index"
-            >
-              <img
-                src="https://cdn.sportmonks.com/images/soccer/teams/8/8.png"
-                class="w-6 md:w-7"
-                alt=""
-              />
-              <span class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
-                >H</span
+              <div
+                class="data-cell relative p-1"
+                v-for="index in 30"
+                :key="index"
               >
-            </div>
-          </div>
-
-          <div class="flex relative">
-            <div class="w-44 border">
-              <div class="flex align-middle">
                 <img
-                  src="https://cdn.sportmonks.com/images/soccer/players/13/1901.png"
-                  class="h-8 p-1 mr-1 hidden md:inline-flex"
+                  src="https://cdn.sportmonks.com/images/soccer/teams/8/8.png"
+                  class="w-6 md:w-7"
                   alt=""
                 />
-                <span class="self-center pl-1">Rob Holding</span>
+                <span
+                  class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
+                  >H</span
+                >
               </div>
             </div>
 
-            <div
-              class="data-cell relative p-1 font-bold"
-              v-for="index in 30"
-              :key="index"
-            >
-              45%
+            <div class="flex relative" v-for="p in players.data">
+              <div class="w-44 border">
+                <div class="flex align-middle">
+                  <img
+                    :src="p.player.data.image_path"
+                    class="h-8 p-1 mr-1 hidden md:inline-flex"
+                    alt=""
+                  />
+                  <span class="self-center pl-1">{{
+                    p.player.data.display_name
+                  }}</span>
+                </div>
+              </div>
+
+              <div
+                class="data-cell relative p-1 font-bold"
+                v-for="index in 30"
+                :key="index"
+              >
+                45%
+              </div>
             </div>
           </div>
 
-          <div class="flex relative">
-            <div class="w-44 border">
-              <div class="flex align-middle">
-                <img
-                  src="https://cdn.sportmonks.com/images/soccer/players/27/538907.png"
-                  class="h-8 p-1 mr-1 hidden md:inline-flex"
-                  alt=""
-                />
-                <span class="self-center pl-1">Albert Sambi Lokonga</span>
-              </div>
-            </div>
+          <div class="mt-5" v-if="allStats">
+            <div class="bg-gray-400 p-5 text-3xl">Table 2</div>
 
-            <div
-              class="data-cell relative p-1 font-bold"
-              v-for="index in 30"
-              :key="index"
-            >
-              45%
-            </div>
-          </div>
-
-          <div class="flex relative">
-            <div class="w-44 border">
-              <div class="flex align-middle">
-                <img
-                  src="https://cdn.sportmonks.com/images/soccer/players/0/172960.png"
-                  class="h-8 p-1 mr-1 hidden md:inline-flex"
-                  alt=""
-                />
-                <span class="self-center pl-1">Kieran Tierney</span>
-              </div>
-            </div>
-
-            <div
-              class="data-cell relative p-1 font-bold"
-              v-for="index in 30"
-              :key="index"
-            >
-              45%
-            </div>
-          </div>
-
-          <div class="flex relative">
-            <div class="w-44 border">
-              <div class="flex align-middle">
-                <img
-                  src="https://cdn.sportmonks.com/images/soccer/players/19/97811.png"
-                  class="h-8 p-1 mr-1 hidden md:inline-flex"
-                  alt=""
-                />
-                <span class="self-center pl-1">Gabriel</span>
-              </div>
-            </div>
-
-            <div
-              class="data-cell relative p-1 font-bold"
-              v-for="index in 30"
-              :key="index"
-            >
-              45%
-            </div>
-          </div>
-
-          <div>
             <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/13/1901.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Rob Holding</span>
-                </div>
-              </div>
+              <div class="w-44 border p-1">Leagues</div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
+              <div class="data-cell p-1" v-for="l in allStats.data" :key="l">
+                <img :src="l.league.data.logo_path" class="w-4 md:w-5" alt="" />
               </div>
             </div>
 
             <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/27/538907.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Albert Sambi Lokonga</span>
-                </div>
-              </div>
+              <div class="w-44 border p-1">Against</div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
+              <div class="data-cell p-1" v-for="l in allStats.data" :key="l">
+                <span v-if="l.visitorteam_id !== 19">{{
+                  l.visitorteam_id
+                }}</span>
+                <span v-if="l.localteam_id !== 19">{{ l.localteam_id }}</span>
               </div>
             </div>
 
             <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/0/172960.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Kieran Tierney</span>
-                </div>
-              </div>
-
+              <div class="w-44 border p-1">Passes</div>
               <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
+                class="data-cell p-1"
+                v-for="stat in allStats.data"
+                :key="stat"
               >
-                45%
+                <span v-for="s in stat.stats.data" :key="s">
+                  <span v-if="s.team_id === 19">
+                    {{ s.passes.total }}
+                  </span>
+                </span>
               </div>
             </div>
-
-            <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/19/97811.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Gabriel</span>
+            <div>
+              <div class="flex relative">
+                <div class="w-44 border p-1">Passes</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.passes.total }}
+                    </span>
+                  </span>
                 </div>
               </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div>
-            </div>
-            <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/13/1901.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Rob Holding</span>
+              <div class="flex relative">
+                <div class="w-44 border p-1">Tackles</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.tackles }}
+                    </span>
+                  </span>
                 </div>
               </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div>
-            </div>
-
-            <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/27/538907.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Albert Sambi Lokonga</span>
+              <div class="flex relative">
+                <div class="w-44 border p-1">corners</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.corners }}
+                    </span>
+                  </span>
                 </div>
               </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div>
-            </div>
-
-            <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/0/172960.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Kieran Tierney</span>
+              <div class="flex relative">
+                <div class="w-44 border p-1">Shots - Total</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.shots.total }}
+                    </span>
+                  </span>
                 </div>
               </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div>
-            </div>
-
-            <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/19/97811.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Gabriel</span>
+              <div class="flex relative">
+                <div class="w-44 border p-1">Shots - On target</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.shots.ongoal }}
+                    </span>
+                  </span>
                 </div>
               </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div>
-            </div>
-            <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/13/1901.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Rob Holding</span>
+              <div class="flex relative">
+                <div class="w-44 border p-1">Shots - Off target</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.shots.offgoal }}
+                    </span>
+                  </span>
                 </div>
               </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div>
-            </div>
-
-            <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/27/538907.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Albert Sambi Lokonga</span>
+              <div class="flex relative">
+                <div class="w-44 border p-1">Shots - Off Blocked</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.shots.blocked }}
+                    </span>
+                  </span>
                 </div>
               </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div>
-            </div>
-
-            <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/0/172960.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Kieran Tierney</span>
+              <div class="flex relative">
+                <div class="w-44 border p-1">Shots - Inside box</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.shots.insidebox }}
+                    </span>
+                  </span>
                 </div>
               </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div>
-            </div>
-
-            <div class="flex relative">
-              <div class="w-44 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/players/19/97811.png"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">Gabriel</span>
+              <div class="flex relative">
+                <div class="w-44 border p-1">Shots - Outside Box</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.shots.outsidebox }}
+                    </span>
+                  </span>
                 </div>
               </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                100%
+              <div class="flex relative">
+                <div class="w-44 border p-1">Fouls</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.fouls }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Offside</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.offsides }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Yellow Cards</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.yellowcards }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Red Cards</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.redcards }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Penalties</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.penalties }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Throw-ins</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.throw_in }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Free Kicks</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.free_kick }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Goal Kicks</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.goal_kick }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Saves</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.saves }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Saves</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.saves }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1">Saves</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === 19">
+                      {{ s.saves }}
+                    </span>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -970,386 +1003,3 @@ const changeTabs = (tab) => {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E %3Cpath d='M15.88 8.29L10 14.17l-1.88-1.88a.996.996 0 1 0-1.41 1.41l2.59 2.59c.39.39 1.02.39 1.41 0L17.3 9.7a.996.996 0 0 0 0-1.41c-.39-.39-1.03-.39-1.42 0z' fill='%23fff'/%3E %3C/svg%3E");
 }
 </style>
-
-<!-- 
-        <div class="flex 2xl:block mt-4 md:mt-7">
-          <div class="2xl:flex 2xl:mb-4 items-center">
-            <h5
-              class="text-gray-600 font-bold text-xs uppercase mr-5 w-32 mb-2 2xl:mb-0"
-            >
-              Competitions
-            </h5>
-            <div class="2xl:flex">
-              <div class="flex items-center pr-4 mb-1 2xl:mb-0">
-                <input
-                  id="leagueCheck1"
-                  name="leagueCheck1"
-                  type="checkbox"
-                  class="h-4 w-4 border-gray-300 rounded league-filter"
-                  data-league-id="30"
-                />
-                <label
-                  for="leagueCheck1"
-                  class="ml-2 block text-sm text-gray-700"
-                >
-                  Premier League
-                </label>
-              </div>
-              <div class="flex items-center pr-4 mb-1 2xl:mb-0">
-                <input
-                  id="leagueCheck2"
-                  name="leagueCheck2"
-                  type="checkbox"
-                  class="h-4 w-4 border-gray-300 rounded league-filter"
-                  data-league-id="30"
-                />
-                <label
-                  for="leagueCheck2"
-                  class="ml-2 block text-sm text-gray-700"
-                >
-                  FA Cup
-                </label>
-              </div>
-              <div class="flex items-center pr-4 mb-1 2xl:mb-0">
-                <input
-                  id="leagueCheck3"
-                  name="leagueCheck3"
-                  type="checkbox"
-                  class="h-4 w-4 border-gray-300 rounded league-filter"
-                  data-league-id="31"
-                />
-                <label
-                  for="leagueCheck3"
-                  class="ml-2 block text-sm text-gray-700"
-                >
-                  Carabao Cup
-                </label>
-              </div>
-              <div class="flex items-center pr-4 mb-1 2xl:mb-0">
-                <input
-                  id="leagueCheck4"
-                  name="leagueCheck4"
-                  type="checkbox"
-                  class="h-4 w-4 border-gray-300 rounded league-filter"
-                  data-league-id="27"
-                />
-                <label
-                  for="leagueCheck4"
-                  class="ml-2 block text-sm text-gray-700"
-                >
-                  Champions League
-                </label>
-              </div>
-              <div class="flex items-center pr-4 mb-1 2xl:mb-0">
-                <input
-                  id="leagueCheck5"
-                  name="leagueCheck5"
-                  type="checkbox"
-                  class="h-4 w-4 border-gray-300 rounded league-filter"
-                  data-league-id="29"
-                />
-                <label
-                  for="leagueCheck5"
-                  class="ml-2 block text-sm text-gray-700"
-                >
-                  Community Shield
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="2xl:flex 2xl:mb-4 items-center pl-4 2xl:pl-0">
-            <h5
-              class="text-gray-600 font-bold text-xs uppercase mr-5 w-32 mb-2 2xl:mb-0"
-            >
-              Venue
-            </h5>
-            <div class="2xl:flex">
-              <div class="flex items-center pr-4 mb-1 2xl:mb-0">
-                <input
-                  id="venueCheck1"
-                  name="venueCheck1"
-                  type="checkbox"
-                  class="h-4 w-4 border-gray-300 rounded venue-filter"
-                  data-venue-id="h"
-                />
-                <label
-                  for="venueCheck1"
-                  class="ml-2 block text-sm text-gray-700"
-                >
-                  Home
-                </label>
-              </div>
-              <div class="flex items-center pr-4 mb-1 2xl:mb-0">
-                <input
-                  id="venueCheck2"
-                  name="venueCheck2"
-                  type="checkbox"
-                  class="h-4 w-4 border-gray-300 rounded venue-filter"
-                  data-venue-id="a"
-                />
-                <label
-                  for="venueCheck2"
-                  class="ml-2 block text-sm text-gray-700"
-                >
-                  Away
-                </label>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
-<!-- <div class="flex relative">
-              <div class="w-32 border">
-                <div class="flex align-middle">
-                  <img
-                    src="https://cdn.sportmonks.com/images/soccer/teams/8/8.png"
-                    class="h-8 p-1 mr-3 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center"> Possession</span>
-                </div>
-              </div>
-               
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div>
-            </div> -->
-
-<!-- <div class="lg:w-60 xl:w-72 lg:pr-3">
-        <div class="hidden lg:block">
-          <div
-            class="mb-4 group flex items-center px-3 py-1 text-sm rounded-md text-white bg-[#0d406a]"
-          >
-            <img
-              src="https://cdn.sportmonks.com/images/soccer/teams/8/8.png"
-              class="h-5 md:h-7"
-              alt="team logo"
-            />
-            <span class="hidden md:flex ml-3">Liverpool Game Stats</span>
-          </div>
-
-          <div>
-            <p
-              class="px-3 text-xs font-bold text-gray-900 uppercase tracking-wider"
-            >
-              Passing
-            </p>
-            <div class="mt-2">
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span>Passes</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Accurate Passes</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <p
-              class="px-3 text-xs font-bold text-gray-900 uppercase tracking-wider"
-            >
-              Shots
-            </p>
-            <div class="mt-2">
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span>Total Shots</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Shots on target</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Hit Woodwork</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <p
-              class="px-3 text-xs font-bold text-gray-900 uppercase tracking-wider"
-            >
-              Tackles
-            </p>
-            <div class="mt-2">
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span>Tackles</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Dispossessed</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Fouls Committed</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Fouls Drawn</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <p
-              class="px-3 text-xs font-bold text-gray-900 uppercase tracking-wider"
-            >
-              Cards
-            </p>
-            <div class="mt-2">
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span>Yellow Cards</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Red Cards</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <p
-              class="px-3 text-xs font-bold text-gray-900 uppercase tracking-wider"
-            >
-              Goals
-            </p>
-            <div class="mt-2">
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span>Goals Scored</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Assists</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <p
-              class="px-3 text-xs font-bold text-gray-900 uppercase tracking-wider"
-            >
-              Other
-            </p>
-            <div class="mt-2">
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span>Offside</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Crosses</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Team Total Stats</span>
-              </a>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <p
-              class="px-3 text-xs font-bold text-gray-900 uppercase tracking-wider"
-            >
-              Against
-            </p>
-            <div class="mt-2">
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Opposition Tackles</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Opposition Passes</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Opposition Yellow Cards</span>
-              </a>
-              <a
-                href=""
-                class="group flex items-center px-3 py-1 text-sm font-medium rounded-md text-gray-500 hover:text-white hover:bg-[#0d406a]"
-              >
-                <span> Opposition Fouls Committed </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-<!-- <div class="lg:hidden mt-4">
-          <div class="grid grid-flow-row grid-cols-3 grid-rows-6 gap-2">
-            <a href="" class="stat-btn">Passes </a>
-            <a href="" class="stat-btn">Tackles </a>
-            <a href="" class="stat-btn active">Shots on Target </a>
-            <a href="" class="stat-btn">Total Shots </a>
-            <a href="" class="stat-btn">Yellow Cards </a>
-            <a href="" class="stat-btn">Red Cards </a>
-            <a href="" class="stat-btn">Fouls Drawn </a>
-            <a href="" class="stat-btn">Fouls Committed </a>
-            <a href="" class="stat-btn">Crosses </a>
-            <a href="" class="stat-btn">Goals Scored </a>
-            <a href="" class="stat-btn">Assists </a>
-            <a href="" class="stat-btn">Hit Woodwork </a>
-            <a href="" class="stat-btn">Offsides </a>
-            <a href="" class="stat-btn">Dispossessed </a>
-            <a href="" class="stat-btn">Accurate Passes </a>
-            <a href="" class="stat-btn">Team Total Stats </a>
-          </div>
-          <div class="text-xs font-bold uppercase my-2 text-gray-400">
-            Opposition Stats
-          </div>
-          <div class="grid grid-flow-row grid-cols-3 grid-rows-1 gap-2">
-            <a href="" class="stat-btn stat-btn--opp">Tackles </a>
-            <a href="" class="stat-btn stat-btn--opp">Passes </a>
-            <a href="" class="stat-btn stat-btn--opp">Yellow Cards </a>
-            <a href="" class="stat-btn stat-btn--opp">Fouls Committed </a>
-          </div>
-        </div> -->
