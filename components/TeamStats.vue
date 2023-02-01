@@ -22,7 +22,7 @@ const changeTabs = (tab) => {
 // console.log($route.params);
 </script>
 <template>
-  {{ route.params.teamId }}
+  <!-- {{ route.params.teamId }} -->
   {{ statsError }}
   <div class="w-full sm:px-2 md:px-4 lg:px-12 py-8">
     <div class="flex justify-start text-gray-600">
