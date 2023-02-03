@@ -1,8 +1,20 @@
 <script setup>
 const allLeagues = ref(false);
+
+// GET Team fixture stats using and Team Id and range of dates
+const { data: leagues, error: featuresError } = useFetch(
+  () =>
+    `https://soccer.sportmonks.com/api/v2.0/leagues?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+);
+
+// GET Team fixture stats using and Team Id and range of dates
+const { data: allStats, error: statsError } = useFetch(
+  () =>
+    `https://soccer.sportmonks.com/api/v2.0/leagues?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+);
 </script>
 <template>
-  <div class="flex h-16 lg:h-18 bg-[#0d406a] text-white px-8">
+  <div class="flex h-16 lg:h-18 bg-[#0d406a] text-white px-2 md:px-8">
     <div class="self-center">
       <a href="/"> <img src="@/assets/fb-logo.png" alt="" /></a>
     </div>
@@ -31,10 +43,19 @@ const allLeagues = ref(false);
           </svg>
         </div>
         <div
-          v-if="allLeagues"
+          v-if="allLeagues && leagues"
           class="absolute bg-gray-300 text-black mt-2 w-64 rounded"
         >
-          <a
+          <span v-for="l in leagues.data" :key="l.id">
+            <a
+              href="/"
+              class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
+            >
+              <img :src="l.logo_path" class="h-7 mr-3" alt="" />
+              <span class="font-bold">{{ l.name }}</span>
+            </a>
+          </span>
+          <!-- <a
             href="/"
             class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
           >
@@ -88,7 +109,7 @@ const allLeagues = ref(false);
               alt=""
             />
             <span class="font-bold">Serie A</span>
-          </a>
+          </a> -->
         </div>
       </div>
       <a

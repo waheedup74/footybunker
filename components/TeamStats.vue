@@ -69,7 +69,7 @@ const goto = function (team) {
               {{ team.data.name }}
             </h1>
           </div>
-          <div class="flex justify-start">
+          <!-- <div class="flex justify-start">
             <img
               src="https://cdn.sportmonks.com/images/soccer/leagues/8/8.png"
               class="self-center w-12 md:w-16 mr-3"
@@ -80,7 +80,7 @@ const goto = function (team) {
             >
               Premier League
             </h1>
-          </div>
+          </div> -->
         </div>
 
         <!-- <div class="flex items-center mt-6">
