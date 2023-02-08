@@ -106,7 +106,7 @@ const goto = function (team) {
         class="bg-rose-500 text-white rounded-lg py-2 px-2 mb-5 transition delay-150 duration-300 ease-in-out"
       >
         <div class="flex justify-between py-5">
-          <p class="text-3xl">Add display here</p>
+          <p class="text-3xl">Ad display here</p>
         </div>
       </div>
       <!-- add section -->
