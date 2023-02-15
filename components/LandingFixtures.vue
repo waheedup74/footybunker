@@ -21,8 +21,8 @@ let dd = String(today.getDate()).padStart(2, "0");
 let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
 let yyyy = today.getFullYear();
 
-todayDate.value = yyyy + "-" + mm + "-" + dd;
-// todayDate.value = "2023-02-04";
+// todayDate.value = yyyy + "-" + mm + "-" + dd;
+todayDate.value = "2023-02-04";
 
 function getDates(day) {
   if (day === "today") {
@@ -181,9 +181,10 @@ const teamStats = (team_id) => {
             </div>
 
             <div class="self-center mr-5">
-              <span
+              <!-- <span
                 v-if="
-                  f.winner_team_id !== null && f.winner_team_id === localteam_id
+                  f.winner_team_id !== null &&
+                  f.winner_team_id === f.localteam_id
                 "
               >
                 <img
@@ -195,16 +196,16 @@ const teamStats = (team_id) => {
               <span
                 v-if="
                   f.winner_team_id !== null &&
-                  f.winner_team_id === visitorteam_id
+                  f.winner_team_id === f.visitorteam_id
                 "
               >
                 <img
                   :src="f.visitorTeam.data.logo_path"
                   :alt="f.visitorTeam.data.name"
                 />
-              </span>
+              </span> -->
 
-              <span class="text-sm" v-if="f.winner_team_id === null"> RP </span>
+              <!-- <span class="text-sm" v-if="f.winner_team_id === null"> RP </span> -->
             </div>
           </div>
         </div>
@@ -261,9 +262,10 @@ const teamStats = (team_id) => {
             </div>
 
             <div class="self-center mr-5">
-              <span
+              <!-- <span
                 v-if="
-                  f.winner_team_id !== null && f.winner_team_id === localteam_id
+                  f.winner_team_id !== null &&
+                  f.winner_team_id === f.localteam_id
                 "
               >
                 <img
@@ -275,16 +277,16 @@ const teamStats = (team_id) => {
               <span
                 v-if="
                   f.winner_team_id !== null &&
-                  f.winner_team_id === visitorteam_id
+                  f.winner_team_id === f.visitorteam_id
                 "
               >
                 <img
                   :src="f.visitorTeam.data.logo_path"
                   :alt="f.visitorTeam.data.name"
                 />
-              </span>
+              </span> -->
 
-              <span class="text-sm" v-if="f.winner_team_id === null"> RP </span>
+              <!-- <span class="text-sm" v-if="f.winner_team_id === null"> RP </span> -->
             </div>
           </div>
         </div>
@@ -341,9 +343,10 @@ const teamStats = (team_id) => {
             </div>
 
             <div class="self-center mr-5">
-              <span
+              <!-- <span
                 v-if="
-                  f.winner_team_id !== null && f.winner_team_id === localteam_id
+                  f.winner_team_id !== null &&
+                  f.winner_team_id === f.localteam_id
                 "
               >
                 <img
@@ -355,16 +358,16 @@ const teamStats = (team_id) => {
               <span
                 v-if="
                   f.winner_team_id !== null &&
-                  f.winner_team_id === visitorteam_id
+                  f.winner_team_id === f.visitorteam_id
                 "
               >
                 <img
                   :src="f.visitorTeam.data.logo_path"
                   :alt="f.visitorTeam.data.name"
                 />
-              </span>
+              </span> -->
 
-              <span class="text-sm" v-if="f.winner_team_id === null"> RP </span>
+              <!-- <span class="text-sm" v-if="f.winner_team_id === null"> RP </span> -->
             </div>
           </div>
         </div>

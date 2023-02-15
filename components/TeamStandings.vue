@@ -1,20 +1,16 @@
 <script setup>
-import { ref } from "vue";
+const route = useRoute();
 
-const route = useRouter();
 const { data: teams, error: testError } = useFetch(
-  "https://soccer.sportmonks.com/api/v2.0/standings/season/19734?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=standings.team"
+  `https://soccer.sportmonks.com/api/v2.0/standings/season/${route.params.season}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=standings.team`
 );
 
 const goto = function (team) {
   navigateTo(`/team-${team}`);
 };
-
-// console.log(route.params);
 </script>
 
 <template>
-  <!-- {{ teams }} -->
   <h1 class="text-center text-[#0d406a] text-3xl pt-3 pb-5 bg-red-300">
     This is team standing page
   </h1>
@@ -47,5 +43,8 @@ const goto = function (team) {
       <div class="p-1 self-center">{{ team.overall.goals_scored }}</div>
       <div class="p-1 self-center">{{ team.total.points }}</div>
     </div>
+  </div>
+  <div v-else>
+    {{ testError }}
   </div>
 </template>

@@ -1,17 +1,21 @@
 <script setup>
 const allLeagues = ref(false);
+const leagues = ref({});
 
-// GET Team fixture stats using and Team Id and range of dates
-const { data: leagues, error: featuresError } = useFetch(
-  () =>
-    `https://soccer.sportmonks.com/api/v2.0/leagues?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
-);
+onBeforeMount(async () => {
+  leagues.value = await useFetch(
+    () =>
+      `https://soccer.sportmonks.com/api/v2.0/leagues?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+  );
+});
+const getLeagueId = (id) => {
+  allLeagues.value = !allLeagues;
+  navigateTo(`/${id}-standings`);
+};
 
-// GET Team fixture stats using and Team Id and range of dates
-const { data: allStats, error: statsError } = useFetch(
-  () =>
-    `https://soccer.sportmonks.com/api/v2.0/leagues?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
-);
+const toggleDropdown = () => {
+  allLeagues.value = !allLeagues.value;
+};
 </script>
 <template>
   <div class="flex h-16 lg:h-18 bg-[#0d406a] text-white px-2 md:px-8">
@@ -29,7 +33,7 @@ const { data: allStats, error: statsError } = useFetch(
       <div class="relative">
         <div
           class="flex text-white px-4 py-2 hover:bg-[#024c8a] cursor-pointer"
-          @click="allLeagues = !allLeagues"
+          @click="toggleDropdown()"
         >
           <span class="mr-4"> Leagues </span>
           <svg
@@ -43,12 +47,12 @@ const { data: allStats, error: statsError } = useFetch(
           </svg>
         </div>
         <div
-          v-if="allLeagues && leagues"
+          v-if="allLeagues && leagues.data"
           class="absolute bg-gray-300 text-black mt-2 w-64 rounded"
         >
-          <span v-for="l in leagues.data" :key="l.id">
+          <span v-for="l in leagues.data.data" :key="l.id">
             <a
-              href="/"
+              @click="getLeagueId(l.current_season_id)"
               class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
             >
               <img :src="l.logo_path" class="h-7 mr-3" alt="" />
