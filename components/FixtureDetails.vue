@@ -17,10 +17,10 @@ const visitorTeamFormation = ref({});
 //     `https://soccer.sportmonks.com/api/v2.0/fixtures/18535188?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,highlights,events,lineup.player.country,referee,venue,substitutions.player.country`
 // );
 
-onMounted(async () => {
+onBeforeMount(async () => {
   fixture.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/${fixtureId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,events,referee,lineup.player.country,substitutions.player.country,venue`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/${fixtureId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,events,referee,lineup.player.country,substitutions.player.country,venue,highlights`
   );
 
   if (fixture.value.data) {
@@ -147,17 +147,24 @@ const changeTopTabs = function (tab, type) {
     </div>
 
     <div v-if="top_tab_id === 'h2h'">
-      <HeadToHead :test="matches.data.data" />
+      <div v-if="matches.data.data">
+        <HeadToHead :allMatches="matches.data.data" />
+      </div>
     </div>
     <div v-if="top_tab_id === 'standings'">
       <div class="py-5 bg-rose-700 text-white">
         This is testing for api call on load
       </div>
       <div>
-        <HeadToHead />
+        team standings will display here
+        <!-- <HeadToHead /> -->
       </div>
     </div>
-    <div v-if="top_tab_id === 'video'">this is video</div>
+    <div v-if="top_tab_id === 'video'">
+      <div v-if="fixture.data">
+        <Highlights :videos="fixture.data.data.highlights.data" />
+      </div>
+    </div>
   </div>
 </template>
 

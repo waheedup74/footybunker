@@ -4,7 +4,7 @@ const props = defineProps({
 });
 </script>
 <template>
-  <div v-if="commentary">
+  <div v-if="commentary.length">
     <div v-for="com in commentary">
       <div class="mb-4 text-xs">
         <div class="font-semibold mr-3">

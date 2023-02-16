@@ -1,30 +1,26 @@
 <script setup>
-const matches = ref({});
-
 const props = defineProps({
-  test: Array,
+  allMatches: Array,
 });
 
-onMounted(async () => {
-  matches.value = await useFetch(
-    () =>
-      `https://soccer.sportmonks.com/api/v2.0/head2head/63/71?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam`
-  );
-});
+const showDetails = (id) => {
+  navigateTo(`match-${id}`);
+};
 </script>
 <template>
   <div>
     <div
-      class="flex justify-between p-2 mb-2 text-sm bg-[#0d406a] text-white rounded"
+      class="flex justify-between p-2 my-2 text-sm bg-[#0d406a] text-white rounded"
     >
       <p>HEAD-TO-HEAD MATCHES</p>
     </div>
 
-    <div v-if="test">
-      <div v-for="(match, index) in test">
+    <div v-if="allMatches.length">
+      <div v-for="(match, index) in allMatches">
         <div
           class="flex justify-start mb-3 p-1 text-xs rounded border hover:bg-slate-300 hover:cursor-pointer"
-          :class="index % 2 === 0 ? 'bg-slate-200' : ''"
+          :class="index % 2 === 0 ? 'bg-slate-100' : ''"
+          @click="showDetails(match.id)"
         >
           <div class="self-center w-20">
             <p>{{ match.time.starting_at.date }}</p>
