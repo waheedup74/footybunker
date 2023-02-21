@@ -6,7 +6,9 @@ let tab_id = ref("A");
 const showRow = ref(false);
 const showValue = ref("");
 const showStats = ref("player");
-
+const teamPlayers = ref({});
+const teamSeasonPlayers = ref([]);
+const teamSeason = ref({});
 // GET SQUAD using Season Id and Team Id
 const { data: players, error: testError } = useFetch(
   () =>
@@ -16,13 +18,31 @@ const { data: players, error: testError } = useFetch(
 // GET Team fixture stats using and Team Id and range of dates
 const { data: allStats, error: statsError } = useFetch(
   () =>
-    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-01-31/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-01-01/2023-02-20/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
 );
 // GET Team stats using and Team Id
 const { data: team, error: teamError } = useFetch(
   () =>
     `https://soccer.sportmonks.com/api/v2.0/teams/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
 );
+
+onBeforeMount(async () => {
+  teamSeason.value = await useFetch(
+    () =>
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-01-01/2023-02-20/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+  );
+
+  if (teamSeason.value.data) {
+    for (let i = 0; i < teamSeason.value.data.data.length; i++) {
+      console.log(teamSeason.value.data.data[i].id);
+      teamSeasonPlayers.value = await useFetch(
+        () =>
+          `https://soccer.sportmonks.com/api/v2.0/fixtures/${teamSeason.value.data.data[i].id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,lineup.player,bench.player,localTeam,visitorTeam`
+      );
+    }
+  }
+});
+// https://soccer.sportmonks.com/api/v2.0/fixtures/18535188?include=stats,lineup,bench,events
 const changeTabs = (tab, section) => {
   tab_id.value = tab;
   showValue.value = "";
@@ -40,7 +60,14 @@ const goto = function (team) {
 };
 </script>
 <template>
-  {{ statsError }}
+  <div class="bg-green-300">
+    {{ allStats.data }}
+  </div>
+  <!-- <div v-if="teamSeasonPlayers.data">
+    <div v-for="value in teamSeasonPlayers.data.data">
+      {{ value.id }}
+    </div>
+  </div> -->
   <div class="w-full sm:px-2 md:px-4 lg:px-12 py-8">
     <div class="flex justify-start text-gray-600">
       <a href="/" class="flex self-center mr-3"
@@ -196,11 +223,6 @@ const goto = function (team) {
               class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
             >
               Yellows
-            </div>
-            <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
-            >
-              test
             </div>
             <div
               class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
@@ -518,7 +540,7 @@ const goto = function (team) {
       <!-- checkbox section -->
       <div class="overflow-x-scroll pb-16 text-xs">
         <div class="relative border rounded mt-8 w-[5700px]">
-          <div v-if="players && showStats === 'player'">
+          <div v-if="teamPlayers.data && showStats === 'player'">
             <div class="bg-[#0d406a] text-white p-5 text-3xl mb-5 capitalize">
               {{ team.data.name }} Players
             </div>
@@ -527,11 +549,10 @@ const goto = function (team) {
 
               <div
                 class="data-cell relative p-1"
-                v-for="index in 30"
-                :key="index"
+                v-if="teamId === teamPlayers.data.data.localteam_id"
               >
                 <img
-                  src="https://cdn.sportmonks.com/images/soccer/teams/8/8.png"
+                  :src="teamPlayers.data.data.visitorTeam.data.logo_path"
                   class="w-6 md:w-7"
                   alt=""
                 />
@@ -540,28 +561,63 @@ const goto = function (team) {
                   >H</span
                 >
               </div>
+              <div
+                class="data-cell relative p-1"
+                v-if="teamId === teamPlayers.data.data.visitorteam_id"
+              >
+                <img
+                  :src="teamPlayers.data.data.localTeam.data.logo_path"
+                  class="w-6 md:w-7"
+                  alt=""
+                />
+                <span
+                  class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
+                  >A</span
+                >
+              </div>
             </div>
-
-            <div class="flex relative" v-for="p in players.data">
-              <div class="w-44 border">
+            <div
+              class="flex relative"
+              v-for="p in teamPlayers.data.data.lineup.data"
+            >
+              <div class="w-44 border" v-if="teamId === p.team_id">
                 <div class="flex align-middle">
                   <img
                     :src="p.player.data.image_path"
                     class="h-8 p-1 mr-1 hidden md:inline-flex"
                     alt=""
                   />
-                  <span class="self-center pl-1">{{
-                    p.player.data.display_name
-                  }}</span>
+                  <span class="self-center pl-1">{{ p.player_name }}</span>
                 </div>
               </div>
 
               <div
                 class="data-cell relative p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
+                v-if="teamId === p.team_id"
               >
-                45%
+                {{ p.stats.passing.passes }}
+              </div>
+            </div>
+            <div
+              class="flex relative"
+              v-for="p in teamPlayers.data.data.bench.data"
+            >
+              <div class="w-44 border" v-if="teamId === p.team_id">
+                <div v-if="teamId === p.team_id" class="flex align-middle">
+                  <img
+                    :src="p.player.data.image_path"
+                    class="h-8 p-1 mr-1 hidden md:inline-flex"
+                    alt=""
+                  />
+                  <span class="self-center pl-1">{{ p.player_name }}</span>
+                </div>
+              </div>
+
+              <div
+                class="data-cell relative p-1 font-bold"
+                v-if="teamId === p.team_id"
+              >
+                {{ p.stats.passing.passes }}
               </div>
             </div>
           </div>
@@ -1141,3 +1197,11 @@ const goto = function (team) {
     </span>
   </div>
 </div> -->
+
+<!-- <div
+                class="data-cell relative p-1 font-bold"
+                v-for="index in 30"
+                :key="index"
+              >
+                45%
+              </div> -->

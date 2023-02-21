@@ -16,6 +16,11 @@ const getLeagueId = (id) => {
 const toggleDropdown = () => {
   allLeagues.value = !allLeagues.value;
 };
+
+const goto = (value) => {
+  console.log(value);
+  // navigateTo(`auth/${value}`);
+};
 </script>
 <template>
   <div class="flex h-16 lg:h-18 bg-[#0d406a] text-white px-2 md:px-8">
@@ -59,61 +64,6 @@ const toggleDropdown = () => {
               <span class="font-bold">{{ l.name }}</span>
             </a>
           </span>
-          <!-- <a
-            href="/"
-            class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
-          >
-            <img
-              src="https://cdn.sportmonks.com/images/soccer/leagues/8/8.png"
-              class="h-7 mr-3"
-              alt=""
-            />
-            <span class="font-bold">Premier League</span>
-          </a>
-          <a
-            href="/"
-            class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
-          >
-            <img
-              src="https://cdn.sportmonks.com/images/soccer/leagues/564.png"
-              class="h-7 mr-3"
-              alt=""
-            />
-            <span class="font-bold">La Liga</span>
-          </a>
-          <a
-            href="/"
-            class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
-          >
-            <img
-              src="https://cdn.sportmonks.com/images/soccer/leagues/82.png"
-              class="h-7 mr-3"
-              alt=""
-            />
-            <span class="font-bold">Bundesliga</span>
-          </a>
-          <a
-            href="/"
-            class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
-          >
-            <img
-              src="https://cdn.sportmonks.com/images//soccer/leagues/13/301.png"
-              class="h-7 mr-3"
-              alt=""
-            />
-            <span class="font-bold">Ligue 1</span>
-          </a>
-          <a
-            href="/"
-            class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
-          >
-            <img
-              src="https://cdn.sportmonks.com/images//soccer/leagues/0/384.png"
-              class="h-7 mr-3"
-              alt=""
-            />
-            <span class="font-bold">Serie A</span>
-          </a> -->
         </div>
       </div>
       <a
@@ -127,11 +77,13 @@ const toggleDropdown = () => {
     <div class="ml-auto flex self-center">
       <button
         class="text-white mr-3 font-medium text-sm md:text-base sm:text-[10px]"
+        @click="goto('login')"
       >
         Login
       </button>
       <button
-        class="relative inline-flex items-center px-4 py-2 border border-white font-medium rounded-md text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-sm md:text-base"
+        class="relative inline-flex items-center px-4 py-2 border border-white font-medium rounded-md text-white shadow-sm hover:bg-white hover:text-[#0d406a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-sm md:text-base"
+        @click="goto('register')"
       >
         Sign Up
       </button>

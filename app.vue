@@ -1,7 +1,7 @@
 <template>
   <div>
     <NuxtLayout>
-      <NuxtPage />
+      <NuxtPage v-if="!$slots.default" />
     </NuxtLayout>
   </div>
 </template>
