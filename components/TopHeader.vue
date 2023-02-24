@@ -23,12 +23,14 @@ const goto = (value) => {
 };
 </script>
 <template>
-  <div class="flex h-16 lg:h-18 bg-[#0d406a] text-white px-2 md:px-8">
+  <div
+    class="flex h-16 lg:h-18 bg-[#0d406a] text-white px-2 md:px-8 md:text-xs lg:text-sm"
+  >
     <div class="self-center">
       <a href="/"> <img src="@/assets/fb-logo.png" alt="" /></a>
     </div>
     <div
-      class="self-center relative hidden lg:flex md:items-center text-[1.1rem]"
+      class="self-center relative hidden md:flex md:items-center text-[1.1rem]"
     >
       <a
         href=""
@@ -76,18 +78,18 @@ const goto = (value) => {
     </div>
     <div class="ml-auto flex self-center">
       <button
-        class="text-white mr-3 font-medium text-sm md:text-base sm:text-[10px]"
+        class="invisible md:visible text-white mr-3 font-medium text-sm md:text-base sm:text-[10px]"
         @click="goto('login')"
       >
         Login
       </button>
       <button
-        class="relative inline-flex items-center px-4 py-2 border border-white font-medium rounded-md text-white shadow-sm hover:bg-white hover:text-[#0d406a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-sm md:text-base"
+        class="relative invisible md:visible inline-flex items-center px-4 py-2 border border-white font-medium rounded-md text-white shadow-sm hover:bg-white hover:text-[#0d406a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-sm md:text-base"
         @click="goto('register')"
       >
         Sign Up
       </button>
-      <button class="ml-4">
+      <button class="ml-4 md:hidden flex">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="self-center h-6 w-6 lg:w-8 lg:h-8 text-white"
