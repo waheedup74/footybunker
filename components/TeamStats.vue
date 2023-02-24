@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import unfetch from "unfetch";
 const route = useRoute();
 const teamId = parseInt(route.params.teamId);
 let tab_id = ref("A");
@@ -7,18 +8,24 @@ const showRow = ref(false);
 const showValue = ref("");
 const showStats = ref("player");
 const teamPlayers = ref({});
+const fixtureIds = ref([]);
 const teamSeasonPlayers = ref([]);
+const allFixtures = ref([]);
+const teamSeasonPlayersData = ref([]);
 const teamSeason = ref({});
+
+const playerStats = ref("interception");
+
 // GET SQUAD using Season Id and Team Id
-const { data: players, error: testError } = useFetch(
-  () =>
-    `https://soccer.sportmonks.com/api/v2.0/squad/season/19734/team/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=player`
-);
+// const { data: players, error: testError } = useFetch(
+//   () =>
+//     `https://soccer.sportmonks.com/api/v2.0/squad/season/19734/team/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=player`
+// );
 
 // GET Team fixture stats using and Team Id and range of dates
 const { data: allStats, error: statsError } = useFetch(
   () =>
-    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-01-01/2023-02-20/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-02-20/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
 );
 // GET Team stats using and Team Id
 const { data: team, error: teamError } = useFetch(
@@ -26,25 +33,37 @@ const { data: team, error: teamError } = useFetch(
     `https://soccer.sportmonks.com/api/v2.0/teams/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
 );
 
-onBeforeMount(async () => {
+onMounted(async () => {
   teamSeason.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-01-01/2023-02-20/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-02-20/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
   );
 
   if (teamSeason.value.data) {
-    for (let i = 0; i < teamSeason.value.data.data.length; i++) {
-      console.log(teamSeason.value.data.data[i].id);
-      teamSeasonPlayers.value = await useFetch(
-        () =>
-          `https://soccer.sportmonks.com/api/v2.0/fixtures/${teamSeason.value.data.data[i].id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,lineup.player,bench.player,localTeam,visitorTeam`
+    for (let item of teamSeason.value.data.data) {
+      fixtureIds.value.push(item.id);
+    }
+    // fetchItems(fixtureIds.value);
+    for (let id of fixtureIds.value) {
+      teamPlayers.value = await useFetch(
+        `https://soccer.sportmonks.com/api/v2.0/fixtures/${id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,lineup.player,bench.player,localTeam,visitorTeam`
       );
+
+      teamSeasonPlayersData.value.push(teamPlayers.value);
     }
   }
 });
-// https://soccer.sportmonks.com/api/v2.0/fixtures/18535188?include=stats,lineup,bench,events
 const changeTabs = (tab, section) => {
   tab_id.value = tab;
+  if (tab === "A") {
+    showPlayerStats("interception");
+    // playerStats.value = "interception";
+  }
+
+  if (tab === "B") {
+    showPlayerStats("foul_drawn");
+    // playerStats.value = "foul_drawn";
+  }
   showValue.value = "";
   showRow.value = true;
   showStats.value = section;
@@ -55,20 +74,20 @@ const toggleTeamStats = (value) => {
   showRow.value = true;
 };
 
+const showPlayerStats = function (value) {
+  playerStats.value = value;
+};
+
 const goto = function (team) {
   navigateTo(`/team-${team}`);
 };
+
+const goPlayerStats = function (p_id) {
+  navigateTo(`/player-${p_id}`);
+};
 </script>
 <template>
-  <div class="bg-green-300">
-    {{ allStats.data }}
-  </div>
-  <!-- <div v-if="teamSeasonPlayers.data">
-    <div v-for="value in teamSeasonPlayers.data.data">
-      {{ value.id }}
-    </div>
-  </div> -->
-  <div class="w-full sm:px-2 md:px-4 lg:px-12 py-8">
+  <div class="w-11/12 md:w-4/5 mx-auto py-8">
     <div class="flex justify-start text-gray-600">
       <a href="/" class="flex self-center mr-3"
         ><img src="@/assets/home.png" alt="" class="opacity-50"
@@ -78,9 +97,7 @@ const goto = function (team) {
       </span>
       <a href="/Premier-league-standings" class="self-center">Premier League</a>
     </div>
-    <div
-      class="min-w-0 w-full flex-auto lg:static lg:max-h-full lg:overflow-visible"
-    >
+    <div class="min-w-0 w-full flex-auto lg:static lg:max-h-full">
       <!-- Team and league section -->
       <div class="mt-4 md:mt-4 border rounded-md p-2 mb-5">
         <div class="grid md:grid-cols-2">
@@ -109,22 +126,6 @@ const goto = function (team) {
             </h1>
           </div> -->
         </div>
-
-        <!-- <div class="flex items-center mt-6">
-          <select
-            id="statsFilter"
-            data-url="https://playerstats.football/premier-league/liverpool/shots-on-target"
-            class="form-select mx-auto w-64 text-sm pt-1 border border-gray-600"
-            name=""
-          >
-            <option value="all" data-type="period">Select Seasons</option>
-            <option value="last-10" data-type="period">2020/2021</option>
-            <option value="last-5" data-type="period" selected>
-              2021/2022
-            </option>
-            <option value="last-10" data-type="period">2022/2023</option>
-          </select>
-        </div> -->
       </div>
       <!-- Team and league section -->
 
@@ -172,60 +173,126 @@ const goto = function (team) {
 
         <div v-if="tab_id === 'A'">
           <div
-            class="grid gap-1 text-sm grid-cols-4 md:grid-cols-6 lg:grid-cols-8 justify-between items-center"
+            class="grid gap-1 text-sm grid-cols-3 md:grid-cols-5 lg:grid-cols-7 justify-between items-center"
           >
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'interception'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('interception')"
             >
               Interceptions
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'tackles'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('tackles')"
             >
               Tackles
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'blocks'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('blocks')"
             >
               Blocks
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'total_duels'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('total_duels')"
             >
               Total Duels
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'duel_won'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('duel_won')"
             >
               Duels Won
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'foul_committed'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('foul_committed')"
             >
               Fouls Committed
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'pen_saved'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('pen_saved')"
             >
               Penalties Saved
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'drib_past'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('drib_past')"
             >
               Dribbled Past
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'pen_committed'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('pen_committed')"
             >
               Penalties Committed
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'yellow_card'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('yellow_card')"
             >
               Yellows
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'red_card'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('red_card')"
             >
               Reds
             </div>
@@ -233,55 +300,115 @@ const goto = function (team) {
         </div>
         <div v-if="tab_id === 'B'">
           <div
-            class="grid gap-2 grid-cols-4 md:grid-cols-6 lg:grid-cols-8 justify-between items-center"
+            class="grid gap-2 grid-cols-3 md:grid-cols-5 lg:grid-cols-7 justify-between items-center"
           >
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'foul_drawn'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('foul_drawn')"
             >
               Fouls Drawn
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'pen_won'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('pen_won')"
             >
               Penalties Won
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'key_passes'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('key_passes')"
             >
               Key Passes
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'passes'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('passes')"
             >
               Total Passes
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'pen_scored'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('pen_scored')"
             >
               Penalties Scored
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'pen_missed'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('pen_missed')"
             >
               Penalties Missed
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'shots_total'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('shots_total')"
             >
               Total Shots
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'shots_on_goal'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('shots_on_goal')"
             >
               Shots On target
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'offsides'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('offsides')"
             >
               Offside
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                playerStats === 'hit_post'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
+              @click="showPlayerStats('hit_post')"
             >
               Hit Post
             </div>
@@ -292,107 +419,107 @@ const goto = function (team) {
             class="grid gap-2 grid-cols-3 md:grid-cols-5 lg:grid-cols-7 justify-between items-center cursor-pointer"
           >
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('passes')"
             >
               Passes
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('tackles')"
             >
               Tackles
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('corners')"
             >
               Corners
             </div>
             <!-- <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
             >
               1st Half Corners
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
             >
               2nd Half Corners
             </div> -->
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('shotsTotal')"
             >
               Shots - Total
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('shotsOnTarget')"
             >
               Shots - On Target
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('shotsOffTarget')"
             >
               Shots - Off Target
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('ShotsOutsideBox')"
             >
               Shots - Outside Box
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('ShotsInsideBox')"
             >
               Shots - Inside Box
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('offside')"
             >
               Offsides
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('yellowCard')"
             >
               Yellow Cards
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('redCard')"
             >
               Red Cards
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('penalties')"
             >
               Penalties
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('throwIns')"
             >
               Throw Ins
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('freeKicks')"
             >
               Free Kicks
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('goalKicks')"
             >
               Goal Kicks
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white"
+              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('saves')"
             >
               Saves
@@ -538,87 +665,370 @@ const goto = function (team) {
         </div>
       </div>
       <!-- checkbox section -->
-      <div class="overflow-x-scroll pb-16 text-xs">
-        <div class="relative border rounded mt-8 w-[5700px]">
-          <div v-if="teamPlayers.data && showStats === 'player'">
-            <div class="bg-[#0d406a] text-white p-5 text-3xl mb-5 capitalize">
-              {{ team.data.name }} Players
-            </div>
+
+      <!-- <div v-if="team.data">
+        <div class="bg-[#0d406a] text-white p-5 text-3xl mb-5 capitalize">
+          {{ team.data.name }} Players Stats
+        </div>
+      </div> -->
+      <div class="pb-16 text-xs overflow-x-auto overflow-visible">
+        <div class="relative border rounded mt-8 w-[6700px]">
+          <div
+            v-if="teamSeasonPlayersData.length !== 0 && showStats === 'player'"
+          >
+            <!-- <div v-for="team in teamSeasonPlayersData">
+              <p>{{ team.data.data.id }}</p>
+            </div> -->
+
             <div class="flex relative">
-              <div class="w-44 border"></div>
-
-              <div
-                class="data-cell relative p-1"
-                v-if="teamId === teamPlayers.data.data.localteam_id"
-              >
-                <img
-                  :src="teamPlayers.data.data.visitorTeam.data.logo_path"
-                  class="w-6 md:w-7"
-                  alt=""
-                />
-                <span
-                  class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
-                  >H</span
-                >
-              </div>
-              <div
-                class="data-cell relative p-1"
-                v-if="teamId === teamPlayers.data.data.visitorteam_id"
-              >
-                <img
-                  :src="teamPlayers.data.data.localTeam.data.logo_path"
-                  class="w-6 md:w-7"
-                  alt=""
-                />
-                <span
-                  class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
-                  >A</span
-                >
-              </div>
-            </div>
-            <div
-              class="flex relative"
-              v-for="p in teamPlayers.data.data.lineup.data"
-            >
-              <div class="w-44 border" v-if="teamId === p.team_id">
-                <div class="flex align-middle">
-                  <img
-                    :src="p.player.data.image_path"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">{{ p.player_name }}</span>
+              <!-- <div class="w-44 border"></div> -->
+              <span v-for="team in teamSeasonPlayersData.slice().reverse()">
+                <div class="flex">
+                  <div class="w-44 text-center self-center font-bold">
+                    Opposition
+                  </div>
+                  <div
+                    class="data-cell-img relative p-1"
+                    v-if="teamId === team.data.data.localteam_id"
+                  >
+                    <img
+                      :src="team.data.data.visitorTeam.data.logo_path"
+                      class="w-6 md:w-7"
+                      alt=""
+                    />
+                    <span
+                      class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
+                      >H</span
+                    >
+                  </div>
+                  <div
+                    class="data-cell-img relative p-1"
+                    v-if="teamId === team.data.data.visitorteam_id"
+                  >
+                    <img
+                      :src="team.data.data.localTeam.data.logo_path"
+                      class="w-6 md:w-7"
+                      alt=""
+                    />
+                    <span
+                      class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
+                      >A</span
+                    >
+                  </div>
                 </div>
-              </div>
+                <!-- lineup start  -->
+                <div
+                  class="flex relative"
+                  v-for="p in team.data.data?.lineup.data"
+                >
+                  <div class="w-44 border" v-if="teamId === p.team_id">
+                    <div
+                      class="flex align-middle hover:cursor-pointer"
+                      @click="goPlayerStats(p.player.data.player_id)"
+                    >
+                      <img
+                        :src="p.player.data.image_path"
+                        class="h-8 p-1 mr-1 hidden md:inline-flex"
+                        alt=""
+                      />
+                      <span class="self-center pl-1">{{ p.player_name }}</span>
+                    </div>
+                  </div>
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-if="teamId === p.team_id"
-              >
-                {{ p.stats.passing.passes }}
-              </div>
-            </div>
-            <div
-              class="flex relative"
-              v-for="p in teamPlayers.data.data.bench.data"
-            >
-              <div class="w-44 border" v-if="teamId === p.team_id">
-                <div v-if="teamId === p.team_id" class="flex align-middle">
-                  <img
-                    :src="p.player.data.image_path"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">{{ p.player_name }}</span>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="
+                      teamId === p.team_id && playerStats === 'interception'
+                    "
+                  >
+                    {{ p.stats.other.interceptions }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'tackles'"
+                  >
+                    {{ p.stats.other.tackles }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'blocks'"
+                  >
+                    {{ p.stats.other.blocks }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'total_duels'"
+                  >
+                    {{ p.stats.duels.total }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'duel_won'"
+                  >
+                    {{ p.stats.duels.won }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="
+                      teamId === p.team_id && playerStats === 'foul_committed'
+                    "
+                  >
+                    {{ p.stats.fouls.committed }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'pen_saved'"
+                  >
+                    {{ p.stats.other.pen_saved }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'drib_past'"
+                  >
+                    {{ p.stats.dribbles.dribbled_past }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="
+                      teamId === p.team_id && playerStats === 'pen_committed'
+                    "
+                  >
+                    {{ p.stats.other.pen_committed }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'yellow_card'"
+                  >
+                    {{ p.stats.cards.yellowcards }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'red_card'"
+                  >
+                    {{ p.stats.cards.redcards }}
+                  </div>
+
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'foul_drawn'"
+                  >
+                    {{ p.stats.fouls.drawn }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'pen_won'"
+                  >
+                    {{ p.stats.other.pen_won }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'key_passes'"
+                  >
+                    {{ p.stats.passing.key_passes }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'passes'"
+                  >
+                    {{ p.stats.passing.passes }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'pen_scored'"
+                  >
+                    {{ p.stats.other.pen_scored }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'pen_missed'"
+                  >
+                    {{ p.stats.other.pen_missed }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'shots_total'"
+                  >
+                    {{ p.stats.shots.shots_total }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="
+                      teamId === p.team_id && playerStats === 'shots_on_goal'
+                    "
+                  >
+                    {{ p.stats.shots.shots_on_goal }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'offsides'"
+                  >
+                    {{ p.stats.other.offsides }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'hit_post'"
+                  >
+                    {{ p.stats.other.hit_woodwork }}
+                  </div>
                 </div>
-              </div>
+                <!-- lineup end  -->
 
-              <div
-                class="data-cell relative p-1 font-bold"
-                v-if="teamId === p.team_id"
-              >
-                {{ p.stats.passing.passes }}
-              </div>
+                <!-- bench start -->
+                <div
+                  class="flex relative"
+                  v-for="p in team.data.data?.bench.data"
+                >
+                  <div class="w-44 border" v-if="teamId === p.team_id">
+                    <div
+                      class="flex align-middle hover:cursor-pointer"
+                      @click="goPlayerStats(p.player.data.player_id)"
+                    >
+                      <img
+                        :src="p.player.data.image_path"
+                        class="h-8 p-1 mr-1 hidden md:inline-flex"
+                        alt=""
+                      />
+                      <span class="self-center pl-1">{{ p.player_name }}</span>
+                    </div>
+                  </div>
+
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="
+                      teamId === p.team_id && playerStats === 'interception'
+                    "
+                  >
+                    {{ p.stats.other.interceptions }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'tackles'"
+                  >
+                    {{ p.stats.other.tackles }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'blocks'"
+                  >
+                    {{ p.stats.other.blocks }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'total_duels'"
+                  >
+                    {{ p.stats.duels.total }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'duel_won'"
+                  >
+                    {{ p.stats.duels.won }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="
+                      teamId === p.team_id && playerStats === 'foul_committed'
+                    "
+                  >
+                    {{ p.stats.fouls.committed }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'pen_saved'"
+                  >
+                    {{ p.stats.other.pen_saved }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'drib_past'"
+                  >
+                    {{ p.stats.dribbles.dribbled_past }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="
+                      teamId === p.team_id && playerStats === 'pen_committed'
+                    "
+                  >
+                    {{ p.stats.other.pen_committed }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'yellow_card'"
+                  >
+                    {{ p.stats.cards.yellowcards }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'red_card'"
+                  >
+                    {{ p.stats.cards.redcards }}
+                  </div>
+
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'foul_drawn'"
+                  >
+                    {{ p.stats.fouls.drawn }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'pen_won'"
+                  >
+                    {{ p.stats.other.pen_won }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'key_passes'"
+                  >
+                    {{ p.stats.passing.key_passes }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'passes'"
+                  >
+                    {{ p.stats.passing.passes }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'pen_scored'"
+                  >
+                    {{ p.stats.other.pen_scored }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'pen_missed'"
+                  >
+                    {{ p.stats.other.pen_missed }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'shots_total'"
+                  >
+                    {{ p.stats.shots.shots_total }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="
+                      teamId === p.team_id && playerStats === 'shots_on_goal'
+                    "
+                  >
+                    {{ p.stats.shots.shots_on_goal }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'offsides'"
+                  >
+                    {{ p.stats.other.offsides }}
+                  </div>
+                  <div
+                    class="data-cell relative p-1 font-bold"
+                    v-if="teamId === p.team_id && playerStats === 'hit_post'"
+                  >
+                    {{ p.stats.other.hit_woodwork }}
+                  </div>
+                </div>
+              </span>
             </div>
           </div>
 
@@ -972,36 +1382,6 @@ const goto = function (team) {
                   </span>
                 </div>
               </div>
-
-              <!-- <div class="flex relative">
-                <div class="w-44 border p-1 font-bold">Saves</div>
-                <div
-                  class="data-cell p-1"
-                  v-for="stat in allStats.data"
-                  :key="stat"
-                >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
-                      {{ s.saves }}
-                    </span>
-                  </span>
-                </div>
-              </div>
-
-              <div class="flex relative">
-                <div class="w-44 border p-1 font-bold">Saves</div>
-                <div
-                  class="data-cell p-1"
-                  v-for="stat in allStats.data"
-                  :key="stat"
-                >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
-                      {{ s.saves }}
-                    </span>
-                  </span>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -1069,6 +1449,14 @@ const goto = function (team) {
   justify-content: center;
   width: 4rem !important;
   border: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.data-cell-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem !important;
+  /* border: 0.5px solid rgba(0, 0, 0, 0.1); */
 }
 
 /* Basic styling */
@@ -1205,3 +1593,140 @@ const goto = function (team) {
               >
                 45%
               </div> -->
+<!-- <div class="flex items-center mt-6">
+          <select
+            id="statsFilter"
+            data-url="https://playerstats.football/premier-league/liverpool/shots-on-target"
+            class="form-select mx-auto w-64 text-sm pt-1 border border-gray-600"
+            name=""
+          >
+            <option value="all" data-type="period">Select Seasons</option>
+            <option value="last-10" data-type="period">2020/2021</option>
+            <option value="last-5" data-type="period" selected>
+              2021/2022
+            </option>
+            <option value="last-10" data-type="period">2022/2023</option>
+          </select>
+        </div> -->
+
+<!-- <div v-for="team in teamSeasonPlayersData">
+              <div
+                class="flex relative"
+                v-for="p in team.data.data?.lineup.data"
+              >
+                <div class="w-44 border" v-if="teamId === p.team_id">
+                  <div class="flex align-middle">
+                    <img
+                      :src="p.player.data.image_path"
+                      class="h-8 p-1 mr-1 hidden md:inline-flex"
+                      alt=""
+                    />
+                    <span class="self-center pl-1">{{ p.player_name }}</span>
+                  </div>
+                </div>
+
+                <div
+                  class="data-cell relative p-1 font-bold"
+                  v-if="teamId === p.team_id"
+                >
+                  {{ p.stats.passing.passes }}
+                </div>
+              </div>
+            </div>
+
+            <div class="flex relative" v-for="p in team.data.data?.bench.data">
+              <div class="w-44 border" v-if="teamId === p.team_id">
+                <div v-if="teamId === p.team_id" class="flex align-middle">
+                  <img
+                    :src="p.player.data.image_path"
+                    class="h-8 p-1 mr-1 hidden md:inline-flex"
+                    alt=""
+                  />
+                  <span class="self-center pl-1">{{ p.player_name }}</span>
+                </div>
+              </div>
+
+              <div
+                class="data-cell relative p-1 font-bold"
+                v-if="teamId === p.team_id"
+              >
+                {{ p.stats.passing.passes }}
+              </div>
+            </div> -->
+
+<!-- <div class="flex relative">
+                <div class="w-44 border p-1 font-bold">Saves</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === teamId" class="font-bold">
+                      {{ s.saves }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="flex relative">
+                <div class="w-44 border p-1 font-bold">Saves</div>
+                <div
+                  class="data-cell p-1"
+                  v-for="stat in allStats.data"
+                  :key="stat"
+                >
+                  <span v-for="s in stat.stats.data" :key="s">
+                    <span v-if="s.team_id === teamId" class="font-bold">
+                      {{ s.saves }}
+                    </span>
+                  </span>
+                </div>
+              </div> -->
+<!-- <div v-if="teamPlayers.data && showStats === 'player'">
+         
+            <div
+              class="flex relative"
+              v-for="p in teamPlayers.data.data.lineup.data"
+            >
+              <div class="w-44 border" v-if="teamId === p.team_id">
+                <div class="flex align-middle">
+                  <img
+                    :src="p.player.data.image_path"
+                    class="h-8 p-1 mr-1 hidden md:inline-flex"
+                    alt=""
+                  />
+                  <span class="self-center pl-1">{{ p.player_name }}</span>
+                </div>
+              </div>
+
+              <div
+                class="data-cell relative p-1 font-bold"
+                v-if="teamId === p.team_id"
+              >
+                {{ p.stats.passing.passes }}
+              </div>
+            </div>
+            <div
+              class="flex relative"
+              v-for="p in teamPlayers.data.data.bench.data"
+            >
+              <div class="w-44 border" v-if="teamId === p.team_id">
+                <div v-if="teamId === p.team_id" class="flex align-middle">
+                  <img
+                    :src="p.player.data.image_path"
+                    class="h-8 p-1 mr-1 hidden md:inline-flex"
+                    alt=""
+                  />
+                  <span class="self-center pl-1">{{ p.player_name }}</span>
+                </div>
+              </div>
+
+              <div
+                class="data-cell relative p-1 font-bold"
+                v-if="teamId === p.team_id"
+              >
+                {{ p.stats.passing.passes }}
+              </div>
+            </div>
+          </div> -->
