@@ -173,7 +173,7 @@ const goPlayerStats = function (p_id) {
 
         <div v-if="tab_id === 'A'">
           <div
-            class="grid gap-1 text-sm grid-cols-3 md:grid-cols-5 lg:grid-cols-7 justify-between items-center"
+            class="grid gap-1 text-sm grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between items-center"
           >
             <div
               class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
@@ -300,7 +300,7 @@ const goPlayerStats = function (p_id) {
         </div>
         <div v-if="tab_id === 'B'">
           <div
-            class="grid gap-2 grid-cols-3 md:grid-cols-5 lg:grid-cols-7 justify-between items-center"
+            class="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between items-center"
           >
             <div
               class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
@@ -416,7 +416,7 @@ const goPlayerStats = function (p_id) {
         </div>
         <div v-if="tab_id === 'C'">
           <div
-            class="grid gap-2 grid-cols-3 md:grid-cols-5 lg:grid-cols-7 justify-between items-center cursor-pointer"
+            class="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-4 justify-between items-center cursor-pointer"
           >
             <div
               class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
@@ -736,7 +736,7 @@ const goPlayerStats = function (p_id) {
                   </div>
 
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="
                       teamId === p.team_id && playerStats === 'interception'
                     "
@@ -744,31 +744,31 @@ const goPlayerStats = function (p_id) {
                     {{ p.stats.other.interceptions }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'tackles'"
                   >
                     {{ p.stats.other.tackles }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'blocks'"
                   >
                     {{ p.stats.other.blocks }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'total_duels'"
                   >
                     {{ p.stats.duels.total }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'duel_won'"
                   >
                     {{ p.stats.duels.won }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="
                       teamId === p.team_id && playerStats === 'foul_committed'
                     "
@@ -776,19 +776,19 @@ const goPlayerStats = function (p_id) {
                     {{ p.stats.fouls.committed }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'pen_saved'"
                   >
                     {{ p.stats.other.pen_saved }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'drib_past'"
                   >
                     {{ p.stats.dribbles.dribbled_past }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="
                       teamId === p.team_id && playerStats === 'pen_committed'
                     "
@@ -796,62 +796,62 @@ const goPlayerStats = function (p_id) {
                     {{ p.stats.other.pen_committed }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'yellow_card'"
                   >
                     {{ p.stats.cards.yellowcards }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'red_card'"
                   >
                     {{ p.stats.cards.redcards }}
                   </div>
 
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'foul_drawn'"
                   >
                     {{ p.stats.fouls.drawn }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'pen_won'"
                   >
                     {{ p.stats.other.pen_won }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'key_passes'"
                   >
                     {{ p.stats.passing.key_passes }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'passes'"
                   >
                     {{ p.stats.passing.passes }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'pen_scored'"
                   >
                     {{ p.stats.other.pen_scored }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'pen_missed'"
                   >
                     {{ p.stats.other.pen_missed }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'shots_total'"
                   >
                     {{ p.stats.shots.shots_total }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="
                       teamId === p.team_id && playerStats === 'shots_on_goal'
                     "
@@ -859,13 +859,13 @@ const goPlayerStats = function (p_id) {
                     {{ p.stats.shots.shots_on_goal }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'offsides'"
                   >
                     {{ p.stats.other.offsides }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'hit_post'"
                   >
                     {{ p.stats.other.hit_woodwork }}
@@ -893,7 +893,7 @@ const goPlayerStats = function (p_id) {
                   </div>
 
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="
                       teamId === p.team_id && playerStats === 'interception'
                     "
@@ -901,31 +901,31 @@ const goPlayerStats = function (p_id) {
                     {{ p.stats.other.interceptions }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'tackles'"
                   >
                     {{ p.stats.other.tackles }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'blocks'"
                   >
                     {{ p.stats.other.blocks }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'total_duels'"
                   >
                     {{ p.stats.duels.total }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'duel_won'"
                   >
                     {{ p.stats.duels.won }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="
                       teamId === p.team_id && playerStats === 'foul_committed'
                     "
@@ -933,19 +933,19 @@ const goPlayerStats = function (p_id) {
                     {{ p.stats.fouls.committed }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'pen_saved'"
                   >
                     {{ p.stats.other.pen_saved }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'drib_past'"
                   >
                     {{ p.stats.dribbles.dribbled_past }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="
                       teamId === p.team_id && playerStats === 'pen_committed'
                     "
@@ -953,62 +953,62 @@ const goPlayerStats = function (p_id) {
                     {{ p.stats.other.pen_committed }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'yellow_card'"
                   >
                     {{ p.stats.cards.yellowcards }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'red_card'"
                   >
                     {{ p.stats.cards.redcards }}
                   </div>
 
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'foul_drawn'"
                   >
                     {{ p.stats.fouls.drawn }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'pen_won'"
                   >
                     {{ p.stats.other.pen_won }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'key_passes'"
                   >
                     {{ p.stats.passing.key_passes }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'passes'"
                   >
                     {{ p.stats.passing.passes }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'pen_scored'"
                   >
                     {{ p.stats.other.pen_scored }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'pen_missed'"
                   >
                     {{ p.stats.other.pen_missed }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'shots_total'"
                   >
                     {{ p.stats.shots.shots_total }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="
                       teamId === p.team_id && playerStats === 'shots_on_goal'
                     "
@@ -1016,13 +1016,13 @@ const goPlayerStats = function (p_id) {
                     {{ p.stats.shots.shots_on_goal }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'offsides'"
                   >
                     {{ p.stats.other.offsides }}
                   </div>
                   <div
-                    class="data-cell relative p-1 font-bold"
+                    class="data-cell p-1 font-bold"
                     v-if="teamId === p.team_id && playerStats === 'hit_post'"
                   >
                     {{ p.stats.other.hit_woodwork }}
@@ -1447,7 +1447,7 @@ const goPlayerStats = function (p_id) {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 4rem !important;
+  width: 3rem !important;
   border: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -1455,7 +1455,7 @@ const goPlayerStats = function (p_id) {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 4rem !important;
+  width: 3rem !important;
   /* border: 0.5px solid rgba(0, 0, 0, 0.1); */
 }
 
@@ -1587,7 +1587,7 @@ const goPlayerStats = function (p_id) {
 </div> -->
 
 <!-- <div
-                class="data-cell relative p-1 font-bold"
+                class="data-cell p-1 font-bold"
                 v-for="index in 30"
                 :key="index"
               >
@@ -1626,7 +1626,7 @@ const goPlayerStats = function (p_id) {
                 </div>
 
                 <div
-                  class="data-cell relative p-1 font-bold"
+                  class="data-cell p-1 font-bold"
                   v-if="teamId === p.team_id"
                 >
                   {{ p.stats.passing.passes }}
@@ -1647,7 +1647,7 @@ const goPlayerStats = function (p_id) {
               </div>
 
               <div
-                class="data-cell relative p-1 font-bold"
+                class="data-cell p-1 font-bold"
                 v-if="teamId === p.team_id"
               >
                 {{ p.stats.passing.passes }}
@@ -1701,7 +1701,7 @@ const goPlayerStats = function (p_id) {
               </div>
 
               <div
-                class="data-cell relative p-1 font-bold"
+                class="data-cell p-1 font-bold"
                 v-if="teamId === p.team_id"
               >
                 {{ p.stats.passing.passes }}
@@ -1723,7 +1723,7 @@ const goPlayerStats = function (p_id) {
               </div>
 
               <div
-                class="data-cell relative p-1 font-bold"
+                class="data-cell p-1 font-bold"
                 v-if="teamId === p.team_id"
               >
                 {{ p.stats.passing.passes }}

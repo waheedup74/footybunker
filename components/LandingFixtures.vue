@@ -86,7 +86,7 @@ const teamStats = (team_id) => {
 </script>
 
 <template>
-  <div class="w-11/12 md:w-4/5 mx-auto p-5">
+  <div class="w-9/10 md:w-4/5 mx-auto p-5">
     <!-- add section -->
     <div
       class="bg-rose-500 text-white rounded-lg py-2 px-2 mb-5 transition delay-150 duration-300 ease-in-out"

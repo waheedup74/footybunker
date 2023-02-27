@@ -57,7 +57,7 @@ const goto = function (team) {
     </div> -->
 
     <div v-if="teams">
-      <table class="w-full text-start border">
+      <table class="w-full text-start border overflow-x-scroll">
         <thead class="text-start py-4">
           <th class="text-start">Logo</th>
           <th class="text-start">Name</th>

@@ -1,7 +1,7 @@
 <script setup>
 const allLeagues = ref(false);
 const leagues = ref({});
-
+const showmenu = ref(false);
 onBeforeMount(async () => {
   leagues.value = await useFetch(
     () =>
@@ -11,12 +11,15 @@ onBeforeMount(async () => {
 const getLeagueId = (id) => {
   allLeagues.value = !allLeagues;
   navigateTo(`/${id}-standings`);
+  toggleMenue();
 };
 
 const toggleDropdown = () => {
   allLeagues.value = !allLeagues.value;
 };
-
+const toggleMenue = function () {
+  showmenu.value = !showmenu.value;
+};
 const goto = (value) => {
   console.log(value);
   // navigateTo(`auth/${value}`);
@@ -89,7 +92,7 @@ const goto = (value) => {
       >
         Sign Up
       </button>
-      <button class="ml-4 md:hidden flex">
+      <button class="ml-4 md:hidden flex" @click="toggleMenue()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="self-center h-6 w-6 lg:w-8 lg:h-8 text-white"
@@ -106,5 +109,69 @@ const goto = (value) => {
         </svg>
       </button>
     </div>
+  </div>
+
+  <div
+    class="fixed w-full h-full top-0 flex z-50 overflow-y-scroll"
+    v-if="showmenu"
+  >
+    <div class="w-4/5 h-full bg-[#0d406a]">
+      <div class="mb-5">
+        <a href="/">
+          <img src="@/assets/fb-logo.png" class="h-12 p-2" alt=""
+        /></a>
+      </div>
+
+      <div class="pl-2 text-white">
+        <div class="flex">
+          <a href="" class="text-white py-3 leading-4 duration-100">Home</a>
+        </div>
+
+        <!-- <a href="" class="text-white px-4 py-3 leading-4 duration-100"
+            >Leagues</a
+          > -->
+        <div class="relative">
+          <div
+            class="flex text-white py-2 hover:bg-[#024c8a] cursor-pointer"
+            @click="toggleDropdown()"
+          >
+            <span class="mr-4"> Leagues </span>
+            <svg
+              class="fill-white w-[1.5rem] self-center"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+              />
+            </svg>
+          </div>
+          <div
+            v-if="allLeagues && leagues.data"
+            class="absolute h-96 bg-gray-300 text-black mt-2 rounded overflow-y-scroll"
+          >
+            <span v-for="l in leagues.data.data" :key="l.id">
+              <a
+                @click="getLeagueId(l.current_season_id)"
+                class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
+              >
+                <img :src="l.logo_path" class="h-7 mr-3" alt="" />
+                <span class="font-bold">{{ l.name }}</span>
+              </a>
+            </span>
+          </div>
+        </div>
+
+        <div class="flex">
+          <a href="/" class="w-full text-white py-3 leading-4 duration-100"
+            >About</a
+          >
+        </div>
+      </div>
+    </div>
+    <div
+      class="w-1/5 h-full bg-slate-200 opacity-70"
+      @click="toggleMenue()"
+    ></div>
   </div>
 </template>
