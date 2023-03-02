@@ -31,6 +31,8 @@ onBeforeMount(async () => {
         `https://soccer.sportmonks.com/api/v2.0/head2head/${localTeam.value}/${visitorTeam.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam`
     );
   }
+
+  console.log("localteam ????", localTeam.value);
 });
 
 const changeTopTabs = function (tab, type) {
@@ -165,6 +167,22 @@ const changeTopTabs = function (tab, type) {
         <Highlights :videos="fixture.data.data.highlights.data" />
       </div>
     </div>
+
+    <div class="mt-5 bg-green-500 py-10 text-center">Test here for streaks</div>
+    <div v-if="fixture.data">
+      <PlayerStreaks
+        :localTeam="fixture.data.data.localTeam.data"
+        :visitorTeam="fixture.data.data.visitorTeam.data"
+      />
+    </div>
+
+    <!-- <p>
+      {{ fixture.data.data.localTeam.data }}
+    </p>
+
+    <p>
+      {{ fixture.data.data.visitorTeam.data }}
+    </p> -->
   </div>
 </template>
 
