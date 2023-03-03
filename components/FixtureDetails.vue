@@ -168,7 +168,9 @@ const changeTopTabs = function (tab, type) {
       </div>
     </div>
 
-    <div class="mt-5 bg-green-500 py-10 text-center">Test here for streaks</div>
+    <div class="mt-5 bg-green-500 py-10 text-center mb-10">
+      Test here for streaks
+    </div>
     <div v-if="fixture.data">
       <PlayerStreaks
         :localTeam="fixture.data.data.localTeam.data"

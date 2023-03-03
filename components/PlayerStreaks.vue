@@ -18,8 +18,14 @@ const visitorTeamFixturesidListString = ref("");
 const passesStreakLT = ref([]);
 const passesStreakVT = ref([]);
 
+const playerPassesStreakLT = ref([]);
+const playerPassesStreakVT = ref([]);
+
 const tackleStreakLT = ref([]);
 const tackleStreakVT = ref([]);
+
+const idsLT = ref([]);
+const idsVT = ref([]);
 
 onMounted(async () => {
   localTeamStats.value = await useFetch(
@@ -31,8 +37,6 @@ onMounted(async () => {
     for (const match of localTeamStats.value.data.data) {
       localTeamFixturesidList.value.push(match.id);
     }
-
-    // localTeamFixturesidList.value = localTeamFixturesidList.value.reverse();
     localTeamFixturesidListString.value = String(localTeamFixturesidList.value);
   }
 
@@ -46,7 +50,6 @@ onMounted(async () => {
       visitorTeamFixturesidList.value.push(match.id);
     }
 
-    // visitorTeamFixturesidList.value = visitorTeamFixturesidList.value.reverse();
     visitorTeamFixturesidListString.value = String(
       visitorTeamFixturesidList.value
     );
@@ -54,14 +57,14 @@ onMounted(async () => {
 
   localTeamFixtures.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${localTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam,,lineup.player`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${localTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam,,lineup,bench`
   );
 
   visitorTeamFixtures.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${visitorTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam,lineup.player`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${visitorTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam,lineup,bench`
   );
-  // homes.sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+
   // calculateTackles(localTeamFixtures.value, "l");
   // calculateTackles(visitorTeamFixtures.value, "v");
 
@@ -74,26 +77,27 @@ onMounted(async () => {
       new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
   );
   const test = visitorTeamFixtures.value.data.data[0];
-  let idsLT = [];
+
   for (const p of test.lineup.data) {
     if (p.team_id === props.localTeam.id) {
-      idsLT.push(p.player_id);
+      idsLT.value.push(p.player_id);
     }
   }
-  let idsVT = [];
+
   for (const p of test.lineup.data) {
     if (p.team_id === props.visitorTeam.id) {
-      idsVT.push(p.player_id);
+      idsVT.value.push(p.player_id);
     }
   }
-  console.log("ids VT", idsVT);
-  console.log("ids LT", idsLT);
   calculatePasses(localTeamFixtures.value.data.data.slice(0, 3), "l");
   calculatePasses(visitorTeamFixtures.value.data.data.slice(0, 3), "v");
 });
 
 const calculatePasses = function (team, type) {
-  console.log("sorted and sliced", team);
+  const ltLineup = [];
+  const ltBench = [];
+  const vtLineup = [];
+  const vtBench = [];
   if (type === "l") {
     for (const match of team) {
       for (const player of match.lineup.data) {
@@ -101,7 +105,20 @@ const calculatePasses = function (team, type) {
           player.stats.passing.passes > 70 &&
           player.team_id === props.localTeam.id
         ) {
-          passesStreakLT.value.push({
+          ltLineup.push({
+            tid: player.team_id,
+            pid: player.player_id,
+            pn: player.player_name,
+            date: match.time.starting_at.date,
+          });
+        }
+      }
+      for (const player of match.bench.data) {
+        if (
+          player.stats.passing.passes > 70 &&
+          player.team_id === props.localTeam.id
+        ) {
+          ltBench.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
@@ -110,8 +127,13 @@ const calculatePasses = function (team, type) {
         }
       }
     }
+    passesStreakLT.value = [...ltLineup, ...ltBench];
+    const hash = [];
+    const result = passesStreakLT.value.filter(
+      (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
+    );
+    playerPassesStreakLT.value = result;
   }
-  // hasIdOccurredThreeTimes(passesStreakLT.value);
   if (type === "v") {
     for (const match of team) {
       for (const player of match.lineup.data) {
@@ -119,7 +141,20 @@ const calculatePasses = function (team, type) {
           player.stats.passing.passes > 70 &&
           player.team_id === props.visitorTeam.id
         ) {
-          passesStreakVT.value.push({
+          vtLineup.push({
+            tid: player.team_id,
+            pid: player.player_id,
+            pn: player.player_name,
+            date: match.time.starting_at.date,
+          });
+        }
+      }
+      for (const player of match.bench.data) {
+        if (
+          player.stats.passing.passes > 70 &&
+          player.team_id === props.visitorTeam.id
+        ) {
+          vtBench.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
@@ -128,25 +163,19 @@ const calculatePasses = function (team, type) {
         }
       }
     }
+    passesStreakVT.value = [...vtLineup, ...vtBench];
+    const hash = [];
+    const result = passesStreakVT.value.filter(
+      (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
+    );
+    // console.log(result);
+    playerPassesStreakVT.value = result;
   }
 };
+// const valWhichRepeat = (arr, count) =>
+//   [...new Set(arr)].filter((x) => arr.filter((a.) => a === x).length >= count);
 
-function hasIdOccurredThreeTimes(ids, dataArray) {
-  let idCounts = {};
-  for (let id of dataArray) {
-    if (id in idCounts) {
-      idCounts[id]++;
-    } else {
-      idCounts[id] = 1;
-    }
-  }
-  for (let id of ids) {
-    if (idCounts[id] >= 3) {
-      return true;
-    }
-  }
-  return false;
-}
+// console.log("ahdjkadh afhajkfhk", valWhichRepeat(passesStreakLT.value, 3));
 // const calculateTackles = function (team, type) {
 //   if (type === "l") {
 //     for (const match of team.data.data) {
@@ -190,31 +219,33 @@ function hasIdOccurredThreeTimes(ids, dataArray) {
   <!-- <div class="bg-green-200 text-2xl">Local team{{ props.localTeam }}</div>
   <div class="bg-purple-200 text-2xl">visitor team {{ props.visitorTeam }}</div> -->
 
-  <div v-if="passesStreakLT.length > 0">
-    <div v-for="p in passesStreakLT" class="mb-5 bg-rose-200">
-      <span class="mr-4">
-        {{ p.tid }}
-      </span>
-      <span class="mr-4">
-        {{ p.pid }}
-      </span>
+  <!-- <div class="bg-red-900 text-white">{{ passesStreakVT }}</div> -->
 
-      <span class="mr-4">
-        {{ p.pn }}
-      </span>
-
-      <span class="mr-4">
-        {{ p.date }}
-      </span>
-      <span class="mr-4">
-        {{ p.tackle }}
-      </span>
+  <div v-if="playerPassesStreakVT.length > 0">
+    <div v-for="p in playerPassesStreakVT" class="mb-5 bg-rose-200">
+      <p>
+        <strong> {{ p.pn }} </strong> has made <strong>70+ passes</strong> in
+        last 3 <strong> {{ props.visitorTeam.name }}</strong> matches.
+      </p>
     </div>
   </div>
   <div v-else>
     There is no passes streaks {{ props.localTeam.name }} team players.
   </div>
-  <div v-if="passesStreakVT.length > 0">
+  <!-- <div class="bg-black text-white">{{ passesStreakLT }}</div> -->
+
+  <div v-if="playerPassesStreakLT.length > 0">
+    <div v-for="p in playerPassesStreakLT" class="mb-5 bg-rose-200">
+      <p>
+        <strong> {{ p.pn }} </strong> has made <strong>70+ passes</strong> in
+        last 3 <strong>{{ props.localTeam.name }}</strong> matches.
+      </p>
+    </div>
+  </div>
+  <div v-else>
+    There is no passes streaks {{ props.visitorTeam.name }} team players.
+  </div>
+  <!-- <div v-if="passesStreakVT.length > 0">
     <div v-for="p in passesStreakVT" class="mb-5 bg-purple-200">
       <span class="mr-4">
         {{ p.tid }}
@@ -237,7 +268,7 @@ function hasIdOccurredThreeTimes(ids, dataArray) {
   </div>
   <div v-else>
     There is no passes streaks {{ props.visitorTeam.name }} team players.
-  </div>
+  </div> -->
   <!-- <div v-if="visitorTeamFixtures.data" class="bg-rose-200">
     {{ props.visitorTeam.name }}
     <span v-for="match in visitorTeamFixtures.data.data">
