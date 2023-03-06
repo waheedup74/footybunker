@@ -61,12 +61,12 @@ onMounted(async () => {
 
   localTeamFixtures.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${localTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam,,lineup,bench`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${localTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,,lineup,bench`
   );
 
   visitorTeamFixtures.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${visitorTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam,lineup,bench`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${visitorTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,lineup,bench`
   );
 
   // calculateTackles(localTeamFixtures.value, "l");
@@ -222,7 +222,7 @@ const calculatePasses = function (team, type) {
   <section class="mb-5">
     <h2 class="bg-rose-300 text-center py-4 text-2xl">Passes Streaks</h2>
     <div v-if="playerPassesStreakVT.length > 0">
-      <div v-for="p in playerPassesStreakVT" class="mb-5 bg-rose-200">
+      <div v-for="p in playerPassesStreakVT" class="mb-2 bg-purple-200">
         <p>
           <strong> {{ p.pn }} </strong> has made <strong>70+ passes</strong> in
           last 3 <strong> {{ props.visitorTeam.name }}</strong> matches.
@@ -233,20 +233,19 @@ const calculatePasses = function (team, type) {
       There is no passes streaks {{ props.visitorTeam.name }} team players.
     </div>
     <!-- <div class="bg-black text-white">{{ passesStreakLT }}</div> -->
-  </section>
 
-  <div v-if="playerPassesStreakLT.length > 0">
-    <div v-for="p in playerPassesStreakLT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has made <strong>70+ passes</strong> in
-        last 3 <strong>{{ props.localTeam.name }}</strong> matches.
-      </p>
+    <div v-if="playerPassesStreakLT.length > 0">
+      <div v-for="p in playerPassesStreakLT" class="mb-2 bg-purple-200">
+        <p>
+          <strong> {{ p.pn }} </strong> has made <strong>70+ passes</strong> in
+          last 3 <strong>{{ props.localTeam.name }}</strong> matches.
+        </p>
+      </div>
     </div>
-  </div>
-  <div v-else>
-    There is no passes streaks {{ props.localTeam.name }} team players.
-  </div>
-
+    <div v-else>
+      There is no passes streaks {{ props.localTeam.name }} team players.
+    </div>
+  </section>
   <section class="my-5">
     <h2 class="bg-rose-300 text-center py-4 text-2xl">Tackles Streaks</h2>
     <StreakTackles
@@ -302,6 +301,26 @@ const calculatePasses = function (team, type) {
   <section class="my-5">
     <h2 class="bg-rose-300 text-center py-4 text-2xl">Offside Streaks</h2>
     <StreakOffside
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
+  </section>
+
+  <section class="my-5">
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">Goal Streaks</h2>
+    <StreakGoal
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
+  </section>
+
+  <section class="my-5">
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">Assist Streaks</h2>
+    <StreakAssist
       :localteam="lt"
       :visitorteam="vt"
       :local-team-data="localTeamFixtures"

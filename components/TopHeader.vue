@@ -11,7 +11,7 @@ onBeforeMount(async () => {
 const getLeagueId = (id) => {
   allLeagues.value = !allLeagues;
   navigateTo(`/${id}-standings`);
-  toggleMenue();
+  showmenu.value = false;
 };
 
 const toggleDropdown = () => {

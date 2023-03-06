@@ -8,11 +8,11 @@ const props = defineProps({
 const localTeam = ref([]);
 const visitorTeam = ref([]);
 
-const shotsOnTargetStreakLT = ref([]);
-const shotsOnTargetStreakVT = ref([]);
+const assistStreakLT = ref([]);
+const assistStreakVT = ref([]);
 
-const playerShotsOnTargetStreakLT = ref([]);
-const playerShotsOnTargetStreakVT = ref([]);
+const playerAssistStreakLT = ref([]);
+const playerAssistStreakVT = ref([]);
 
 onMounted(() => {
   if (props.localTeamData.data) {
@@ -22,11 +22,11 @@ onMounted(() => {
     visitorTeam.value = props.visitorTeamData.data.data.slice(0, 3);
   }
 
-  calculateFouls(localTeam.value, "l");
-  calculateFouls(visitorTeam.value, "v");
+  calculateGoals(localTeam.value, "l");
+  calculateGoals(visitorTeam.value, "v");
 });
 
-const calculateFouls = function (team, type) {
+const calculateGoals = function (team, type) {
   const ltLineup = [];
   const ltBench = [];
   const vtLineup = [];
@@ -35,7 +35,7 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.shots.shots_on_goal > 1 &&
+          player.stats.goals.assists > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
@@ -48,7 +48,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.shots.shots_on_goal > 1 &&
+          player.stats.goals.assists > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
@@ -60,18 +60,18 @@ const calculateFouls = function (team, type) {
         }
       }
     }
-    shotsOnTargetStreakLT.value = [...ltLineup, ...ltBench];
+    assistStreakLT.value = [...ltLineup, ...ltBench];
     const hash = [];
-    const result = shotsOnTargetStreakLT.value.filter(
+    const result = assistStreakLT.value.filter(
       (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
     );
-    playerShotsOnTargetStreakLT.value = result;
+    playerAssistStreakLT.value = result;
   }
   if (type === "v") {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.shots.shots_on_goal > 1 &&
+          player.stats.goals.assists > 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtLineup.push({
@@ -84,7 +84,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.shots.shots_on_goal > 1 &&
+          player.stats.goals.assists > 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtBench.push({
@@ -96,42 +96,39 @@ const calculateFouls = function (team, type) {
         }
       }
     }
-    shotsOnTargetStreakVT.value = [...vtLineup, ...vtBench];
+    assistStreakVT.value = [...vtLineup, ...vtBench];
     const hash = [];
-    const result = shotsOnTargetStreakVT.value.filter(
+    const result = assistStreakVT.value.filter(
       (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
     );
     // console.log(result);
-    playerShotsOnTargetStreakVT.value = result;
+    playerAssistStreakVT.value = result;
   }
 };
 </script>
 <template>
-  <div v-if="playerShotsOnTargetStreakVT.length > 0">
-    <div v-for="p in playerShotsOnTargetStreakVT" class="mb-5 bg-rose-200">
+  <div v-if="playerAssistStreakVT.length > 0">
+    <div v-for="p in playerAssistStreakVT" class="mb-5 bg-rose-200">
       <p>
-        <strong> {{ p.pn }} </strong> has made
-        <strong>1+ shots on target</strong> in last 3
-        <strong> {{ props.visitorteam.name }}</strong> matches.
+        <strong> {{ p.pn }} </strong> has made <strong>1+ goals</strong> in last
+        3 <strong> {{ props.visitorteam.name }}</strong> matches.
       </p>
     </div>
   </div>
   <div v-else>
-    There is no shots on target streaks {{ props.visitorteam.name }} team
-    players.
+    There is no goal streaks {{ props.localteam.name }} team players.
   </div>
 
-  <div v-if="playerShotsOnTargetStreakLT.length > 0">
-    <div v-for="p in playerShotsOnTargetStreakLT" class="mb-5 bg-rose-200">
+  <div v-if="playerAssistStreakLT.length > 0">
+    <div v-for="p in playerAssistStreakLT" class="mb-5 bg-rose-200">
       <p>
-        <strong> {{ p.pn }} </strong> has made
-        <strong>1+ shots on target</strong> in last 3
-        <strong>{{ props.localteam.name }}</strong> matches.
+        <strong> {{ p.pn }} </strong> has made <strong>1+ goals</strong> in last
+        3 <strong>{{ props.localteam.name }}</strong> matches.
       </p>
     </div>
   </div>
   <div v-else>
-    There is no shot on target streaks {{ props.localteam.name }} team players.
+    There is no goal streaks {{ props.visitorteam.name }} team players.
   </div>
 </template>
 <style scoped></style>

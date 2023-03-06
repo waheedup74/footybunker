@@ -36,6 +36,11 @@ onBeforeMount(async () => {
 const changeTopTabs = function (tab, type) {
   top_tab_id.value = tab;
 };
+
+const teamStats = (team_id) => {
+  navigateTo(`team-${team_id}`);
+  // console.log("what is id?", team_id);
+};
 </script>
 
 <template>
@@ -50,7 +55,10 @@ const changeTopTabs = function (tab, type) {
     </div>
     <!-- add section -->
     <div class="grid grid-cols-3 border-b pb-6" v-if="fixture.data">
-      <div class="text-center self-center">
+      <div
+        class="text-center self-center cursor-pointer"
+        @click="teamStats(fixture.data.data.localteam_id)"
+      >
         <img
           :src="fixture.data.data.localTeam.data.logo_path"
           class="w-16 md:w-32 border p-3 mx-auto rounded"
@@ -68,7 +76,10 @@ const changeTopTabs = function (tab, type) {
           {{ fixture.data.data.scores.visitorteam_score }}
         </div>
       </div>
-      <div class="text-center self-center">
+      <div
+        class="text-center self-center cursor-pointer"
+        @click="teamStats(fixture.data.data.visitorteam_id)"
+      >
         <img
           :src="fixture.data.data.visitorTeam.data.logo_path"
           class="w-16 md:w-32 border p-3 mx-auto rounded"

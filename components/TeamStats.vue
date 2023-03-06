@@ -21,7 +21,7 @@ const teamFixturesIds = ref("");
 // GET Team fixture stats using and Team Id and range of dates
 const { data: allStats, error: statsError } = useFetch(
   () =>
-    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-02-20/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-03-04/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
 );
 // GET Team stats using and Team Id
 const { data: team, error: teamError } = useFetch(
