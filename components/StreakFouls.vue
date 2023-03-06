@@ -130,26 +130,5 @@ const calculateFouls = function (team, type) {
   <div v-else>
     There is no foul streaks {{ props.localteam.name }} team players.
   </div>
-  <!-- <div class="bg-green-200">
-    <div v-for="p of localTeam">
-      {{ p.time.starting_at.date }}
-      <strong>{{ p.time.starting_at.time }}</strong>
-      <strong v-if="p.localteam_id === props.localteam.id">{{
-        p.localteam_id
-      }}</strong>
-      <strong v-else>{{ p.visitorteam_id }}</strong>
-    </div>
-  </div> -->
-
-  <!-- <div class="bg-red-200">
-    <div v-for="p of visitorTeam">
-      {{ p.time.starting_at.date }}
-      <strong>{{ p.time.starting_at.time }}</strong>
-      <strong v-if="p.visitorteam_id === props.visitorteam.id">{{
-        p.visitorteam_id
-      }}</strong>
-      <strong v-else>{{ p.localteam_id }}</strong>
-    </div>
-  </div> -->
 </template>
 <style scoped></style>

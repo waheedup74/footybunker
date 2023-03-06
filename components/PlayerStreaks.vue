@@ -267,6 +267,16 @@ const calculatePasses = function (team, type) {
     />
   </section>
 
+  <section class="my-5">
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">Yellow Card Streaks</h2>
+    <StreakYellowCard
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
+  </section>
+
   <!-- <div v-if="passesStreakVT.length > 0">
     <div v-for="p in passesStreakVT" class="mb-5 bg-purple-200">
       <span class="mr-4">
