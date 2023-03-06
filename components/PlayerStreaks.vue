@@ -34,7 +34,7 @@ const idsVT = ref([]);
 onMounted(async () => {
   localTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-02-1/2023-03-3/${props.localTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-02-1/2023-03-4/${props.localTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
   );
 
   if (localTeamStats.value.data) {
@@ -46,7 +46,7 @@ onMounted(async () => {
 
   visitorTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-02-1/2023-03-3/${props.visitorTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-02-1/2023-03-4/${props.visitorTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
   );
 
   if (visitorTeamStats.value.data) {
@@ -270,6 +270,28 @@ const calculatePasses = function (team, type) {
   <section class="my-5">
     <h2 class="bg-rose-300 text-center py-4 text-2xl">Yellow Card Streaks</h2>
     <StreakYellowCard
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
+  </section>
+
+  <section class="my-5">
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">Shots Streaks</h2>
+    <StreakAllShots
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
+  </section>
+
+  <section class="my-5">
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">
+      Shots on Target Streaks
+    </h2>
+    <StreakShotsOnTarget
       :localteam="lt"
       :visitorteam="vt"
       :local-team-data="localTeamFixtures"

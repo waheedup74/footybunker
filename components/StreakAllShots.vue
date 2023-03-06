@@ -8,11 +8,11 @@ const props = defineProps({
 const localTeam = ref([]);
 const visitorTeam = ref([]);
 
-const yellowCardStreakLT = ref([]);
-const yellowCardStreakVT = ref([]);
+const totalShotsStreakLT = ref([]);
+const totalShotsStreakVT = ref([]);
 
-const playerYellowCardStreakLT = ref([]);
-const playerYellowCardStreakVT = ref([]);
+const playerTotalShotsStreakLT = ref([]);
+const playerTotalShotsStreakVT = ref([]);
 
 onMounted(() => {
   if (props.localTeamData.data) {
@@ -35,7 +35,7 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.cards.yellowcards > 3 &&
+          player.stats.shots.shots_total > 3 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
@@ -48,7 +48,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.cards.yellowcards > 3 &&
+          player.stats.shots.shots_total > 3 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
@@ -60,18 +60,18 @@ const calculateFouls = function (team, type) {
         }
       }
     }
-    yellowCardStreakLT.value = [...ltLineup, ...ltBench];
+    totalShotsStreakLT.value = [...ltLineup, ...ltBench];
     const hash = [];
-    const result = yellowCardStreakLT.value.filter(
+    const result = totalShotsStreakLT.value.filter(
       (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
     );
-    playerYellowCardStreakLT.value = result;
+    playerTotalShotsStreakLT.value = result;
   }
   if (type === "v") {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.cards.yellowcards > 1 &&
+          player.stats.shots.shots_total > 2 &&
           player.team_id === props.visitorteam.id
         ) {
           vtLineup.push({
@@ -84,7 +84,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.cards.yellowcards > 1 &&
+          player.stats.shots.shots_total > 2 &&
           player.team_id === props.visitorteam.id
         ) {
           vtBench.push({
@@ -96,41 +96,39 @@ const calculateFouls = function (team, type) {
         }
       }
     }
-    yellowCardStreakVT.value = [...vtLineup, ...vtBench];
+    totalShotsStreakVT.value = [...vtLineup, ...vtBench];
     const hash = [];
-    const result = yellowCardStreakVT.value.filter(
+    const result = totalShotsStreakVT.value.filter(
       (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
     );
     // console.log(result);
-    playerYellowCardStreakVT.value = result;
+    playerTotalShotsStreakVT.value = result;
   }
 };
 </script>
 <template>
-  <div v-if="playerYellowCardStreakVT.length > 0">
-    <div v-for="p in playerYellowCardStreakVT" class="mb-5 bg-rose-200">
+  <div v-if="playerTotalShotsStreakVT.length > 0">
+    <div v-for="p in playerTotalShotsStreakVT" class="mb-5 bg-rose-200">
       <p>
-        <strong> {{ p.pn }} </strong> has got
-        <strong>1+ yellow cards</strong> in last 3
-        <strong> {{ props.visitorteam.name }}</strong> matches.
+        <strong> {{ p.pn }} </strong> has made <strong>2+ shots</strong> in last
+        3 <strong> {{ props.visitorteam.name }}</strong> matches.
       </p>
     </div>
   </div>
   <div v-else>
-    There is no yellow card streak of {{ props.visitorteam.name }} team players.
+    There is no shots streaks {{ props.visitorteam.name }} team players.
   </div>
 
-  <div v-if="playerYellowCardStreakLT.length > 0">
-    <div v-for="p in playerYellowCardStreakLT" class="mb-5 bg-rose-200">
+  <div v-if="playerTotalShotsStreakLT.length > 0">
+    <div v-for="p in playerTotalShotsStreakLT" class="mb-5 bg-rose-200">
       <p>
-        <strong> {{ p.pn }} </strong> has got
-        <strong>1+ yellow cards</strong> in last 3
-        <strong>{{ props.localteam.name }}</strong> matches.
+        <strong> {{ p.pn }} </strong> has made <strong>2+ shots</strong> in last
+        3 <strong>{{ props.localteam.name }}</strong> matches.
       </p>
     </div>
   </div>
   <div v-else>
-    There is no yellow card streak of {{ props.localteam.name }} team players.
+    There is no shots streaks {{ props.localteam.name }} team players.
   </div>
 </template>
 <style scoped></style>

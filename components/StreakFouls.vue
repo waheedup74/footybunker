@@ -35,7 +35,7 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.fouls.committed > 3 &&
+          player.stats.fouls.committed > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
@@ -48,7 +48,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.fouls.committed > 3 &&
+          player.stats.fouls.committed > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
