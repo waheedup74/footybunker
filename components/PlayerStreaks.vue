@@ -3,6 +3,10 @@ const props = defineProps({
   localTeam: Object,
   visitorTeam: Object,
 });
+
+const lt = props.localTeam;
+const vt = props.visitorTeam;
+
 const localTeamStats = ref({});
 const visitorTeamStats = ref({});
 
@@ -168,7 +172,6 @@ const calculatePasses = function (team, type) {
     const result = passesStreakVT.value.filter(
       (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
     );
-    // console.log(result);
     playerPassesStreakVT.value = result;
   }
 };
@@ -216,23 +219,21 @@ const calculatePasses = function (team, type) {
 // };
 </script>
 <template>
-  <!-- <div class="bg-green-200 text-2xl">Local team{{ props.localTeam }}</div>
-  <div class="bg-purple-200 text-2xl">visitor team {{ props.visitorTeam }}</div> -->
-
-  <!-- <div class="bg-red-900 text-white">{{ passesStreakVT }}</div> -->
-
-  <div v-if="playerPassesStreakVT.length > 0">
-    <div v-for="p in playerPassesStreakVT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has made <strong>70+ passes</strong> in
-        last 3 <strong> {{ props.visitorTeam.name }}</strong> matches.
-      </p>
+  <section class="mb-5">
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">Passes Streaks</h2>
+    <div v-if="playerPassesStreakVT.length > 0">
+      <div v-for="p in playerPassesStreakVT" class="mb-5 bg-rose-200">
+        <p>
+          <strong> {{ p.pn }} </strong> has made <strong>70+ passes</strong> in
+          last 3 <strong> {{ props.visitorTeam.name }}</strong> matches.
+        </p>
+      </div>
     </div>
-  </div>
-  <div v-else>
-    There is no passes streaks {{ props.localTeam.name }} team players.
-  </div>
-  <!-- <div class="bg-black text-white">{{ passesStreakLT }}</div> -->
+    <div v-else>
+      There is no passes streaks {{ props.visitorTeam.name }} team players.
+    </div>
+    <!-- <div class="bg-black text-white">{{ passesStreakLT }}</div> -->
+  </section>
 
   <div v-if="playerPassesStreakLT.length > 0">
     <div v-for="p in playerPassesStreakLT" class="mb-5 bg-rose-200">
@@ -243,8 +244,19 @@ const calculatePasses = function (team, type) {
     </div>
   </div>
   <div v-else>
-    There is no passes streaks {{ props.visitorTeam.name }} team players.
+    There is no passes streaks {{ props.localTeam.name }} team players.
   </div>
+
+  <section class="my-5">
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">Tackles Streaks</h2>
+    <StreakTackles
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
+  </section>
+
   <!-- <div v-if="passesStreakVT.length > 0">
     <div v-for="p in passesStreakVT" class="mb-5 bg-purple-200">
       <span class="mr-4">

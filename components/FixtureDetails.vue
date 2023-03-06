@@ -31,8 +31,6 @@ onBeforeMount(async () => {
         `https://soccer.sportmonks.com/api/v2.0/head2head/${localTeam.value}/${visitorTeam.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam`
     );
   }
-
-  console.log("localteam ????", localTeam.value);
 });
 
 const changeTopTabs = function (tab, type) {
@@ -168,8 +166,8 @@ const changeTopTabs = function (tab, type) {
       </div>
     </div>
 
-    <div class="mt-5 bg-green-500 py-10 text-center mb-10">
-      Test here for streaks
+    <div class="mt-5 bg-green-500 py-5 text-center text-white text-2xl mb-10">
+      <h1>Player Streaks</h1>
     </div>
     <div v-if="fixture.data">
       <PlayerStreaks
