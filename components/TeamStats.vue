@@ -19,7 +19,7 @@ const teamFixturesIds = ref("");
 // GET Team fixture stats using and Team Id and range of dates
 const { data: allStats, error: statsError } = useFetch(
   () =>
-    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-03-04/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-03-07/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
 );
 // GET Team stats using and Team Id
 const { data: team, error: teamError } = useFetch(
@@ -30,7 +30,7 @@ const { data: team, error: teamError } = useFetch(
 onMounted(async () => {
   teamSeason.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-03-04/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-03-07/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
   );
 
   if (teamSeason.value.data) {
@@ -89,7 +89,7 @@ const goPlayerStats = function (p_id) {
       <span class="mr-3 self-center">
         <img src="@/assets/right.png" class="opacity-50" alt="" />
       </span>
-      <a href="/Premier-league-standings" class="self-center">Premier League</a>
+      <a href="/" class="self-center">Premier League</a>
     </div>
     <div class="min-w-0 w-full flex-auto lg:static lg:max-h-full">
       <!-- Team and league section -->
