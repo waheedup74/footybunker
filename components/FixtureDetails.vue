@@ -124,7 +124,7 @@ const teamStats = (team_id) => {
           ]"
           class="mr-3 px-5 py-2 bg-[#0d406a] text-white text-center cursor-pointer rounded"
         >
-          h2H
+          H2H
         </div>
         <div
           @click="changeTopTabs('standings')"
@@ -158,7 +158,7 @@ const teamStats = (team_id) => {
     </div>
 
     <div v-if="top_tab_id === 'h2h'">
-      <div v-if="matches.data.data">
+      <div v-if="matches.data">
         <HeadToHead :allMatches="matches.data.data" />
       </div>
     </div>
@@ -206,11 +206,11 @@ const teamStats = (team_id) => {
  
 } */
 
-.football-field {
+/* .football-field {
   background-image: url(@assets/football-field.png);
   background-repeat: no-repeat;
   background-position: center;
-}
+} */
 </style>
 <!-- <div class="p-5 bg-rose-400">test section</div>
     {{ localTeamFormation }}

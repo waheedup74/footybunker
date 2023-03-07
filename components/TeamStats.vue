@@ -1,6 +1,4 @@
 <script setup>
-import { ref } from "vue";
-import unfetch from "unfetch";
 const route = useRoute();
 const teamId = parseInt(route.params.teamId);
 let tab_id = ref("A");

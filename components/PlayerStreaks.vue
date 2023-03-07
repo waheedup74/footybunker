@@ -1,4 +1,5 @@
 <script setup>
+// const config = useRuntimeConfig();
 const props = defineProps({
   localTeam: Object,
   visitorTeam: Object,
@@ -25,16 +26,34 @@ const passesStreakVT = ref([]);
 const playerPassesStreakLT = ref([]);
 const playerPassesStreakVT = ref([]);
 
-const tackleStreakLT = ref([]);
-const tackleStreakVT = ref([]);
-
 const idsLT = ref([]);
 const idsVT = ref([]);
+
+const todayDate = ref("");
+const months6Before = ref("");
+
+let today = new Date();
+
+const getDate = function (date) {
+  let dd = String(date.getDate()).padStart(2, "0");
+  let mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = date.getFullYear();
+
+  return yyyy + "-" + mm + "-" + dd;
+};
+const subtract6Months = function (date) {
+  date.setMonth(date.getMonth() - 6);
+  return date;
+};
+months6Before.value = getDate(subtract6Months(new Date()));
+todayDate.value = getDate(today);
+
+// console.log("env variable", config);
 
 onMounted(async () => {
   localTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-02-1/2023-03-4/${props.localTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${props.localTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
   );
 
   if (localTeamStats.value.data) {
@@ -46,7 +65,7 @@ onMounted(async () => {
 
   visitorTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-02-1/2023-03-4/${props.visitorTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${props.visitorTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
   );
 
   if (visitorTeamStats.value.data) {
@@ -219,154 +238,127 @@ const calculatePasses = function (team, type) {
 // };
 </script>
 <template>
-  <section
-    class="mb-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <h2 class="bg-rose-300 text-center py-4 text-2xl">Passes Streaks</h2>
-    <div v-if="playerPassesStreakVT.length > 0">
-      <div v-for="p in playerPassesStreakVT" class="my-2 bg-purple-200">
-        <p>
-          <strong> {{ p.pn }} </strong> has made <strong>70+ passes</strong> in
-          last 3 <strong> {{ props.visitorTeam.name }}</strong> matches.
-        </p>
+  <div v-if="localTeamFixtures.data && visitorTeamFixtures.data">
+    <section class="mb-5">
+      <h2 class="bg-rose-300 text-center py-4 text-2xl">Passes Streaks</h2>
+      <div v-if="playerPassesStreakVT.length > 0">
+        <div v-for="p in playerPassesStreakVT" class="my-2 bg-purple-200">
+          <p>
+            <strong> {{ p.pn }} </strong> has made
+            <strong>70+ passes</strong> in last 3
+            <strong> {{ props.visitorTeam.name }}</strong> matches.
+          </p>
+        </div>
       </div>
-    </div>
-    <div v-else>
-      There is no passes streaks {{ props.visitorTeam.name }} team players.
-    </div>
-    <!-- <div class="bg-black text-white">{{ passesStreakLT }}</div> -->
-
-    <div v-if="playerPassesStreakLT.length > 0">
-      <div v-for="p in playerPassesStreakLT" class="my-2 bg-purple-200">
-        <p>
-          <strong> {{ p.pn }} </strong> has made <strong>70+ passes</strong> in
-          last 3 <strong>{{ props.localTeam.name }}</strong> matches.
-        </p>
+      <div v-else>
+        There is no passes streaks {{ props.visitorTeam.name }} team players.
       </div>
-    </div>
-    <div v-else>
-      There is no passes streaks {{ props.localTeam.name }} team players.
-    </div>
-  </section>
-  <section
-    class="my-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <h2 class="bg-rose-300 text-center py-4 text-2xl">Tackles Streaks</h2>
-    <StreakTackles
-      :localteam="lt"
-      :visitorteam="vt"
-      :local-team-data="localTeamFixtures"
-      :visitor-team-data="visitorTeamFixtures"
-    />
-  </section>
+      <!-- <div class="bg-black text-white">{{ passesStreakLT }}</div> -->
 
-  <section
-    class="my-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <h2 class="bg-rose-300 text-center py-4 text-2xl">Foul Streaks</h2>
-    <StreakFouls
-      :localteam="lt"
-      :visitorteam="vt"
-      :local-team-data="localTeamFixtures"
-      :visitor-team-data="visitorTeamFixtures"
-    />
-  </section>
+      <div v-if="playerPassesStreakLT.length > 0">
+        <div v-for="p in playerPassesStreakLT" class="my-2 bg-purple-200">
+          <p>
+            <strong> {{ p.pn }} </strong> has made
+            <strong>70+ passes</strong> in last 3
+            <strong>{{ props.localTeam.name }}</strong> matches.
+          </p>
+        </div>
+      </div>
+      <div v-else>
+        There is no passes streaks {{ props.localTeam.name }} team players.
+      </div>
+    </section>
+    <section class="my-5">
+      <h2 class="bg-rose-300 text-center py-4 text-2xl">Tackles Streaks</h2>
+      <StreakTackles
+        :localteam="lt"
+        :visitorteam="vt"
+        :local-team-data="localTeamFixtures"
+        :visitor-team-data="visitorTeamFixtures"
+      />
+    </section>
 
-  <section
-    class="my-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <h2 class="bg-rose-300 text-center py-4 text-2xl">Yellow Card Streaks</h2>
-    <StreakYellowCard
-      :localteam="lt"
-      :visitorteam="vt"
-      :local-team-data="localTeamFixtures"
-      :visitor-team-data="visitorTeamFixtures"
-    />
-  </section>
+    <section class="my-5">
+      <h2 class="bg-rose-300 text-center py-4 text-2xl">Foul Streaks</h2>
+      <StreakFouls
+        :localteam="lt"
+        :visitorteam="vt"
+        :local-team-data="localTeamFixtures"
+        :visitor-team-data="visitorTeamFixtures"
+      />
+    </section>
 
-  <section
-    class="my-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <h2 class="bg-rose-300 text-center py-4 text-2xl">Shots Streaks</h2>
-    <StreakAllShots
-      :localteam="lt"
-      :visitorteam="vt"
-      :local-team-data="localTeamFixtures"
-      :visitor-team-data="visitorTeamFixtures"
-    />
-  </section>
+    <section class="my-5">
+      <h2 class="bg-rose-300 text-center py-4 text-2xl">Yellow Card Streaks</h2>
+      <StreakYellowCard
+        :localteam="lt"
+        :visitorteam="vt"
+        :local-team-data="localTeamFixtures"
+        :visitor-team-data="visitorTeamFixtures"
+      />
+    </section>
 
-  <section
-    class="my-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <h2 class="bg-rose-300 text-center py-4 text-2xl">
-      Shots on Target Streaks
-    </h2>
-    <StreakShotsOnTarget
-      :localteam="lt"
-      :visitorteam="vt"
-      :local-team-data="localTeamFixtures"
-      :visitor-team-data="visitorTeamFixtures"
-    />
-  </section>
+    <section class="my-5">
+      <h2 class="bg-rose-300 text-center py-4 text-2xl">Shots Streaks</h2>
+      <StreakAllShots
+        :localteam="lt"
+        :visitorteam="vt"
+        :local-team-data="localTeamFixtures"
+        :visitor-team-data="visitorTeamFixtures"
+      />
+    </section>
 
-  <section
-    class="my-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <h2 class="bg-rose-300 text-center py-4 text-2xl">Offside Streaks</h2>
-    <StreakOffside
-      :localteam="lt"
-      :visitorteam="vt"
-      :local-team-data="localTeamFixtures"
-      :visitor-team-data="visitorTeamFixtures"
-    />
-  </section>
+    <section class="my-5">
+      <h2 class="bg-rose-300 text-center py-4 text-2xl">
+        Shots on Target Streaks
+      </h2>
+      <StreakShotsOnTarget
+        :localteam="lt"
+        :visitorteam="vt"
+        :local-team-data="localTeamFixtures"
+        :visitor-team-data="visitorTeamFixtures"
+      />
+    </section>
 
-  <section
-    class="my-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <h2 class="bg-rose-300 text-center py-4 text-2xl">Goal Streaks</h2>
-    <StreakGoal
-      :localteam="lt"
-      :visitorteam="vt"
-      :local-team-data="localTeamFixtures"
-      :visitor-team-data="visitorTeamFixtures"
-    />
-  </section>
+    <section class="my-5">
+      <h2 class="bg-rose-300 text-center py-4 text-2xl">Offside Streaks</h2>
+      <StreakOffside
+        :localteam="lt"
+        :visitorteam="vt"
+        :local-team-data="localTeamFixtures"
+        :visitor-team-data="visitorTeamFixtures"
+      />
+    </section>
 
-  <section
-    class="my-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <h2 class="bg-rose-300 text-center py-4 text-2xl">Assist Streaks</h2>
-    <StreakAssist
-      :localteam="lt"
-      :visitorteam="vt"
-      :local-team-data="localTeamFixtures"
-      :visitor-team-data="visitorTeamFixtures"
-    />
-  </section>
+    <section class="my-5">
+      <h2 class="bg-rose-300 text-center py-4 text-2xl">Goal Streaks</h2>
+      <StreakGoal
+        :localteam="lt"
+        :visitorteam="vt"
+        :local-team-data="localTeamFixtures"
+        :visitor-team-data="visitorTeamFixtures"
+      />
+    </section>
 
-  <section
-    class="my-5"
-    v-if="localTeamFixtures.data && visitorTeamFixtures.data"
-  >
-    <StreakTotalPasses
-      :localteam="lt"
-      :visitorteam="vt"
-      :local-team-data="localTeamFixtures"
-      :visitor-team-data="visitorTeamFixtures"
-    />
-  </section>
+    <section class="my-5">
+      <h2 class="bg-rose-300 text-center py-4 text-2xl">Assist Streaks</h2>
+      <StreakAssist
+        :localteam="lt"
+        :visitorteam="vt"
+        :local-team-data="localTeamFixtures"
+        :visitor-team-data="visitorTeamFixtures"
+      />
+    </section>
 
+    <section class="my-5">
+      <StreakTotalPasses
+        :localteam="lt"
+        :visitorteam="vt"
+        :local-team-data="localTeamFixtures"
+        :visitor-team-data="visitorTeamFixtures"
+      />
+    </section>
+  </div>
   <!-- <div v-if="passesStreakVT.length > 0">
     <div v-for="p in passesStreakVT" class="mb-5 bg-purple-200">
       <span class="mr-4">

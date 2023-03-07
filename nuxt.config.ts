@@ -23,7 +23,19 @@ export default {
     // axios: {
     //     baseURL: 'http://localhost:3000', // Used as fallback if no runtime config is provided
     //   }
-
+    // publicRuntimeConfig:{
+    //   myApp:{
+    //     publicTest: "public",
+    //     bothTest: "public"
+  
+    //   }
+    // },
+    // privateRuntimeConfig: {
+    //   myApp:{
+    //     privateTest: "private",
+    //     bothTest: "private",
+    //   }
+    // }
  
   }
 
