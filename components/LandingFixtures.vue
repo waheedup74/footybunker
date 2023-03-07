@@ -375,13 +375,13 @@ const teamStats = (team_id) => {
     </div>
   </div>
 
-  <div class="mt-5 text-center">
+  <!-- <div class="mt-5 text-center">
     <a
       class="bg-green-400 py-3 px-6 mr-5 cursor-pointer"
       @click="goto('Premier-league')"
       >GoTo Premier league Standings
     </a>
-  </div>
+  </div> -->
 </template>
 
 <style></style>

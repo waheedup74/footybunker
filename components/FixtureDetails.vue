@@ -163,10 +163,10 @@ const teamStats = (team_id) => {
       </div>
     </div>
     <div v-if="top_tab_id === 'standings'">
-      <div class="py-5 bg-rose-700 text-white">
+      <!-- <div class="py-5 bg-rose-700 text-white">
         This is testing for api call on load
-      </div>
-      <div>
+      </div> -->
+      <div class="text-center mt-5">
         team standings will display here
         <!-- <HeadToHead /> -->
       </div>

@@ -18,16 +18,20 @@ onBeforeMount(() => {
   checkTeamIds();
 });
 const checkTeamIds = function () {
-  if (props.fixture?.localteam_id === props.fixture.stats.data[0].team_id) {
-    localTeamStats.value = props.fixture.stats.data[0];
-  } else {
-    localTeamStats.value = props.fixture.stats.data[1];
-  }
+  if (props.fixture.stats.data.length != 0) {
+    if (props.fixture?.localteam_id === props.fixture.stats.data[0].team_id) {
+      localTeamStats.value = props.fixture.stats.data[0];
+    } else {
+      localTeamStats.value = props.fixture.stats.data[1];
+    }
 
-  if (props.fixture?.visitorteam_id === props.fixture.stats.data[0].team_id) {
-    visitorTeamStats.value = props.fixture.stats.data[0];
+    if (props.fixture?.visitorteam_id === props.fixture.stats.data[0].team_id) {
+      visitorTeamStats.value = props.fixture.stats.data[0];
+    } else {
+      visitorTeamStats.value = props.fixture.stats.data[1];
+    }
   } else {
-    visitorTeamStats.value = props.fixture.stats.data[1];
+    console.log("no stats available yet!");
   }
 };
 const changeTabs = function (tab, type) {
