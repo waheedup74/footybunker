@@ -5,21 +5,13 @@ let tab_id = ref("A");
 const showRow = ref(false);
 const showValue = ref("");
 const showStats = ref("player");
-const teamPlayers = ref({});
-const fixtureIds = ref([]);
-const teamSeasonPlayers = ref([]);
-const allFixtures = ref([]);
 const teamSeasonPlayersData = ref([]);
-const teamSeason = ref({});
 
 const newTeamStats = ref({});
 const newTeamFixtures = ref({});
-const newTeamFixturesidList = ref([]);
 const newTeamFixturesidListString = ref("");
 
 const playerStats = ref("interception");
-
-const teamFixturesIds = ref("");
 
 const todayDate = ref("");
 const months6Before = ref("");
@@ -58,10 +50,8 @@ onMounted(async () => {
       `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
   );
   if (newTeamStats.value.data) {
-    for (const match of newTeamStats.value.data.data) {
-      newTeamFixturesidList.value.push(match.id);
-    }
-    newTeamFixturesidListString.value = String(newTeamFixturesidList.value);
+    const listOfIds = newTeamStats.value.data.data.map((match) => match.id);
+    newTeamFixturesidListString.value = String(listOfIds);
   }
   newTeamFixtures.value = await useFetch(
     () =>
