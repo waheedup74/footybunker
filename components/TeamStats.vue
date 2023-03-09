@@ -34,17 +34,17 @@ const getDate = function (date) {
   return yyyy + "-" + mm + "-" + dd;
 };
 const subtract6Months = function (date) {
-  date.setMonth(date.getMonth() - 6);
+  date.setMonth(date.getMonth() - 11);
   return date;
 };
 months6Before.value = getDate(subtract6Months(new Date()));
 todayDate.value = getDate(today);
 
 // GET Team fixture stats using and Team Id and range of dates
-const { data: allStats, error: statsError } = useFetch(
-  () =>
-    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
-);
+// const { data: allStats, error: statsError } = useFetch(
+//   () =>
+//     `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+// );
 // GET Team stats using and Team Id
 const { data: team, error: teamError } = useFetch(
   () =>
@@ -460,16 +460,6 @@ const goPlayerStats = function (p_id) {
             >
               Corners
             </div>
-            <!-- <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
-            >
-              1st Half Corners
-            </div>
-            <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
-            >
-              2nd Half Corners
-            </div> -->
             <div
               class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               @click="toggleTeamStats('shotsTotal')"
@@ -689,15 +679,12 @@ const goPlayerStats = function (p_id) {
         </div>
       </div>
       <!-- checkbox section -->
-
-      <!-- <div v-if="team.data">
-        <div class="bg-[#0d406a] text-white p-5 text-3xl mb-5 capitalize">
-          {{ team.data.name }} Players Stats
-        </div>
-      </div> -->
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
         <div class="relative border rounded mt-8 w-[6700px]">
-          <div v-if="newTeamFixtures.data && showStats === 'player'">
+          <div
+            class="mt-5"
+            v-if="newTeamFixtures.data && showStats === 'player'"
+          >
             <div class="flex relative">
               <span v-for="team in newTeamFixtures.data.data">
                 <div class="flex">
@@ -1993,7 +1980,7 @@ const goPlayerStats = function (p_id) {
             </div>
           </div>
 
-          <div class="mt-5" v-if="allStats && showStats === 'team'">
+          <div class="mt-5" v-if="newTeamStats.data && showStats === 'team'">
             <div
               class="bg-[#0d406a] text-white p-5 text-3xl mb-5 capitalize"
               v-if="team"
@@ -2006,7 +1993,7 @@ const goPlayerStats = function (p_id) {
 
               <div
                 class="data-cell p-1 cursor-pointer tooltip"
-                v-for="l in allStats.data"
+                v-for="l in newTeamStats.data.data"
                 :key="l"
               >
                 <span class="tooltiptext">{{ l.league.data.name }}</span>
@@ -2017,7 +2004,11 @@ const goPlayerStats = function (p_id) {
             <div class="flex relative">
               <div class="w-44 border p-1">Against</div>
 
-              <div class="data-cell p-1" v-for="l in allStats.data" :key="l">
+              <div
+                class="data-cell p-1"
+                v-for="l in newTeamStats.data.data"
+                :key="l"
+              >
                 <span
                   class="cursor-pointer tooltip"
                   v-if="l.visitorteam_id !== teamId"
@@ -2045,7 +2036,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Passes</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2063,7 +2054,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Tackles</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2081,7 +2072,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Corners</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2099,7 +2090,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Shots - Total</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2117,7 +2108,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Shots - On target</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2135,7 +2126,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Shots - Off target</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2153,7 +2144,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Shots - Inside Box</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2171,7 +2162,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Shots - Outside Box</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2189,7 +2180,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Fouls</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2207,7 +2198,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Offside</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2225,7 +2216,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Yellow Cards</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2243,7 +2234,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Red Cards</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2261,7 +2252,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Penalties</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2279,7 +2270,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Throw-Ins</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2297,7 +2288,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Free Kicks</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2315,7 +2306,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Goal Kicks</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
@@ -2333,7 +2324,7 @@ const goPlayerStats = function (p_id) {
                 <div class="w-44 border p-1 font-bold">Saves</div>
                 <div
                   class="data-cell p-1"
-                  v-for="stat in allStats.data"
+                  v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
                   <span v-for="s in stat.stats.data" :key="s">
