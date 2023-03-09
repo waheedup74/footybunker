@@ -55,42 +55,32 @@ onMounted(async () => {
     () =>
       `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${props.localTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
   );
-
   if (localTeamStats.value.data) {
     for (const match of localTeamStats.value.data.data) {
       localTeamFixturesidList.value.push(match.id);
     }
     localTeamFixturesidListString.value = String(localTeamFixturesidList.value);
   }
-
   visitorTeamStats.value = await useFetch(
     () =>
       `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${props.visitorTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
   );
-
   if (visitorTeamStats.value.data) {
     for (const match of visitorTeamStats.value.data.data) {
       visitorTeamFixturesidList.value.push(match.id);
     }
-
     visitorTeamFixturesidListString.value = String(
       visitorTeamFixturesidList.value
     );
   }
-
   localTeamFixtures.value = await useFetch(
     () =>
       `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${localTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,,lineup,bench`
   );
-
   visitorTeamFixtures.value = await useFetch(
     () =>
       `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${visitorTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,lineup,bench`
   );
-
-  // calculateTackles(localTeamFixtures.value, "l");
-  // calculateTackles(visitorTeamFixtures.value, "v");
-
   localTeamFixtures.value.data.data.sort(
     (a, b) =>
       new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
@@ -106,7 +96,6 @@ onMounted(async () => {
       idsLT.value.push(p.player_id);
     }
   }
-
   for (const p of test.lineup.data) {
     if (p.team_id === props.visitorTeam.id) {
       idsVT.value.push(p.player_id);

@@ -12,14 +12,38 @@ const allFixtures = ref([]);
 const teamSeasonPlayersData = ref([]);
 const teamSeason = ref({});
 
+const newTeamStats = ref({});
+const newTeamFixtures = ref({});
+const newTeamFixturesidList = ref([]);
+const newTeamFixturesidListString = ref("");
+
 const playerStats = ref("interception");
 
 const teamFixturesIds = ref("");
 
+const todayDate = ref("");
+const months6Before = ref("");
+
+let today = new Date();
+
+const getDate = function (date) {
+  let dd = String(date.getDate()).padStart(2, "0");
+  let mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = date.getFullYear();
+
+  return yyyy + "-" + mm + "-" + dd;
+};
+const subtract6Months = function (date) {
+  date.setMonth(date.getMonth() - 6);
+  return date;
+};
+months6Before.value = getDate(subtract6Months(new Date()));
+todayDate.value = getDate(today);
+
 // GET Team fixture stats using and Team Id and range of dates
 const { data: allStats, error: statsError } = useFetch(
   () =>
-    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-03-07/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+    `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
 );
 // GET Team stats using and Team Id
 const { data: team, error: teamError } = useFetch(
@@ -28,24 +52,30 @@ const { data: team, error: teamError } = useFetch(
 );
 
 onMounted(async () => {
-  teamSeason.value = await useFetch(
+  // new work
+  newTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-07-01/2023-03-07/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
+  );
+  if (newTeamStats.value.data) {
+    for (const match of newTeamStats.value.data.data) {
+      newTeamFixturesidList.value.push(match.id);
+    }
+    newTeamFixturesidListString.value = String(newTeamFixturesidList.value);
+  }
+  newTeamFixtures.value = await useFetch(
+    () =>
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${newTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,lineup.player,bench.player,localTeam,visitorTeam`
   );
 
-  if (teamSeason.value.data) {
-    for (let item of teamSeason.value.data.data) {
-      fixtureIds.value.push(item.id);
-    }
-    // teamFixturesIds.value = String(fixtureIds.value);
-    for (let id of fixtureIds.value) {
-      teamPlayers.value = await useFetch(
-        `https://soccer.sportmonks.com/api/v2.0/fixtures/${id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,lineup.player,bench.player,localTeam,visitorTeam`
-      );
+  const testFixtures = newTeamFixtures.value.data.data.sort(
+    (a, b) =>
+      new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
+  );
 
-      teamSeasonPlayersData.value.push(teamPlayers.value);
-    }
-  }
+  teamSeasonPlayersData.value = testFixtures;
+
+  // new work
 });
 const changeTabs = (tab, section) => {
   tab_id.value = tab;
@@ -667,26 +697,19 @@ const goPlayerStats = function (p_id) {
       </div> -->
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
         <div class="relative border rounded mt-8 w-[6700px]">
-          <div
-            v-if="teamSeasonPlayersData.length !== 0 && showStats === 'player'"
-          >
-            <!-- <div v-for="team in teamSeasonPlayersData">
-              <p>{{ team.data.data.id }}</p>
-            </div> -->
-
+          <div v-if="newTeamFixtures.data && showStats === 'player'">
             <div class="flex relative">
-              <!-- <div class="w-44 border"></div> -->
-              <span v-for="team in teamSeasonPlayersData.slice().reverse()">
+              <span v-for="team in newTeamFixtures.data.data">
                 <div class="flex">
                   <div class="w-44 text-center self-center font-bold">
                     Opposition
                   </div>
                   <div
                     class="data-cell-img relative p-1"
-                    v-if="teamId === team.data.data.localteam_id"
+                    v-if="teamId === team.localteam_id"
                   >
                     <img
-                      :src="team.data.data.visitorTeam.data.logo_path"
+                      :src="team.visitorTeam.data.logo_path"
                       class="w-6 md:w-7"
                       alt=""
                     />
@@ -697,10 +720,10 @@ const goPlayerStats = function (p_id) {
                   </div>
                   <div
                     class="data-cell-img relative p-1"
-                    v-if="teamId === team.data.data.visitorteam_id"
+                    v-if="teamId === team.visitorteam_id"
                   >
                     <img
-                      :src="team.data.data.localTeam.data.logo_path"
+                      :src="team.localTeam.data.logo_path"
                       class="w-6 md:w-7"
                       alt=""
                     />
@@ -711,10 +734,7 @@ const goPlayerStats = function (p_id) {
                   </div>
                 </div>
                 <!-- lineup start  -->
-                <div
-                  class="flex relative"
-                  v-for="p in team.data.data?.lineup.data"
-                >
+                <div class="flex relative" v-for="p in team.lineup.data">
                   <div class="w-44 border" v-if="teamId === p.team_id">
                     <div
                       class="flex align-middle hover:cursor-pointer"
@@ -1046,8 +1066,6 @@ const goPlayerStats = function (p_id) {
                       </div>
                     </div>
                   </div>
-
-                  <!-- section b starts -->
 
                   <div class="flex w-100 tooltip">
                     <span
@@ -1344,10 +1362,7 @@ const goPlayerStats = function (p_id) {
                 <!-- lineup end  -->
 
                 <!-- bench start -->
-                <div
-                  class="flex relative"
-                  v-for="p in team.data.data?.bench.data"
-                >
+                <div class="flex relative" v-for="p in team?.bench.data">
                   <div class="w-44 border" v-if="teamId === p.team_id">
                     <div
                       class="flex align-middle hover:cursor-pointer"
@@ -1679,7 +1694,7 @@ const goPlayerStats = function (p_id) {
                       </div>
                     </div>
                   </div>
-                  <!-- section b starts here -->
+
                   <div class="flex w-100 tooltip">
                     <span
                       v-if="p.stats.other.minutes_played"
@@ -2515,163 +2530,3 @@ const goPlayerStats = function (p_id) {
   opacity: 1;
 }
 </style>
-
-<!-- <div class="flex relative" v-if="showMe === 'passes' && showValue">
-  <div class="w-44 border p-1">Passes</div>
-  <div
-    class="data-cell p-1"
-    v-for="stat in allStats.data"
-    :key="stat"
-  >
-    <span v-for="s in stat.stats.data" :key="s">
-      <span v-if="s.team_id === teamId" class="font-bold">
-        {{ s.passes.total }}
-      </span>
-    </span>
-  </div>
-</div> -->
-
-<!-- <div
-                class="data-cell p-1 font-bold"
-                v-for="index in 30"
-                :key="index"
-              >
-                45%
-              </div> -->
-<!-- <div class="flex items-center mt-6">
-          <select
-            id="statsFilter"
-            data-url="https://playerstats.football/premier-league/liverpool/shots-on-target"
-            class="form-select mx-auto w-64 text-sm pt-1 border border-gray-600"
-            name=""
-          >
-            <option value="all" data-type="period">Select Seasons</option>
-            <option value="last-10" data-type="period">2020/2021</option>
-            <option value="last-5" data-type="period" selected>
-              2021/2022
-            </option>
-            <option value="last-10" data-type="period">2022/2023</option>
-          </select>
-        </div> -->
-
-<!-- <div v-for="team in teamSeasonPlayersData">
-              <div
-                class="flex relative"
-                v-for="p in team.data.data?.lineup.data"
-              >
-                <div class="w-44 border" v-if="teamId === p.team_id">
-                  <div class="flex align-middle">
-                    <img
-                      :src="p.player.data.image_path"
-                      class="h-8 p-1 mr-1 hidden md:inline-flex"
-                      alt=""
-                    />
-                    <span class="self-center pl-1">{{ p.player_name }}</span>
-                  </div>
-                </div>
-
-                <div
-                  class="data-cell p-1 font-bold"
-                  v-if="teamId === p.team_id"
-                >
-                  {{ p.stats.passing.passes }}
-                </div>
-              </div>
-            </div>
-
-            <div class="flex relative" v-for="p in team.data.data?.bench.data">
-              <div class="w-44 border" v-if="teamId === p.team_id">
-                <div v-if="teamId === p.team_id" class="flex align-middle">
-                  <img
-                    :src="p.player.data.image_path"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">{{ p.player_name }}</span>
-                </div>
-              </div>
-
-              <div
-                class="data-cell p-1 font-bold"
-                v-if="teamId === p.team_id"
-              >
-                {{ p.stats.passing.passes }}
-              </div>
-            </div> -->
-
-<!-- <div class="flex relative">
-                <div class="w-44 border p-1 font-bold">Saves</div>
-                <div
-                  class="data-cell p-1"
-                  v-for="stat in allStats.data"
-                  :key="stat"
-                >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
-                      {{ s.saves }}
-                    </span>
-                  </span>
-                </div>
-              </div>
-
-              <div class="flex relative">
-                <div class="w-44 border p-1 font-bold">Saves</div>
-                <div
-                  class="data-cell p-1"
-                  v-for="stat in allStats.data"
-                  :key="stat"
-                >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
-                      {{ s.saves }}
-                    </span>
-                  </span>
-                </div>
-              </div> -->
-<!-- <div v-if="teamPlayers.data && showStats === 'player'">
-         
-            <div
-              class="flex relative"
-              v-for="p in teamPlayers.data.data.lineup.data"
-            >
-              <div class="w-44 border" v-if="teamId === p.team_id">
-                <div class="flex align-middle">
-                  <img
-                    :src="p.player.data.image_path"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">{{ p.player_name }}</span>
-                </div>
-              </div>
-
-              <div
-                class="data-cell p-1 font-bold"
-                v-if="teamId === p.team_id"
-              >
-                {{ p.stats.passing.passes }}
-              </div>
-            </div>
-            <div
-              class="flex relative"
-              v-for="p in teamPlayers.data.data.bench.data"
-            >
-              <div class="w-44 border" v-if="teamId === p.team_id">
-                <div v-if="teamId === p.team_id" class="flex align-middle">
-                  <img
-                    :src="p.player.data.image_path"
-                    class="h-8 p-1 mr-1 hidden md:inline-flex"
-                    alt=""
-                  />
-                  <span class="self-center pl-1">{{ p.player_name }}</span>
-                </div>
-              </div>
-
-              <div
-                class="data-cell p-1 font-bold"
-                v-if="teamId === p.team_id"
-              >
-                {{ p.stats.passing.passes }}
-              </div>
-            </div>
-          </div> -->
