@@ -15,6 +15,10 @@ const playerStats = ref("interception");
 
 const todayDate = ref("");
 const months6Before = ref("");
+const leaguesList = ref([]);
+
+const showHome = ref(true);
+const showAway = ref(true);
 
 let today = new Date();
 
@@ -32,18 +36,13 @@ const subtract6Months = function (date) {
 months6Before.value = getDate(subtract6Months(new Date()));
 todayDate.value = getDate(today);
 
-// GET Team fixture stats using and Team Id and range of dates
-// const { data: allStats, error: statsError } = useFetch(
-//   () =>
-//     `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,localTeam,visitorTeam`
-// );
 // GET Team stats using and Team Id
 const { data: team, error: teamError } = useFetch(
   () =>
     `https://soccer.sportmonks.com/api/v2.0/teams/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
 );
 
-onMounted(async () => {
+onBeforeMount(async () => {
   // new work
   newTeamStats.value = await useFetch(
     () =>
@@ -51,19 +50,32 @@ onMounted(async () => {
   );
   if (newTeamStats.value.data) {
     const listOfIds = newTeamStats.value.data.data.map((match) => match.id);
+    const listOfleagueIds = newTeamStats.value.data.data.map(
+      (match) => match.league_id
+    );
     newTeamFixturesidListString.value = String(listOfIds);
+
+    const uniqueIds = [...new Set(listOfleagueIds)];
+
+    leaguesList.value = await Promise.all(
+      uniqueIds.map(async (id) => {
+        const response = await useFetch(
+          `https://soccer.sportmonks.com/api/v2.0/leagues/${id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+        );
+        return response;
+      })
+    );
   }
+
   newTeamFixtures.value = await useFetch(
     () =>
       `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${newTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,lineup.player,bench.player,localTeam,visitorTeam`
   );
 
-  const testFixtures = newTeamFixtures.value.data.data.sort(
+  newTeamFixtures.value.data.data.sort(
     (a, b) =>
       new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
   );
-
-  teamSeasonPlayersData.value = testFixtures;
 
   // new work
 });
@@ -71,12 +83,10 @@ const changeTabs = (tab, section) => {
   tab_id.value = tab;
   if (tab === "A") {
     showPlayerStats("interception");
-    // playerStats.value = "interception";
   }
 
   if (tab === "B") {
     showPlayerStats("foul_drawn");
-    // playerStats.value = "foul_drawn";
   }
   showValue.value = "";
   showRow.value = true;
@@ -99,6 +109,22 @@ const goto = function (team) {
 const goPlayerStats = function (p_id) {
   navigateTo(`/player-${p_id}`);
 };
+
+const switchVenue = (value) => {
+  if (value === "home") {
+    showHome.value = !showHome.value;
+    console.log("home called");
+  }
+  if (value === "away") {
+    showAway.value = !showAway.value;
+    console.log("away called");
+  }
+};
+
+const leagueChange = (e, id) => {
+  console.log("value --- id", e, id);
+};
+const selectedOptions = ref([]);
 </script>
 <template>
   <div class="w-11/12 md:w-4/5 mx-auto py-8">
@@ -430,7 +456,7 @@ const goPlayerStats = function (p_id) {
         </div>
         <div v-if="tab_id === 'C'">
           <div
-            class="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-4 justify-between items-center cursor-pointer"
+            class="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between items-center cursor-pointer"
           >
             <div
               class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
@@ -541,23 +567,31 @@ const goPlayerStats = function (p_id) {
           >
             Competitions
           </h5>
-          <div class="grid grid-cols-2 gap-2 md:grid-cols-5 lg:grid-cols-7">
-            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+          <div
+            class="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6"
+            v-if="leaguesList"
+          >
+            <div
+              class="flex items-center pr-4 mb-1 2xl:mb-0"
+              v-for="(league, index) of leaguesList"
+            >
               <input
-                id="leagueCheck1"
-                name="leagueCheck1"
+                :id="league.data.data.id"
+                :name="league.data.data.id"
                 type="checkbox"
                 class="h-4 w-4 border-gray-300 rounded league-filter"
-                data-league-id="30"
+                :checked="true"
+                v-model="selectedOptions[index]"
+                @change="leagueChange(index, league.data.data.id)"
               />
               <label
-                for="leagueCheck1"
+                :for="league.data.data.id"
                 class="ml-2 block text-sm text-gray-700"
               >
-                Premier League
+                {{ league.data.data.name }}
               </label>
             </div>
-            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+            <!-- <div class="flex items-center pr-4 mb-1 2xl:mb-0">
               <input
                 id="leagueCheck2"
                 name="leagueCheck2"
@@ -616,8 +650,8 @@ const goPlayerStats = function (p_id) {
               >
                 Community Shield
               </label>
-            </div>
-            <div class="flex items-center pr-4 mb-1 2xl:mb-0">
+            </div> -->
+            <!-- <div class="flex items-center pr-4 mb-1 2xl:mb-0">
               <input
                 id="leagueCheck5"
                 name="leagueCheck5"
@@ -631,7 +665,7 @@ const goPlayerStats = function (p_id) {
               >
                 Next Opponent
               </label>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="">
@@ -640,7 +674,7 @@ const goPlayerStats = function (p_id) {
           >
             Venue
           </h5>
-          <div class="grid grid-cols-2 gap-2 md:grid-cols-5 lg:grid-cols-7">
+          <div class="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6">
             <div class="flex items-center pr-4 mb-1 2xl:mb-0">
               <input
                 id="venueCheck1"
@@ -648,6 +682,8 @@ const goPlayerStats = function (p_id) {
                 type="checkbox"
                 class="h-4 w-4 border-gray-300 rounded venue-filter"
                 data-venue-id="h"
+                :checked="showHome"
+                @change="switchVenue('home')"
               />
               <label for="venueCheck1" class="ml-2 block text-sm text-gray-700">
                 Home
@@ -660,6 +696,8 @@ const goPlayerStats = function (p_id) {
                 type="checkbox"
                 class="h-4 w-4 border-gray-300 rounded venue-filter"
                 data-venue-id="a"
+                :checked="showAway"
+                @change="switchVenue('away')"
               />
               <label for="venueCheck2" class="ml-2 block text-sm text-gray-700">
                 Away
@@ -671,19 +709,20 @@ const goPlayerStats = function (p_id) {
       <!-- checkbox section -->
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
         <div class="relative border rounded mt-8 w-[6700px]">
-          <div
-            class="mt-5"
-            v-if="newTeamFixtures.data && showStats === 'player'"
-          >
+          <div v-if="newTeamFixtures.data && showStats === 'player'">
             <div class="flex relative">
               <span v-for="team in newTeamFixtures.data.data">
-                <div class="flex">
+                <div
+                  class="flex"
+                  v-if="team.localteam_id === teamId ? showHome : showAway"
+                >
                   <div class="w-44 text-center self-center font-bold">
                     Opposition
                   </div>
                   <div
                     class="data-cell-img relative p-1"
                     v-if="teamId === team.localteam_id"
+                    @click="goto(team.visitorteam_id)"
                   >
                     <img
                       :src="team.visitorTeam.data.logo_path"
@@ -698,6 +737,7 @@ const goPlayerStats = function (p_id) {
                   <div
                     class="data-cell-img relative p-1"
                     v-if="teamId === team.visitorteam_id"
+                    @click="goto(team.localteam_id)"
                   >
                     <img
                       :src="team.localTeam.data.logo_path"
@@ -711,7 +751,11 @@ const goPlayerStats = function (p_id) {
                   </div>
                 </div>
                 <!-- lineup start  -->
-                <div class="flex relative" v-for="p in team.lineup.data">
+                <div
+                  class="flex relative"
+                  v-for="p in team.lineup.data"
+                  v-if="team.localteam_id === teamId ? showHome : showAway"
+                >
                   <div class="w-44 border" v-if="teamId === p.team_id">
                     <div
                       class="flex align-middle hover:cursor-pointer"
@@ -1339,7 +1383,11 @@ const goPlayerStats = function (p_id) {
                 <!-- lineup end  -->
 
                 <!-- bench start -->
-                <div class="flex relative" v-for="p in team?.bench.data">
+                <div
+                  class="flex relative"
+                  v-for="p in team?.bench.data"
+                  v-if="team.localteam_id === teamId ? showHome : showAway"
+                >
                   <div class="w-44 border" v-if="teamId === p.team_id">
                     <div
                       class="flex align-middle hover:cursor-pointer"
