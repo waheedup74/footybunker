@@ -20,6 +20,8 @@ const leaguesList = ref([]);
 const showHome = ref(true);
 const showAway = ref(true);
 
+const selectedLeague = ref([]);
+
 let today = new Date();
 
 const getDate = function (date) {
@@ -56,7 +58,7 @@ onBeforeMount(async () => {
     newTeamFixturesidListString.value = String(listOfIds);
 
     const uniqueIds = [...new Set(listOfleagueIds)];
-
+    selectedLeague.value = [...new Set(listOfleagueIds)];
     leaguesList.value = await Promise.all(
       uniqueIds.map(async (id) => {
         const response = await useFetch(
@@ -120,11 +122,6 @@ const switchVenue = (value) => {
     console.log("away called");
   }
 };
-
-const leagueChange = (e, id) => {
-  console.log("value --- id", e, id);
-};
-const selectedOptions = ref([]);
 </script>
 <template>
   <div class="w-11/12 md:w-4/5 mx-auto py-8">
@@ -558,7 +555,6 @@ const selectedOptions = ref([]);
         </div>
       </div>
       <!-- tabs section -->
-
       <!-- checkbox section -->
       <div class="mt-4 md:mt-7">
         <div class="mb-4">
@@ -573,7 +569,7 @@ const selectedOptions = ref([]);
           >
             <div
               class="flex items-center pr-4 mb-1 2xl:mb-0"
-              v-for="(league, index) of leaguesList"
+              v-for="league of leaguesList"
             >
               <input
                 :id="league.data.data.id"
@@ -581,8 +577,8 @@ const selectedOptions = ref([]);
                 type="checkbox"
                 class="h-4 w-4 border-gray-300 rounded league-filter"
                 :checked="true"
-                v-model="selectedOptions[index]"
-                @change="leagueChange(index, league.data.data.id)"
+                :value="league.data.data.id"
+                v-model="selectedLeague"
               />
               <label
                 :for="league.data.data.id"
@@ -714,7 +710,10 @@ const selectedOptions = ref([]);
               <span v-for="team in newTeamFixtures.data.data">
                 <div
                   class="flex"
-                  v-if="team.localteam_id === teamId ? showHome : showAway"
+                  v-if="
+                    selectedLeague.includes(team.league_id) &&
+                    (team.localteam_id === teamId ? showHome : showAway)
+                  "
                 >
                   <div class="w-44 text-center self-center font-bold">
                     Opposition
@@ -754,7 +753,10 @@ const selectedOptions = ref([]);
                 <div
                   class="flex relative"
                   v-for="p in team.lineup.data"
-                  v-if="team.localteam_id === teamId ? showHome : showAway"
+                  v-if="
+                    selectedLeague.includes(team.league_id) &&
+                    (team.localteam_id === teamId ? showHome : showAway)
+                  "
                 >
                   <div class="w-44 border" v-if="teamId === p.team_id">
                     <div
@@ -1386,7 +1388,10 @@ const selectedOptions = ref([]);
                 <div
                   class="flex relative"
                   v-for="p in team?.bench.data"
-                  v-if="team.localteam_id === teamId ? showHome : showAway"
+                  v-if="
+                    selectedLeague.includes(team.league_id) &&
+                    (team.localteam_id === teamId ? showHome : showAway)
+                  "
                 >
                   <div class="w-44 border" v-if="teamId === p.team_id">
                     <div
