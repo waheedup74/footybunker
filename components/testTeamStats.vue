@@ -1,6 +1,6 @@
 <script setup>
 const route = useRoute();
-const teamId = 13;
+const teamId = parseInt(route.params.id);
 let tab_id = ref("A");
 const showRow = ref(false);
 const showValue = ref("");
@@ -21,6 +21,10 @@ const showHome = ref(true);
 const showAway = ref(true);
 
 const selectedLeague = ref([]);
+
+const lineupPlayers = ref([]);
+const benchPlayers = ref([]);
+const allPlayers = ref([]);
 
 let today = new Date();
 
@@ -48,13 +52,29 @@ onBeforeMount(async () => {
   );
   newTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-03-01/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam`
   );
   if (newTeamStats.value.data) {
     newTeamStats.value.data.data.sort(
       (a, b) =>
         new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
     );
+
+    newTeamStats.value.data.data.map((e) => {
+      e.lineup.data.map((p) => {
+        if (p.team_id === teamId) {
+          lineupPlayers.value.push(p);
+        }
+      });
+      e.bench.data.map((p) => {
+        if (p.team_id === teamId) {
+          benchPlayers.value.push(p);
+        }
+      });
+    });
+
+    allPlayers.value = [...lineupPlayers.value, ...benchPlayers.value];
+    console.log("lineup playsers of team", allPlayers.value);
   }
 
   //   for league filters
@@ -596,7 +616,7 @@ const switchVenue = (value) => {
           </div>
         </div>
       </div>
-      <!-- newTeamStats -->
+
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
         <div
           class="relative border rounded mt-8 w-[6700px]"
