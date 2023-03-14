@@ -81,7 +81,7 @@ const viewDetails = function (fix_id) {
 };
 
 const teamStats = (team_id) => {
-  navigateTo(`team-${team_id}`);
+  navigateTo(`teamStats-${team_id}`);
 };
 </script>
 

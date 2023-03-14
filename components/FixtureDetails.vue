@@ -38,7 +38,7 @@ const changeTopTabs = function (tab, type) {
 };
 
 const teamStats = (team_id) => {
-  navigateTo(`team-${team_id}`);
+  navigateTo(`teamStats-${team_id}`);
   // console.log("what is id?", team_id);
 };
 </script>

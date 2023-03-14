@@ -6,7 +6,7 @@ const { data: teams, error: testError } = useFetch(
 );
 
 const goto = function (team) {
-  navigateTo(`/team-${team}`);
+  navigateTo(`/teamStats-${team}`);
 };
 </script>
 

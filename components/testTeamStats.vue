@@ -1,6 +1,6 @@
 <script setup>
 const route = useRoute();
-const teamId = parseInt(route.params.id);
+const teamId = 13;
 let tab_id = ref("A");
 const showRow = ref(false);
 const showValue = ref("");
