@@ -1,3 +1,160 @@
+<!-- <script setup>
+const route = useRoute();
+const teamId = parseInt(route.params.id);
+
+let tab_id = ref("A");
+const showRow = ref(false);
+const showValue = ref("");
+const showStats = ref("player");
+const playerStats = ref("interception");
+
+const showHome = ref(true);
+const showAway = ref(true);
+const selectedLeague = ref([]);
+
+const team = ref({});
+const teamSeasonPlayersData = ref([]);
+
+const newTeamStats = ref({});
+const newTeamFixtures = ref({});
+const newTeamFixturesidListString = ref("");
+
+const todayDate = ref("");
+const months6Before = ref("");
+const leaguesList = ref([]);
+
+const lineupPlayers = ref([]);
+const benchPlayers = ref([]);
+const allPlayers = ref([]);
+const uniquePlayers = ref([]);
+
+let today = new Date();
+
+const getDate = function (date) {
+  let dd = String(date.getDate() - 1).padStart(2, "0");
+  let mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
+  let yyyy = date.getFullYear();
+
+  return yyyy + "-" + mm + "-" + dd;
+};
+const subtract6Months = function (date) {
+  date.setMonth(date.getMonth() - 1);
+  return date;
+};
+
+// ${months6Before.value}
+// 2023-03-01
+
+onBeforeMount(async () => {
+  months6Before.value = getDate(subtract6Months(new Date()));
+  todayDate.value = getDate(today);
+  // new work
+  team.value = await useFetch(
+    () =>
+      `https://soccer.sportmonks.com/api/v2.0/teams/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+  );
+  newTeamStats.value = await useFetch(
+    () =>
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-03-01/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam`
+  );
+let testr
+  if (newTeamStats.value.data) {
+    newTeamStats.value.data.data.sort(
+      (a, b) =>
+        new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
+    );
+
+    newTeamStats.value.data.data.map((e) => {
+      e.lineup.data.map((p) => {
+        if (p.team_id === teamId) {
+          lineupPlayers.value.push(p);
+        }
+      });
+      e.bench.data.map((p) => {
+        if (p.team_id === teamId) {
+          benchPlayers.value.push(p);
+        }
+      });
+      allPlayers.value = [...lineupPlayers.value, ...benchPlayers.value];
+      newTeamStats.value.data.data.push({ allPlayers: allPlayers.value });
+    });
+    console.log("all fixtures", newTeamStats.value);
+
+    console.log("all players", allPlayers.value);
+    // uniquePlayers.value = getUniquePlayersById(allPlayers.value);
+  }
+
+  //   for league filters
+  if (newTeamStats.value.data) {
+    const listOfleagueIds = newTeamStats.value.data.data.map(
+      (match) => match.league_id
+    );
+    const uniqueIds = [...new Set(listOfleagueIds)];
+    selectedLeague.value = [...new Set(listOfleagueIds)];
+    leaguesList.value = await Promise.all(
+      uniqueIds.map(async (id) => {
+        const response = await useFetch(
+          `https://soccer.sportmonks.com/api/v2.0/leagues/${id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+        );
+        return response;
+      })
+    );
+  }
+  // new work
+});
+
+const changeTabs = (tab, section) => {
+  tab_id.value = tab;
+  if (tab === "A") {
+    showPlayerStats("interception");
+  }
+
+  if (tab === "B") {
+    showPlayerStats("foul_drawn");
+  }
+  showValue.value = "";
+  showRow.value = true;
+  showStats.value = section;
+};
+
+const toggleTeamStats = (value) => {
+  showValue.value = value;
+  showRow.value = true;
+};
+
+const showPlayerStats = function (value) {
+  playerStats.value = value;
+};
+
+const goto = function (team) {
+  navigateTo(`/teamStats-${team}`);
+};
+
+const goPlayerStats = function (p_id) {
+  navigateTo(`/player-${p_id}`);
+};
+
+const switchVenue = (value) => {
+  if (value === "home") {
+    showHome.value = !showHome.value;
+  }
+  if (value === "away") {
+    showAway.value = !showAway.value;
+  }
+};
+
+// create a unique array of objects
+function getUniquePlayersById(originalArray) {
+  let uniqueArray = [];
+  originalArray.forEach((obj) => {
+    const id = obj.player_id;
+    if (!uniqueArray.find((o) => o.player_id === id)) {
+      uniqueArray.push(obj);
+    }
+  });
+  return uniqueArray;
+}
+</script> -->
 <script setup>
 const route = useRoute();
 const teamId = parseInt(route.params.teamId);
@@ -35,12 +192,12 @@ const subtract6Months = function (date) {
   date.setMonth(date.getMonth() - 11);
   return date;
 };
-months6Before.value = getDate(subtract6Months(new Date()));
-todayDate.value = getDate(today);
 
 const team = ref({});
 
 onBeforeMount(async () => {
+  months6Before.value = getDate(subtract6Months(new Date()));
+  todayDate.value = getDate(today);
   // new work
   team.value = await useFetch(
     () =>
@@ -2270,6 +2427,7 @@ const switchVenue = (value) => {
               </div>
             </div>
           </div>
+          -->
         </div>
       </div>
     </div>

@@ -1,30 +1,38 @@
 <script setup>
 const route = useRoute();
 const teamId = parseInt(route.params.id);
+
 let tab_id = ref("A");
 const showRow = ref(false);
 const showValue = ref("");
 const showStats = ref("player");
+const playerStats = ref("interception");
+
+const showHome = ref(true);
+const showAway = ref(true);
+const selectedLeague = ref([]);
+
+const team = ref({});
 const teamSeasonPlayersData = ref([]);
 
 const newTeamStats = ref({});
 const newTeamFixtures = ref({});
 const newTeamFixturesidListString = ref("");
 
-const playerStats = ref("interception");
-
 const todayDate = ref("");
 const months6Before = ref("");
 const leaguesList = ref([]);
 
-const showHome = ref(true);
-const showAway = ref(true);
-
-const selectedLeague = ref([]);
-
 const lineupPlayers = ref([]);
 const benchPlayers = ref([]);
+const lineup = ref([]);
+const bench = ref([]);
 const allPlayers = ref([]);
+
+const teamPlayers = ref([]);
+const uniquePlayers = ref([]);
+
+const finalStats = ref([]);
 
 let today = new Date();
 
@@ -36,15 +44,16 @@ const getDate = function (date) {
   return yyyy + "-" + mm + "-" + dd;
 };
 const subtract6Months = function (date) {
-  date.setMonth(date.getMonth() - 11);
+  date.setMonth(date.getMonth() - 1);
   return date;
 };
-months6Before.value = getDate(subtract6Months(new Date()));
-todayDate.value = getDate(today);
 
-const team = ref({});
+// ${months6Before.value}
+// 2023-03-01
 
 onBeforeMount(async () => {
+  months6Before.value = getDate(subtract6Months(new Date()));
+  todayDate.value = getDate(today);
   // new work
   team.value = await useFetch(
     () =>
@@ -52,29 +61,109 @@ onBeforeMount(async () => {
   );
   newTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2023-03-01/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-02-2/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam`
   );
+
   if (newTeamStats.value.data) {
     newTeamStats.value.data.data.sort(
       (a, b) =>
         new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
     );
-
     newTeamStats.value.data.data.map((e) => {
       e.lineup.data.map((p) => {
         if (p.team_id === teamId) {
           lineupPlayers.value.push(p);
+          lineup.value.push(p);
         }
       });
       e.bench.data.map((p) => {
         if (p.team_id === teamId) {
           benchPlayers.value.push(p);
+          bench.value.push(p);
+        }
+      });
+      teamPlayers.value = [...lineupPlayers.value, ...benchPlayers.value];
+      allPlayers.value = [...lineup.value, ...bench.value];
+      e.teamPlayers = teamPlayers.value;
+      lineupPlayers.value = [];
+      benchPlayers.value = [];
+    });
+    uniquePlayers.value = getUniquePlayersById(allPlayers.value);
+    // calculate player stats
+    // let stats_index = 0;
+    uniquePlayers.value.forEach((player, index) => {
+      finalStats.value.push({
+        playerId: player.player_id,
+        player: player.player.data,
+        matchesData: [],
+      });
+      // stats_index++;
+      newTeamStats.value.data.data.map((match) => {
+        let team_Player = null;
+        match.teamPlayers.map((teamPlayer) => {
+          if (player.player_id === teamPlayer.player_id) {
+            team_Player = teamPlayer;
+          }
+        });
+
+        if (team_Player) {
+          const test = match.teamPlayers
+            .filter((e) => e.player_id === player.player_id)
+            .map((e) => e.stats);
+          finalStats.value[index].matchesData.push({
+            matchId: match.id,
+            passes: test,
+          });
+        } else {
+          finalStats.value[index].matchesData.push({
+            matchId: match.id,
+            passes: 0,
+          });
         }
       });
     });
 
-    allPlayers.value = [...lineupPlayers.value, ...benchPlayers.value];
-    console.log("lineup playsers of team", allPlayers.value);
+    // for (let player of uniquePlayers){
+    //     finalStatistics.push({
+    // 	   playerId: player.id,
+    // 	   matchesData: []
+    // 	})
+    //     for (let match of matches){
+    // 		let linupPlayer = null;
+    // 		for (let lineup of match.lineup){
+    // 		   if(player.id === lineup.id) linupPlayer = lineup
+    // 		}
+
+    // 	if (linupPlayer){
+    // 	   let index = finalStatistics.findIndex((fs)=> fs.playerId === linupPlayer.id)
+
+    // 	   if (index !== -1){
+    // 	      finalStatistics[index].matchesData["matchId"] = match.id
+    // 		  finalStatistics[index].matchesData["score"] = score
+    // 	   }
+    // 	}
+    // }
+    // }
+
+    // let finalStatistics = []   //show this to view
+
+    // for (let player of uniquePlayers){
+    //     finalStatistics.push({
+    // 	   playerId: player.id,
+    // 	   matchesData: []
+    // 	})
+    //     for (let match of matches){
+    // 	    let found = match.lineup.find((lineup_player) => player.id === lineup_player.id)
+    // 		if (found){
+    // 		   let index = finalStatistics.findIndex((fs)=> fs.playerId === lineup_player.id)
+
+    // 		   if (index !== -1){
+    // 		      finalStatistics[index].matchesData["matchId"] = match.id
+    // 			  finalStatistics[index].matchesData["score"] = score
+    // 		   }
+    // 		}
+    // 	}
+    // }
   }
 
   //   for league filters
@@ -130,14 +219,25 @@ const goPlayerStats = function (p_id) {
 const switchVenue = (value) => {
   if (value === "home") {
     showHome.value = !showHome.value;
-    console.log("home called");
   }
   if (value === "away") {
     showAway.value = !showAway.value;
-    console.log("away called");
   }
 };
+
+// create a unique array of objects
+function getUniquePlayersById(originalArray) {
+  let uniqueArray = [];
+  originalArray.forEach((obj) => {
+    const id = obj.player_id;
+    if (!uniqueArray.find((o) => o.player_id === id)) {
+      uniqueArray.push(obj);
+    }
+  });
+  return uniqueArray;
+}
 </script>
+
 <template>
   <div class="w-11/12 md:w-4/5 mx-auto py-8">
     <div class="flex justify-start text-gray-600">
@@ -617,6 +717,7 @@ const switchVenue = (value) => {
         </div>
       </div>
 
+      <!-- below section for testing  -->
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
         <div
           class="relative border rounded mt-8 w-[6700px]"
@@ -675,10 +776,7 @@ const switchVenue = (value) => {
                   "
                 >
                   <div class="w-44 border" v-if="teamId === p.team_id">
-                    <div
-                      class="flex align-middle hover:cursor-pointer"
-                      @click="goPlayerStats(p.player.data.player_id)"
-                    >
+                    <div class="flex align-middle hover:cursor-pointer">
                       <img
                         :src="p.player.data.image_path"
                         class="h-8 p-1 mr-1 hidden md:inline-flex"
@@ -1307,10 +1405,7 @@ const switchVenue = (value) => {
                   "
                 >
                   <div class="w-44 border" v-if="teamId === p.team_id">
-                    <div
-                      class="flex align-middle hover:cursor-pointer"
-                      @click="goPlayerStats(p.player.data.player_id)"
-                    >
+                    <div class="flex align-middle hover:cursor-pointer">
                       <img
                         :src="p.player.data.image_path"
                         class="h-8 p-1 mr-1 hidden md:inline-flex"
@@ -2292,6 +2387,93 @@ const switchVenue = (value) => {
           </div>
         </div>
       </div>
+
+      <!-- <div class="bg-green-200" v-if="newTeamStats.data">
+        <div class="bg-rose-200 w-64" v-for="test in uniquePlayers">
+          <span class="flex mb-2">
+            <img
+              :src="test.player.data.image_path"
+              class="h-8 w-8"
+              alt="player image"
+            />
+            {{ test.player_name }}
+            {{ test.stats.passing.passes }}
+          </span>
+        </div>
+      </div>
+
+      <div class="text-left bg-slate-200 border">
+        <div v-if="newTeamStats.data">
+          <div class="flex">
+            <div class="w-64"></div>
+            <div v-for="t in newTeamStats.data.data">
+              <span v-if="t.localteam_id === teamId"
+                ><img class="w-8" :src="t.visitorTeam.data.logo_path" alt="img"
+              /></span>
+              <span v-else-if="t.visitorteam_id === teamId"
+                ><img class="w-8" :src="t.localTeam.data.logo_path" alt="img"
+              /></span>
+            </div>
+          </div>
+          <div class="flex">
+            <div class="w-64"></div>
+
+            <div v-for="t in newTeamStats.data.data">
+              <span v-if="t.localteam_id === teamId"
+                ><img class="w-8" :src="t.visitorTeam.data.logo_path" alt="img"
+              /></span>
+              <span v-else-if="t.visitorteam_id === teamId"
+                ><img class="w-8" :src="t.localTeam.data.logo_path" alt="img"
+              /></span>
+            </div>
+          </div>
+        </div>
+        <div v-for="p in uniquePlayers">
+          <span class="w-64 flex mb-2">
+            <img
+              :src="p.player.data.image_path"
+              class="h-8 w-8"
+              alt="player image"
+            />
+            {{ p.player_name }}
+          </span>
+        </div>
+      </div> -->
+    </div>
+    <div class="py-10 w-[3700px]">
+      <div v-if="newTeamStats.data">
+        <div class="flex">
+          <div class="w-64"></div>
+          <div v-for="t in newTeamStats.data.data">
+            <div class="w-12" v-if="t.localteam_id === teamId">
+              <img
+                class="w-6 mx-auto"
+                :src="t.visitorTeam.data.logo_path"
+                alt="img"
+              />
+            </div>
+            <div class="w-12" v-else-if="t.visitorteam_id === teamId">
+              <img
+                class="w-6 mx-auto"
+                :src="t.localTeam.data.logo_path"
+                alt="img"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex mb-4 border-b-slate-900" v-for="stats of finalStats">
+        <div class="flex w-64">
+          <img class="w-6" :src="stats.player.image_path" alt="" />
+          <div class="">{{ stats.player.display_name }}</div>
+        </div>
+        <div v-for="player of stats.matchesData">
+          <div class="w-12 text-center" v-if="player.passes">
+            {{ player.passes[0].passing.passes }}
+          </div>
+          <div class="w-12 text-center" v-if="player.passes[0] === null">0</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -2300,7 +2482,6 @@ const switchVenue = (value) => {
 .test-bg {
   background-color: #aed5f5;
 }
-
 .stat-btn {
   padding-bottom: 0.25rem;
   padding-top: 0.25rem;
