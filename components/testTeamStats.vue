@@ -112,12 +112,12 @@ onBeforeMount(async () => {
             .map((e) => e.stats);
           finalStats.value[index].matchesData.push({
             matchId: match.id,
-            passes: test,
+            p_stats: test,
           });
         } else {
           finalStats.value[index].matchesData.push({
             matchId: match.id,
-            passes: 0,
+            p_stats: 0,
           });
         }
       });
@@ -2385,6 +2385,491 @@ function getUniquePlayersById(originalArray) {
               </div>
             </div>
           </div>
+
+          <div class="py-10">
+            <div v-if="newTeamStats.data">
+              <div class="flex">
+                <div class="w-64"></div>
+                <div v-for="t in newTeamStats.data.data">
+                  <div class="w-12" v-if="t.localteam_id === teamId">
+                    <img
+                      class="w-6 mx-auto"
+                      :src="t.visitorTeam.data.logo_path"
+                      alt="img"
+                    />
+                  </div>
+                  <div class="w-12" v-else-if="t.visitorteam_id === teamId">
+                    <img
+                      class="w-6 mx-auto"
+                      :src="t.localTeam.data.logo_path"
+                      alt="img"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex mb-4 border-b-slate-900"
+              v-for="stats of finalStats"
+            >
+              <div class="flex w-64">
+                <img class="w-6" :src="stats.player.image_path" alt="" />
+                <div class="">{{ stats.player.display_name }}</div>
+              </div>
+              <div v-for="player of stats.matchesData">
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'interception'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.interceptions }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'tackles'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.tackles }}
+                </div>
+
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'blocks'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.blocks }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'total_duels'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].duels.total }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'duel_won'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].duels.won }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'foul_committed'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].fouls.committed }}
+                </div>
+
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'pen_saved'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.pen_saved }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'drib_past'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].dribbles.dribbled_past }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'pen_committed'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.pen_committed }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'yellow_card'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].cards.yellowcards }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'red_card'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].cards.redcards }}
+                </div>
+
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'foul_drawn'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].fouls.drawn }}
+                </div>
+
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'pen_won'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.pen_won }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'pen_won'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.pen_won }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'key_passes'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].passing.key_passes }}
+                </div>
+
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'passes'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].passing.passes }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'pen_scored'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.pen_scored }}
+                </div>
+
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'pen_missed'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.pen_missed }}
+                </div>
+
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'shots_total'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].shots.shots_total }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'shots_on_goal'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].shots.shots_on_goal }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'offsides'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.offsides }}
+                </div>
+                <div
+                  class="w-12 text-center"
+                  v-if="player.p_stats[0] && playerStats === 'hit_post'"
+                  :style="[
+                    player.p_stats[0].other.minutes_played
+                      ? {
+                          maxWidth:
+                            (player.p_stats[0].other.minutes_played * 100) /
+                              90 +
+                            '%',
+                          backgroundColor: 'rgb(144,238,144)',
+                        }
+                      : {
+                          maxWidth: '100%',
+                          backgroundColor: 'white',
+                        },
+                  ]"
+                >
+                  {{ player.p_stats[0].other.hit_woodwork }}
+                </div>
+                <div class="w-12 text-center" v-if="player.p_stats[0] === null">
+                  0
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2439,41 +2924,6 @@ function getUniquePlayersById(originalArray) {
           </span>
         </div>
       </div> -->
-    </div>
-    <div class="py-10 w-[3700px]">
-      <div v-if="newTeamStats.data">
-        <div class="flex">
-          <div class="w-64"></div>
-          <div v-for="t in newTeamStats.data.data">
-            <div class="w-12" v-if="t.localteam_id === teamId">
-              <img
-                class="w-6 mx-auto"
-                :src="t.visitorTeam.data.logo_path"
-                alt="img"
-              />
-            </div>
-            <div class="w-12" v-else-if="t.visitorteam_id === teamId">
-              <img
-                class="w-6 mx-auto"
-                :src="t.localTeam.data.logo_path"
-                alt="img"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex mb-4 border-b-slate-900" v-for="stats of finalStats">
-        <div class="flex w-64">
-          <img class="w-6" :src="stats.player.image_path" alt="" />
-          <div class="">{{ stats.player.display_name }}</div>
-        </div>
-        <div v-for="player of stats.matchesData">
-          <div class="w-12 text-center" v-if="player.passes">
-            {{ player.passes[0].passing.passes }}
-          </div>
-          <div class="w-12 text-center" v-if="player.passes[0] === null">0</div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
