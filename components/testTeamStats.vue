@@ -126,8 +126,6 @@ onBeforeMount(async () => {
             p_stats: 0,
           });
         }
-
-       
       });
     });
     // console.log('final stats', finalStats)
@@ -727,10 +725,7 @@ function getUniquePlayersById(originalArray) {
 
       <!-- below section for testing  -->
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
-        <div
-          class="relative rounded w-[3700px]"
-          v-if="newTeamStats.data"
-        >
+        <div class="relative rounded w-[3700px]" v-if="newTeamStats.data">
           <!-- <div v-if="showStats === 'player'">
             <div class="flex relative">
               <span v-for="team in newTeamStats.data.data">
@@ -2396,16 +2391,15 @@ function getUniquePlayersById(originalArray) {
           <div class="py-10" v-if="showStats === 'player'">
             <div v-if="newTeamStats.data">
               <div class="flex mb-1">
-                <div class=" w-40 md:w-64"></div>
-                <div
-                  v-for="t in newTeamStats.data.data"
-                >
+                <div class="w-40 md:w-64"></div>
+                <div v-for="t in newTeamStats.data.data">
                   <div
                     class="w-[50px] p-1 relative mx-auto border"
-                    v-if="t.localteam_id === teamId &&
-                     selectedLeague.includes(t.league_id) &&
-                    (t.localteam_id === teamId ? showHome : showAway)"
-                    
+                    v-if="
+                      t.localteam_id === teamId &&
+                      selectedLeague.includes(t.league_id) &&
+                      (t.localteam_id === teamId ? showHome : showAway)
+                    "
                     @click="goto(t.visitorteam_id)"
                   >
                     <img
@@ -2420,8 +2414,11 @@ function getUniquePlayersById(originalArray) {
                   </div>
                   <div
                     class="w-[50px] p-1 relative border"
-                    v-else-if="t.visitorteam_id === teamId && selectedLeague.includes(t.league_id) &&
-                    (t.localteam_id === teamId ? showHome : showAway)"
+                    v-else-if="
+                      t.visitorteam_id === teamId &&
+                      selectedLeague.includes(t.league_id) &&
+                      (t.localteam_id === teamId ? showHome : showAway)
+                    "
                     @click="goto(t.localteam_id)"
                   >
                     <img
@@ -2437,48 +2434,50 @@ function getUniquePlayersById(originalArray) {
                 </div>
               </div>
             </div>
-           
-           <div
-              class="flex border-b-slate-900"
-              v-for="stats of finalStats"
-            >
+
+            <div class="flex border-b-slate-900" v-for="stats of finalStats">
               <div class="flex w-40 md:w-64 border h-[50px]">
-                <img class="h-8 p-1 mr-1 hidden md:inline-flex self-center" :src="stats.player.image_path" alt="" />
-                <div class="self-center p-1 ">{{ stats.player.display_name }}</div>
-              </div>
-              <div v-for="player of stats.matchesData"  
-             
-                     >
-                     <div class="flex w-100 tooltip">
-                    <span
-                      v-if="player.p_stats[0]"
-                      class="tooltiptext"
-                      >infield: {{player.p_stats[0].other.minutes_played }}'</span
-                    >
-                <div
-                  class="w-[50px] h-[50px] self-center text-center justify-between border"
-                  v-if="player.p_stats[0] && 
-                  playerStats === 'interception' && 
-                  selectedLeague.includes(player.league) &&
-                  (player.localTeam === teamId ? showHome : showAway)"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                 <p >{{ player.p_stats[0].other.interceptions }}</p> 
+                <img
+                  class="h-8 p-1 mr-1 hidden md:inline-flex self-center"
+                  :src="stats.player.image_path"
+                  alt=""
+                />
+                <div class="self-center p-1">
+                  {{ stats.player.display_name }}
                 </div>
               </div>
+              <div v-for="player of stats.matchesData">
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'interception' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.interceptions }}</p>
+                  </div>
+                </div>
                 <div
                   class="w-12 text-center"
                   v-if="player.p_stats[0] && playerStats === 'tackles'"
