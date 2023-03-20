@@ -128,7 +128,7 @@ const teamStats = (team_id) => {
       </div>
     </div>
 
-    <div v-if="features">
+    <div v-if="features.data.length !== 0">
       <div v-if="tab_id === 'A'">
         <div
           class="w-full border mb-3 shadow-lg hover:shadow-[#9acaf1] cursor-pointer"
@@ -372,6 +372,9 @@ const teamStats = (team_id) => {
           </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <p>No fixture data available</p>
     </div>
   </div>
 

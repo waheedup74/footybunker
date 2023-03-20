@@ -44,7 +44,7 @@ const getDate = function (date) {
   return yyyy + "-" + mm + "-" + dd;
 };
 const subtract6Months = function (date) {
-  date.setMonth(date.getMonth() - 1);
+  date.setMonth(date.getMonth() - 12);
   return date;
 };
 
@@ -61,7 +61,7 @@ onBeforeMount(async () => {
   );
   newTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/2022-02-2/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam`
   );
 
   if (newTeamStats.value.data) {
@@ -112,17 +112,25 @@ onBeforeMount(async () => {
             .map((e) => e.stats);
           finalStats.value[index].matchesData.push({
             matchId: match.id,
+            league: match.league_id,
+            localTeam: match.localteam_id,
+            visitorTeam: match.visitorteam_id,
             p_stats: test,
           });
         } else {
           finalStats.value[index].matchesData.push({
             matchId: match.id,
+            league: match.league_id,
+            localTeam: match.localteam_id,
+            visitorTeam: match.visitorteam_id,
             p_stats: 0,
           });
         }
+
+       
       });
     });
-
+    // console.log('final stats', finalStats)
     // for (let player of uniquePlayers){
     //     finalStatistics.push({
     // 	   playerId: player.id,
@@ -720,10 +728,10 @@ function getUniquePlayersById(originalArray) {
       <!-- below section for testing  -->
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
         <div
-          class="relative border rounded mt-8 w-[6700px]"
+          class="relative rounded w-[3700px]"
           v-if="newTeamStats.data"
         >
-          <div v-if="showStats === 'player'">
+          <!-- <div v-if="showStats === 'player'">
             <div class="flex relative">
               <span v-for="team in newTeamStats.data.data">
                 <div
@@ -2027,7 +2035,7 @@ function getUniquePlayersById(originalArray) {
                 </div>
               </span>
             </div>
-          </div>
+          </div> -->
 
           <div class="mt-5" v-if="showStats === 'team'">
             <div
@@ -2385,41 +2393,74 @@ function getUniquePlayersById(originalArray) {
               </div>
             </div>
           </div>
-
-          <div class="py-10">
+          <div class="py-10" v-if="showStats === 'player'">
             <div v-if="newTeamStats.data">
-              <div class="flex">
-                <div class="w-64"></div>
-                <div v-for="t in newTeamStats.data.data">
-                  <div class="w-12" v-if="t.localteam_id === teamId">
+              <div class="flex mb-1">
+                <div class=" w-40 md:w-64"></div>
+                <div
+                  v-for="t in newTeamStats.data.data"
+                >
+                  <div
+                    class="w-[50px] p-1 relative mx-auto border"
+                    v-if="t.localteam_id === teamId &&
+                     selectedLeague.includes(t.league_id) &&
+                    (t.localteam_id === teamId ? showHome : showAway)"
+                    
+                    @click="goto(t.visitorteam_id)"
+                  >
                     <img
-                      class="w-6 mx-auto"
                       :src="t.visitorTeam.data.logo_path"
-                      alt="img"
+                      class="w-6 md:w-7 mx-auto"
+                      alt=""
                     />
+                    <span
+                      class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
+                      >H</span
+                    >
                   </div>
-                  <div class="w-12" v-else-if="t.visitorteam_id === teamId">
+                  <div
+                    class="w-[50px] p-1 relative border"
+                    v-else-if="t.visitorteam_id === teamId && selectedLeague.includes(t.league_id) &&
+                    (t.localteam_id === teamId ? showHome : showAway)"
+                    @click="goto(t.localteam_id)"
+                  >
                     <img
-                      class="w-6 mx-auto"
                       :src="t.localTeam.data.logo_path"
-                      alt="img"
+                      class="w-6 md:w-7 mx-auto"
+                      alt=""
                     />
+                    <span
+                      class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
+                      >A</span
+                    >
                   </div>
                 </div>
               </div>
             </div>
-            <div
-              class="flex mb-4 border-b-slate-900"
+           
+           <div
+              class="flex border-b-slate-900"
               v-for="stats of finalStats"
             >
-              <div class="flex w-64">
-                <img class="w-6" :src="stats.player.image_path" alt="" />
-                <div class="">{{ stats.player.display_name }}</div>
+              <div class="flex w-40 md:w-64 border h-[50px]">
+                <img class="h-8 p-1 mr-1 hidden md:inline-flex self-center" :src="stats.player.image_path" alt="" />
+                <div class="self-center p-1 ">{{ stats.player.display_name }}</div>
               </div>
-              <div v-for="player of stats.matchesData">
+              <div v-for="player of stats.matchesData"  
+             
+                     >
+                     <div class="flex w-100 tooltip">
+                    <span
+                      v-if="player.p_stats[0]"
+                      class="tooltiptext"
+                      >infield: {{player.p_stats[0].other.minutes_played }}'</span
+                    >
                 <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'interception'"
+                  class="w-[50px] h-[50px] self-center text-center justify-between border"
+                  v-if="player.p_stats[0] && 
+                  playerStats === 'interception' && 
+                  selectedLeague.includes(player.league) &&
+                  (player.localTeam === teamId ? showHome : showAway)"
                   :style="[
                     player.p_stats[0].other.minutes_played
                       ? {
@@ -2435,8 +2476,9 @@ function getUniquePlayersById(originalArray) {
                         },
                   ]"
                 >
-                  {{ player.p_stats[0].other.interceptions }}
+                 <p >{{ player.p_stats[0].other.interceptions }}</p> 
                 </div>
+              </div>
                 <div
                   class="w-12 text-center"
                   v-if="player.p_stats[0] && playerStats === 'tackles'"
@@ -2872,58 +2914,6 @@ function getUniquePlayersById(originalArray) {
           </div>
         </div>
       </div>
-
-      <!-- <div class="bg-green-200" v-if="newTeamStats.data">
-        <div class="bg-rose-200 w-64" v-for="test in uniquePlayers">
-          <span class="flex mb-2">
-            <img
-              :src="test.player.data.image_path"
-              class="h-8 w-8"
-              alt="player image"
-            />
-            {{ test.player_name }}
-            {{ test.stats.passing.passes }}
-          </span>
-        </div>
-      </div>
-
-      <div class="text-left bg-slate-200 border">
-        <div v-if="newTeamStats.data">
-          <div class="flex">
-            <div class="w-64"></div>
-            <div v-for="t in newTeamStats.data.data">
-              <span v-if="t.localteam_id === teamId"
-                ><img class="w-8" :src="t.visitorTeam.data.logo_path" alt="img"
-              /></span>
-              <span v-else-if="t.visitorteam_id === teamId"
-                ><img class="w-8" :src="t.localTeam.data.logo_path" alt="img"
-              /></span>
-            </div>
-          </div>
-          <div class="flex">
-            <div class="w-64"></div>
-
-            <div v-for="t in newTeamStats.data.data">
-              <span v-if="t.localteam_id === teamId"
-                ><img class="w-8" :src="t.visitorTeam.data.logo_path" alt="img"
-              /></span>
-              <span v-else-if="t.visitorteam_id === teamId"
-                ><img class="w-8" :src="t.localTeam.data.logo_path" alt="img"
-              /></span>
-            </div>
-          </div>
-        </div>
-        <div v-for="p in uniquePlayers">
-          <span class="w-64 flex mb-2">
-            <img
-              :src="p.player.data.image_path"
-              class="h-8 w-8"
-              alt="player image"
-            />
-            {{ p.player_name }}
-          </span>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
