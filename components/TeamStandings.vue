@@ -72,9 +72,9 @@ const goto = function (team) {
           v-for="team in teams.data[0].standings.data"
           :key="team.team_id"
           @click="goto(team.team_id)"
-          class="border"
+          class="border cursor-pointer"
         >
-          <td class="p-2">
+          <td class="p-2 ">
             <img :src="team.team.data.logo_path" class="w-10" alt="" />
           </td>
           <td>{{ team.team_name }}</td>

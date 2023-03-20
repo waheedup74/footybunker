@@ -63,7 +63,7 @@ const goto = (value) => {
           <span v-for="l in leagues.data.data" :key="l.id">
             <a
               @click="getLeagueId(l.current_season_id)"
-              class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
+              class="flex items-center border bg-white cursor-pointer rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
             >
               <img :src="l.logo_path" class="h-7 mr-3" alt="" />
               <span class="font-bold">{{ l.name }}</span>
@@ -153,7 +153,7 @@ const goto = (value) => {
             <span v-for="l in leagues.data.data" :key="l.id">
               <a
                 @click="getLeagueId(l.current_season_id)"
-                class="flex items-center border bg-white rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
+                class="flex items-center border bg-white rounded p-3 cursor-pointer hover:text-[#0d406a] hover:bg-gray-200"
               >
                 <img :src="l.logo_path" class="h-7 mr-3" alt="" />
                 <span class="font-bold">{{ l.name }}</span>
