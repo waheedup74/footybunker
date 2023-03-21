@@ -2438,15 +2438,18 @@ function getUniquePlayersById(originalArray) {
             <div class="flex border-b-slate-900" v-for="stats of finalStats">
               <div class="flex w-40 md:w-64 border h-[50px]">
                 <img
-                  class="h-8 p-1 mr-1 hidden md:inline-flex self-center"
+                  class="h-6 p-1 mr-1 md:h-8 self-center"
                   :src="stats.player.image_path"
                   alt=""
                 />
-                <div class="self-center p-1">
+                <div class="self-center p-1 hidden md:inline-flex">
                   {{ stats.player.display_name }}
                 </div>
+                <div class="self-center p-1 inline-flex md:hidden">
+                  {{ stats.player.common_name }}
+                </div>
               </div>
-              <div v-for="player of stats.matchesData">
+              <div class="text-lg font-semibold" v-for="player of stats.matchesData">
                 <div class="flex w-100 tooltip">
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
@@ -2478,433 +2481,679 @@ function getUniquePlayersById(originalArray) {
                     <p class="self-center justify-between w-full">{{ player.p_stats[0].other.interceptions }}</p>
                   </div>
                 </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'tackles'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.tackles }}
+
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'tackles' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.tackles }}</p>
+                  </div>
                 </div>
 
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'blocks'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.blocks }}
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'blocks' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.blocks }}</p>
+                  </div>
                 </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'total_duels'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].duels.total }}
+               
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'total_duels' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].duels.total }}</p>
+                  </div>
                 </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'duel_won'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].duels.won }}
+               
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'duel_won' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].duels.won }}</p>
+                  </div>
                 </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'foul_committed'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].fouls.committed }}
+              
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'foul_committed' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].fouls.committed }}</p>
+                  </div>
                 </div>
-
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'pen_saved'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.pen_saved }}
-                </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'drib_past'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].dribbles.dribbled_past }}
-                </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'pen_committed'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.pen_committed }}
-                </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'yellow_card'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].cards.yellowcards }}
-                </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'red_card'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].cards.redcards }}
+               
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'foul_committed' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].fouls.committed }}</p>
+                  </div>
                 </div>
 
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'foul_drawn'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].fouls.drawn }}
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'pen_saved' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.pen_saved  }}</p>
+                  </div>
                 </div>
 
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'pen_won'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.pen_won }}
-                </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'pen_won'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.pen_won }}
-                </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'key_passes'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].passing.key_passes }}
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'drib_past' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].dribbles.dribbled_past  }}</p>
+                  </div>
                 </div>
 
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'passes'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].passing.passes }}
-                </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'pen_scored'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.pen_scored }}
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'pen_committed' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{player.p_stats[0].other.pen_committed  }}</p>
+                  </div>
                 </div>
 
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'pen_missed'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.pen_missed }}
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'yellow_card' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{player.p_stats[0].cards.yellowcards }}</p>
+                  </div>
                 </div>
 
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'shots_total'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].shots.shots_total }}
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'red_card' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{player.p_stats[0].cards.redcards }}</p>
+                  </div>
                 </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'shots_on_goal'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].shots.shots_on_goal }}
+                     
+                
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'foul_drawn' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{player.p_stats[0].fouls.drawn }}</p>
+                  </div>
                 </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'offsides'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.offsides }}
+
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'pen_won' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{player.p_stats[0].other.pen_won }}</p>
+                  </div>
                 </div>
-                <div
-                  class="w-12 text-center"
-                  v-if="player.p_stats[0] && playerStats === 'hit_post'"
-                  :style="[
-                    player.p_stats[0].other.minutes_played
-                      ? {
-                          maxWidth:
-                            (player.p_stats[0].other.minutes_played * 100) /
-                              90 +
-                            '%',
-                          backgroundColor: 'rgb(144,238,144)',
-                        }
-                      : {
-                          maxWidth: '100%',
-                          backgroundColor: 'white',
-                        },
-                  ]"
-                >
-                  {{ player.p_stats[0].other.hit_woodwork }}
+                
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'key_passes' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{player.p_stats[0].passing.key_passes}}</p>
+                  </div>
                 </div>
+
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'passes' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{player.p_stats[0].passing.passes}}</p>
+                  </div>
+                </div>
+
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'pen_scored' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.pen_scored}}</p>
+                  </div>
+                </div>
+
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'pen_missed' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.pen_missed}}</p>
+                  </div>
+                </div>
+              
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'shots_total' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].shots.shots_total }}</p>
+                  </div>
+                </div>
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'shots_on_goal' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].shots.shots_on_goal }}</p>
+                  </div>
+                </div>
+                
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'offsides' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.offsides }}</p>
+                  </div>
+                </div>
+
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'hit_post' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.hit_woodwork }}</p>
+                  </div>
+                </div>
+               
                 <div class="w-12 text-center" v-if="player.p_stats[0] === null">
                   0
                 </div>
