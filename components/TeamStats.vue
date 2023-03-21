@@ -279,10 +279,10 @@ const switchVenue = (value) => {
   <div class="w-11/12 md:w-4/5 mx-auto py-8">
     <div class="flex justify-start text-gray-600">
       <a href="/" class="flex self-center mr-3"
-        ><img src="@/assets/home.png" alt="" class="opacity-50"
+        ><img src="@/assets/home.png" alt="icon" class="opacity-50"
       /></a>
       <span class="mr-3 self-center">
-        <img src="@/assets/right.png" class="opacity-50" alt="" />
+        <img src="@/assets/right.png" class="opacity-50" alt="icon" />
       </span>
       <a href="/" class="self-center">Premier League</a>
     </div>
@@ -293,7 +293,7 @@ const switchVenue = (value) => {
             <img
               :src="team.data.data.logo_path"
               class="self-center w-12 md:w-16 mr-3"
-              alt=""
+              alt="logo"
             />
             <h1
               class="inline-block text-xl md:text-2xl self-center font-medium text-gray-900 tracking-tight capitalize"
@@ -780,7 +780,7 @@ const switchVenue = (value) => {
                     <img
                       :src="team.visitorTeam.data.logo_path"
                       class="w-6 md:w-7"
-                      alt=""
+                      alt="logo"
                     />
                     <span
                       class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
@@ -795,7 +795,7 @@ const switchVenue = (value) => {
                     <img
                       :src="team.localTeam.data.logo_path"
                       class="w-6 md:w-7"
-                      alt=""
+                      alt="logo"
                     />
                     <span
                       class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
@@ -819,7 +819,7 @@ const switchVenue = (value) => {
                       <img
                         :src="p.player.data.image_path"
                         class="h-8 p-1 mr-1 hidden md:inline-flex"
-                        alt=""
+                        alt="logo"
                       />
                       <span class="self-center pl-1">{{ p.player_name }}</span>
                     </div>
@@ -1451,7 +1451,7 @@ const switchVenue = (value) => {
                       <img
                         :src="p.player.data.image_path"
                         class="h-8 p-1 mr-1 hidden md:inline-flex"
-                        alt=""
+                        alt="logo"
                       />
                       <span class="self-center pl-1">{{ p.player_name }}</span>
                     </div>
@@ -2088,7 +2088,7 @@ const switchVenue = (value) => {
                 :key="l"
               >
                 <span class="tooltiptext">{{ l.league.data.name }}</span>
-                <img :src="l.league.data.logo_path" class="w-4 md:w-5" alt="" />
+                <img :src="l.league.data.logo_path" class="w-4 md:w-5" alt="logo" />
               </div>
             </div>
 

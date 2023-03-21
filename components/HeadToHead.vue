@@ -38,7 +38,7 @@ const showDetails = (id) => {
                 <img
                   :src="match.localTeam.data.logo_path"
                   class="w-6 self-center mr-2"
-                  alt=""
+                  alt="logo"
                 />
                 <p class="self-center">{{ match.localTeam.data.name }}</p>
               </div>
@@ -58,7 +58,7 @@ const showDetails = (id) => {
                 <img
                   :src="match.visitorTeam.data.logo_path"
                   class="w-6 self-center mr-2"
-                  alt=""
+                  alt="logo"
                 />
                 <p class="self-center">{{ match.visitorTeam.data.name }}</p>
               </div>

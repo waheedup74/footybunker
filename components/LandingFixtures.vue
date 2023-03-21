@@ -153,7 +153,7 @@ const teamStats = (team_id) => {
                   <img
                     :src="f.localTeam.data.logo_path"
                     class="w-4 mr-2"
-                    alt=""
+                    alt="logo"
                   />
                   <a class="text-sm" @click="teamStats(f.localteam_id)">
                     {{ f.localTeam.data.name }}</a
@@ -168,7 +168,7 @@ const teamStats = (team_id) => {
                   <img
                     :src="f.visitorTeam.data.logo_path"
                     class="w-4 mr-2"
-                    alt=""
+                    alt="logo"
                   />
                   <a class="text-sm" @click="teamStats(f.visitorteam_id)">{{
                     f.visitorTeam.data.name
@@ -234,7 +234,7 @@ const teamStats = (team_id) => {
                   <img
                     :src="f.localTeam.data.logo_path"
                     class="w-4 mr-2"
-                    alt=""
+                    alt="logo"
                   />
                   <a class="text-sm" @click="teamStats(f.localteam_id)">
                     {{ f.localTeam.data.name }}</a
@@ -249,7 +249,7 @@ const teamStats = (team_id) => {
                   <img
                     :src="f.visitorTeam.data.logo_path"
                     class="w-4 mr-2"
-                    alt=""
+                    alt="logo"
                   />
                   <a class="text-sm" @click="teamStats(f.visitorteam_id)">{{
                     f.visitorTeam.data.name
@@ -315,7 +315,7 @@ const teamStats = (team_id) => {
                   <img
                     :src="f.localTeam.data.logo_path"
                     class="w-4 mr-2"
-                    alt=""
+                    alt="logo"
                   />
                   <a class="text-sm" @click="teamStats(f.localteam_id)">
                     {{ f.localTeam.data.name }}</a
@@ -330,7 +330,7 @@ const teamStats = (team_id) => {
                   <img
                     :src="f.visitorTeam.data.logo_path"
                     class="w-4 mr-2"
-                    alt=""
+                    alt="logo"
                   />
                   <a class="text-sm" @click="teamStats(f.visitorteam_id)">{{
                     f.visitorTeam.data.name

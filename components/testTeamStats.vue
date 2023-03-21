@@ -248,10 +248,10 @@ function getUniquePlayersById(originalArray) {
   <div class="w-11/12 md:w-4/5 mx-auto py-8">
     <div class="flex justify-start text-gray-600">
       <a href="/" class="flex self-center mr-3"
-        ><img src="@/assets/home.png" alt="" class="opacity-50"
+        ><img src="@/assets/home.png" alt="icon" class="opacity-50"
       /></a>
       <span class="mr-3 self-center">
-        <img src="@/assets/right.png" class="opacity-50" alt="" />
+        <img src="@/assets/right.png" class="opacity-50" alt="icon" />
       </span>
       <a href="/" class="self-center">Premier League</a>
     </div>
@@ -262,7 +262,7 @@ function getUniquePlayersById(originalArray) {
             <img
               :src="team.data.data.logo_path"
               class="self-center w-12 md:w-16 mr-3"
-              alt=""
+              alt="logo"
             />
             <h1
               class="inline-block text-xl md:text-2xl self-center font-medium text-gray-900 tracking-tight capitalize"

@@ -30,7 +30,7 @@ const goto = (value) => {
     class="flex h-16 lg:h-18 bg-[#0d406a] text-white px-2 md:px-8 md:text-xs lg:text-sm"
   >
     <div class="self-center">
-      <a href="/"> <img src="@/assets/fb-logo.png" alt="" /></a>
+      <a href="/"> <img src="@/assets/fb-logo.png" alt="logo" /></a>
     </div>
     <div
       class="self-center relative hidden md:flex md:items-center text-[1.1rem]"
@@ -65,7 +65,7 @@ const goto = (value) => {
               @click="getLeagueId(l.current_season_id)"
               class="flex items-center border bg-white cursor-pointer rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
             >
-              <img :src="l.logo_path" class="h-7 mr-3" alt="" />
+              <img :src="l.logo_path" class="h-7 mr-3" alt="logo" />
               <span class="font-bold">{{ l.name }}</span>
             </a>
           </span>
@@ -118,7 +118,7 @@ const goto = (value) => {
     <div class="w-4/5 h-full bg-[#0d406a]">
       <div class="mb-5">
         <a href="/">
-          <img src="@/assets/fb-logo.png" class="h-12 p-2" alt=""
+          <img src="@/assets/fb-logo.png" class="h-12 p-2" alt="logo"
         /></a>
       </div>
 
@@ -155,7 +155,7 @@ const goto = (value) => {
                 @click="getLeagueId(l.current_season_id)"
                 class="flex items-center border bg-white rounded p-3 cursor-pointer hover:text-[#0d406a] hover:bg-gray-200"
               >
-                <img :src="l.logo_path" class="h-7 mr-3" alt="" />
+                <img :src="l.logo_path" class="h-7 mr-3" alt="logo" />
                 <span class="font-bold">{{ l.name }}</span>
               </a>
             </span>

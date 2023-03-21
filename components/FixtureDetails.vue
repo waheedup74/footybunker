@@ -62,7 +62,7 @@ const teamStats = (team_id) => {
         <img
           :src="fixture.data.data.localTeam.data.logo_path"
           class="w-16 md:w-32 border p-3 mx-auto rounded"
-          alt=""
+          alt="logo"
         />
 
         <p class="mt-3 font-semibold">
@@ -83,7 +83,7 @@ const teamStats = (team_id) => {
         <img
           :src="fixture.data.data.visitorTeam.data.logo_path"
           class="w-16 md:w-32 border p-3 mx-auto rounded"
-          alt=""
+          alt="logo"
         />
         <p class="mt-3 font-semibold">
           {{ fixture.data.data.visitorTeam.data.name }}
