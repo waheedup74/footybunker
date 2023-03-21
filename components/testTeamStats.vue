@@ -2449,14 +2449,17 @@ function getUniquePlayersById(originalArray) {
                   {{ stats.player.common_name }}
                 </div>
               </div>
-              <div class="text-lg font-semibold" v-for="player of stats.matchesData">
+              <div
+                class="text-lg font-semibold"
+                v-for="player of stats.matchesData"
+              >
                 <div class="flex w-100 tooltip">
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'interception' &&
@@ -2478,7 +2481,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.interceptions }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.interceptions }}
+                    </p>
                   </div>
                 </div>
 
@@ -2488,7 +2493,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'tackles' &&
@@ -2510,7 +2515,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.tackles }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.tackles }}
+                    </p>
                   </div>
                 </div>
 
@@ -2520,7 +2527,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'blocks' &&
@@ -2542,17 +2549,19 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.blocks }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.blocks }}
+                    </p>
                   </div>
                 </div>
-               
+
                 <div class="flex w-100 tooltip">
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'total_duels' &&
@@ -2574,17 +2583,19 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].duels.total }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].duels.total }}
+                    </p>
                   </div>
                 </div>
-               
+
                 <div class="flex w-100 tooltip">
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'duel_won' &&
@@ -2606,71 +2617,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].duels.won }}</p>
-                  </div>
-                </div>
-              
-                <div class="flex w-100 tooltip">
-                  <span v-if="player.p_stats[0]" class="tooltiptext"
-                    >infield:
-                    {{ player.p_stats[0].other.minutes_played }}'</span
-                  >
-                  <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
-                    v-if="
-                      player.p_stats[0] &&
-                      playerStats === 'foul_committed' &&
-                      selectedLeague.includes(player.league) &&
-                      (player.localTeam === teamId ? showHome : showAway)
-                    "
-                    :style="[
-                      player.p_stats[0].other.minutes_played
-                        ? {
-                            maxWidth:
-                              (player.p_stats[0].other.minutes_played * 100) /
-                                90 +
-                              '%',
-                            backgroundColor: 'rgb(144,238,144)',
-                          }
-                        : {
-                            maxWidth: '100%',
-                            backgroundColor: 'white',
-                          },
-                    ]"
-                  >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].fouls.committed }}</p>
-                  </div>
-                </div>
-               
-                <div class="flex w-100 tooltip">
-                  <span v-if="player.p_stats[0]" class="tooltiptext"
-                    >infield:
-                    {{ player.p_stats[0].other.minutes_played }}'</span
-                  >
-                  <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
-                    v-if="
-                      player.p_stats[0] &&
-                      playerStats === 'foul_committed' &&
-                      selectedLeague.includes(player.league) &&
-                      (player.localTeam === teamId ? showHome : showAway)
-                    "
-                    :style="[
-                      player.p_stats[0].other.minutes_played
-                        ? {
-                            maxWidth:
-                              (player.p_stats[0].other.minutes_played * 100) /
-                                90 +
-                              '%',
-                            backgroundColor: 'rgb(144,238,144)',
-                          }
-                        : {
-                            maxWidth: '100%',
-                            backgroundColor: 'white',
-                          },
-                    ]"
-                  >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].fouls.committed }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].duels.won }}
+                    </p>
                   </div>
                 </div>
 
@@ -2680,7 +2629,75 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'foul_committed' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].fouls.committed }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
+                    v-if="
+                      player.p_stats[0] &&
+                      playerStats === 'foul_committed' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    :style="[
+                      player.p_stats[0].other.minutes_played
+                        ? {
+                            maxWidth:
+                              (player.p_stats[0].other.minutes_played * 100) /
+                                90 +
+                              '%',
+                            backgroundColor: 'rgb(144,238,144)',
+                          }
+                        : {
+                            maxWidth: '100%',
+                            backgroundColor: 'white',
+                          },
+                    ]"
+                  >
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].fouls.committed }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex w-100 tooltip">
+                  <span v-if="player.p_stats[0]" class="tooltiptext"
+                    >infield:
+                    {{ player.p_stats[0].other.minutes_played }}'</span
+                  >
+                  <div
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'pen_saved' &&
@@ -2702,7 +2719,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.pen_saved  }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.pen_saved }}
+                    </p>
                   </div>
                 </div>
 
@@ -2712,7 +2731,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'drib_past' &&
@@ -2734,7 +2753,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].dribbles.dribbled_past  }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].dribbles.dribbled_past }}
+                    </p>
                   </div>
                 </div>
 
@@ -2744,7 +2765,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'pen_committed' &&
@@ -2766,7 +2787,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{player.p_stats[0].other.pen_committed  }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.pen_committed }}
+                    </p>
                   </div>
                 </div>
 
@@ -2776,7 +2799,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'yellow_card' &&
@@ -2798,7 +2821,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{player.p_stats[0].cards.yellowcards }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].cards.yellowcards }}
+                    </p>
                   </div>
                 </div>
 
@@ -2808,7 +2833,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'red_card' &&
@@ -2830,18 +2855,19 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{player.p_stats[0].cards.redcards }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].cards.redcards }}
+                    </p>
                   </div>
                 </div>
-                     
-                
+
                 <div class="flex w-100 tooltip">
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'foul_drawn' &&
@@ -2863,7 +2889,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{player.p_stats[0].fouls.drawn }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].fouls.drawn }}
+                    </p>
                   </div>
                 </div>
 
@@ -2873,7 +2901,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'pen_won' &&
@@ -2895,17 +2923,19 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{player.p_stats[0].other.pen_won }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.pen_won }}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div class="flex w-100 tooltip">
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'key_passes' &&
@@ -2927,7 +2957,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{player.p_stats[0].passing.key_passes}}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].passing.key_passes }}
+                    </p>
                   </div>
                 </div>
 
@@ -2937,7 +2969,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'passes' &&
@@ -2959,7 +2991,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{player.p_stats[0].passing.passes}}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].passing.passes }}
+                    </p>
                   </div>
                 </div>
 
@@ -2969,7 +3003,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'pen_scored' &&
@@ -2991,7 +3025,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.pen_scored}}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.pen_scored }}
+                    </p>
                   </div>
                 </div>
 
@@ -3001,7 +3037,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'pen_missed' &&
@@ -3023,17 +3059,19 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.pen_missed}}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.pen_missed }}
+                    </p>
                   </div>
                 </div>
-              
+
                 <div class="flex w-100 tooltip">
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'shots_total' &&
@@ -3055,7 +3093,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].shots.shots_total }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].shots.shots_total }}
+                    </p>
                   </div>
                 </div>
                 <div class="flex w-100 tooltip">
@@ -3064,7 +3104,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'shots_on_goal' &&
@@ -3086,17 +3126,19 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].shots.shots_on_goal }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].shots.shots_on_goal }}
+                    </p>
                   </div>
                 </div>
-                
+
                 <div class="flex w-100 tooltip">
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'offsides' &&
@@ -3118,7 +3160,9 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.offsides }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.offsides }}
+                    </p>
                   </div>
                 </div>
 
@@ -3128,7 +3172,7 @@ function getUniquePlayersById(originalArray) {
                     {{ player.p_stats[0].other.minutes_played }}'</span
                   >
                   <div
-                    class="w-[50px] h-[50px] flex  text-center justify-between border"
+                    class="w-[50px] h-[50px] flex text-center justify-between border"
                     v-if="
                       player.p_stats[0] &&
                       playerStats === 'hit_post' &&
@@ -3150,10 +3194,12 @@ function getUniquePlayersById(originalArray) {
                           },
                     ]"
                   >
-                    <p class="self-center justify-between w-full">{{ player.p_stats[0].other.hit_woodwork }}</p>
+                    <p class="self-center justify-between w-full">
+                      {{ player.p_stats[0].other.hit_woodwork }}
+                    </p>
                   </div>
                 </div>
-               
+
                 <div class="w-12 text-center" v-if="player.p_stats[0] === null">
                   0
                 </div>

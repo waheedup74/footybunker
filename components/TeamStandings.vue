@@ -58,15 +58,25 @@ const goto = function (team) {
 
     <div v-if="teams">
       <table class="w-full text-start border overflow-x-scroll">
-        <thead class="text-start py-4">
-          <th class="text-start">Logo</th>
-          <th class="text-start">Name</th>
+        <thead class="text-start py-4 md:visible invisible">
+          <th class="text-start"></th>
+          <th class="text-start"></th>
           <th class="text-start">Played</th>
           <th class="text-start">Won</th>
           <th class="text-start">Draw</th>
           <th class="text-start">Lost</th>
           <th class="text-start">Goal Scored</th>
           <th class="text-start">Points</th>
+        </thead>
+        <thead class="text-start py-4 visible md:invisible">
+          <th class="text-start"></th>
+          <th class="text-start"></th>
+          <th class="text-start">P</th>
+          <th class="text-start">W</th>
+          <th class="text-start">D</th>
+          <th class="text-start">L</th>
+          <th class="text-start">G</th>
+          <th class="text-start">Pts</th>
         </thead>
         <tbody
           v-for="team in teams.data[0].standings.data"
