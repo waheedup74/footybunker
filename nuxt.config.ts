@@ -1,41 +1,24 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
-// export default defineNuxtConfig({
-//     // modules: [
-//     //     "@nuxtjs/tailwindcss",
-//     // ],
-// modules: [
-//     "@nuxtjs/tailwindcss",
-//     "@nuxtjs/axios"
-// ],
-// // buildModules: [
-// //     "@nuxtjs/axios"
-// // ],
-// axios: {
-//   baseURL: '/',
-// }
-// })
-
 export default {
     modules: [
     "@nuxtjs/tailwindcss",
-    // "@nuxtjs/axios"
-    ],
-    // axios: {
-    //     baseURL: 'http://localhost:3000', // Used as fallback if no runtime config is provided
-    //   }
-    // publicRuntimeConfig:{
-    //   myApp:{
-    //     publicTest: "public",
-    //     bothTest: "public"
   
-    //   }
-    // },
-    // privateRuntimeConfig: {
-    //   myApp:{
-    //     privateTest: "private",
-    //     bothTest: "private",
-    //   }
-    // }
- 
+    ],
+    head: {
+      link: [
+        { rel: "icon", type: "image/x-icon", href: "/fb_fav.png" },
+        // {
+        //   rel: "stylesheet",
+        //   href: "https://fonts.googleapis.com/css2?family=Oxygen&display=swap",
+        // },
+        {
+          rel:"preconnect",
+          href:"https://fonts.googleapis.com"
+        },
+        {
+          href: "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,600;0,700;1,500&display=swap",
+          rel:"stylesheet"
+        }
+      ],
+    },
   }
 

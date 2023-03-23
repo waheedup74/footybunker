@@ -57,9 +57,9 @@ const goto = function (team) {
     </div> -->
 
     <div v-if="teams">
-      <table class="w-full text-start border overflow-x-hidden">
+      <table class="w-full">
         <thead class="text-start py-4 md:visible invisible">
-          <th class="text-start"></th>
+          <th class="text-start"><span class="invisible">logo</span></th>
           <th class="text-start"></th>
           <th class="text-start">Played</th>
           <th class="text-start">Won</th>
@@ -84,7 +84,7 @@ const goto = function (team) {
           @click="goto(team.team_id)"
           class="border cursor-pointer"
         >
-          <td class=" md:w-[10%]">
+          <td>
             <img :src="team.team.data.logo_path" class="h-6 w-6 mx-auto" alt="logo" />
           </td>
           <td>{{ team.team_name }}</td>

@@ -1443,7 +1443,7 @@ const switchVenue = (value) => {
                     (team.localteam_id === teamId ? showHome : showAway)
                   "
                 >
-                  <div class="w-44 border" v-if="teamId === p.team_id">
+                  <div class="w-44 border-purple" v-if="teamId === p.team_id">
                     <div
                       class="flex align-middle hover:cursor-pointer"
                       @click="goPlayerStats(p.player.data.player_id)"
@@ -2427,7 +2427,7 @@ const switchVenue = (value) => {
               </div>
             </div>
           </div>
-          -->
+        
         </div>
       </div>
     </div>
@@ -2491,7 +2491,7 @@ const switchVenue = (value) => {
   display: flex;
   align-items: center;
   width: 3rem !important;
-  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  border: 0.1px solid rgba(0, 0, 0, 1);
 }
 
 .data-cell-img {
