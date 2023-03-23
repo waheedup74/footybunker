@@ -730,9 +730,9 @@ function getUniquePlayersById(originalArray) {
           <div class="mt-5" v-if="showStats === 'team'">
             <div
               class="bg-[#0d406a] text-white p-5 text-3xl mb-5 capitalize"
-              v-if="team"
+              v-if="team.data"
             >
-              {{ team.data.name }} Stats
+              {{ team.data.data.name }} Stats
             </div>
 
             <div class="flex relative">
