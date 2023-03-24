@@ -215,6 +215,15 @@ function getUniquePlayersById(originalArray) {
       </span>
       <a href="/" class="self-center">Premier League</a>
     </div>
+       <!-- add section -->
+       <div
+      class="bg-rose-500 text-white rounded-lg py-2 px-2 my-5 transition delay-150 duration-300 ease-in-out"
+    >
+      <div class="flex justify-between py-5">
+        <p class="text-3xl">Ad display here</p>
+      </div>
+    </div>
+    <!-- add section -->
     <div class="min-w-0 w-full flex-auto lg:static lg:max-h-full">
       <div class="mt-4 md:mt-4 border rounded-md p-2 mb-5">
         <div class="grid md:grid-cols-2">
