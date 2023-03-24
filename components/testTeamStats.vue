@@ -1042,9 +1042,9 @@ function getUniquePlayersById(originalArray) {
               </div>
             </div>
           </div>
-          <div class="py-20" v-if="showStats === 'player'">
+          <div class="pt-20" v-if="showStats === 'player'">
             <div v-if="newTeamStats.data">
-              <div class="flex mb-1">
+              <div class="flex">
                 <div class="w-40 md:w-64"></div>
                 <div v-for="t in newTeamStats.data.data">
                   <div
@@ -1092,7 +1092,7 @@ function getUniquePlayersById(originalArray) {
             <div class="flex" v-for="stats of finalStats">
               <div class="flex w-40 md:w-64 h-[40px] player-name-cell">
                 <img
-                  class="h-6 p-1 mr-1 md:h-8 self-center"
+                  class="p-1 mr-1 h-8 self-center"
                   :src="stats.player.image_path"
                   alt=""
                 />
@@ -1103,7 +1103,6 @@ function getUniquePlayersById(originalArray) {
                   {{ stats.player.common_name }}
                 </div>
               </div>
-
               <div v-for="player of stats.matchesData">
                 <div
                   class="flex w-100 tooltip"
@@ -2199,14 +2198,6 @@ function getUniquePlayersById(originalArray) {
       </div>
     </div>
   </div>
-  <!-- <div>
-  <div  v-for="stats of finalStats">
-
-    {{ stats }}
-
- 
-  </div>
-</div> -->
 </template>
 
 <style scoped>
