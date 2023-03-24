@@ -69,6 +69,10 @@ onBeforeMount(async () => {
       (a, b) =>
         new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
     );
+    if (newTeamStats.value.data.data.length > 20) {
+      newTeamStats.value.data.data = newTeamStats.value.data.data.slice(0, 20);
+    }
+    console.log("data array", newTeamStats.value.data.data);
     newTeamStats.value.data.data.map((e) => {
       e.lineup.data.map((p) => {
         if (p.team_id === teamId) {
@@ -84,20 +88,18 @@ onBeforeMount(async () => {
       });
       teamPlayers.value = [...lineupPlayers.value, ...benchPlayers.value];
       allPlayers.value = [...lineup.value, ...bench.value];
+      console.log("teamplayers", teamPlayers.value);
       e.teamPlayers = teamPlayers.value;
       lineupPlayers.value = [];
       benchPlayers.value = [];
     });
     uniquePlayers.value = getUniquePlayersById(allPlayers.value);
-    // calculate player stats
-    // let stats_index = 0;
     uniquePlayers.value.forEach((player, index) => {
       finalStats.value.push({
         playerId: player.player_id,
         player: player.player.data,
         matchesData: [],
       });
-      // stats_index++;
       newTeamStats.value.data.data.map((match) => {
         let team_Player = null;
         match.teamPlayers.map((teamPlayer) => {
@@ -123,53 +125,11 @@ onBeforeMount(async () => {
             league: match.league_id,
             localTeam: match.localteam_id,
             visitorTeam: match.visitorteam_id,
-            p_stats: 0,
+            p_stats: [],
           });
         }
       });
     });
-    // console.log('final stats', finalStats)
-    // for (let player of uniquePlayers){
-    //     finalStatistics.push({
-    // 	   playerId: player.id,
-    // 	   matchesData: []
-    // 	})
-    //     for (let match of matches){
-    // 		let linupPlayer = null;
-    // 		for (let lineup of match.lineup){
-    // 		   if(player.id === lineup.id) linupPlayer = lineup
-    // 		}
-
-    // 	if (linupPlayer){
-    // 	   let index = finalStatistics.findIndex((fs)=> fs.playerId === linupPlayer.id)
-
-    // 	   if (index !== -1){
-    // 	      finalStatistics[index].matchesData["matchId"] = match.id
-    // 		  finalStatistics[index].matchesData["score"] = score
-    // 	   }
-    // 	}
-    // }
-    // }
-
-    // let finalStatistics = []   //show this to view
-
-    // for (let player of uniquePlayers){
-    //     finalStatistics.push({
-    // 	   playerId: player.id,
-    // 	   matchesData: []
-    // 	})
-    //     for (let match of matches){
-    // 	    let found = match.lineup.find((lineup_player) => player.id === lineup_player.id)
-    // 		if (found){
-    // 		   let index = finalStatistics.findIndex((fs)=> fs.playerId === lineup_player.id)
-
-    // 		   if (index !== -1){
-    // 		      finalStatistics[index].matchesData["matchId"] = match.id
-    // 			  finalStatistics[index].matchesData["score"] = score
-    // 		   }
-    // 		}
-    // 	}
-    // }
   }
 
   //   for league filters
@@ -725,8 +685,7 @@ function getUniquePlayersById(originalArray) {
 
       <!-- below section for testing  -->
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
-        <div class="relative rounded w-[3700px]" v-if="newTeamStats.data">
-
+        <div class="relative rounded w-[1200px]" v-if="newTeamStats.data">
           <div class="mt-5" v-if="showStats === 'team'">
             <div
               class="bg-[#0d406a] text-white p-5 text-3xl mb-5 capitalize"
@@ -1083,13 +1042,13 @@ function getUniquePlayersById(originalArray) {
               </div>
             </div>
           </div>
-          <div class="py-10" v-if="showStats === 'player'">
+          <div class="py-20" v-if="showStats === 'player'">
             <div v-if="newTeamStats.data">
               <div class="flex mb-1">
                 <div class="w-40 md:w-64"></div>
                 <div v-for="t in newTeamStats.data.data">
                   <div
-                    class=" stats-cell p-1 relative mx-auto"
+                    class="stats-cell p-1 relative mx-auto cursor-pointer"
                     v-if="
                       t.localteam_id === teamId &&
                       selectedLeague.includes(t.league_id) &&
@@ -1108,7 +1067,7 @@ function getUniquePlayersById(originalArray) {
                     >
                   </div>
                   <div
-                    class=" stats-cell p-1 relative"
+                    class="stats-cell p-1 relative mx-auto cursor-pointer"
                     v-else-if="
                       t.visitorteam_id === teamId &&
                       selectedLeague.includes(t.league_id) &&
@@ -1144,10 +1103,12 @@ function getUniquePlayersById(originalArray) {
                   {{ stats.player.common_name }}
                 </div>
               </div>
-              <div
-                v-for="player of stats.matchesData"
-              >
-                <div class="flex w-100 tooltip" v-if=" playerStats === 'interception'">
+
+              <div v-for="player of stats.matchesData">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'interception'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1182,12 +1143,22 @@ function getUniquePlayersById(originalArray) {
                             backgroundColor: 'white',
                           },
                     ]"
-                  >
-                    <span class="invisible">0</span>
-                  </div>
+                  ></div>
+                  <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'interception' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                 <div class="flex w-100 tooltip" v-if=" playerStats === 'tackles'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'tackles'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1225,6 +1196,15 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'tackles' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
                 <div class="flex w-100 tooltip" v-if="playerStats === 'blocks'">
@@ -1265,9 +1245,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'blocks' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
-         
-                <div class="flex w-100 tooltip" v-if=" playerStats === 'total_duels'">
+
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'total_duels'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1285,7 +1277,7 @@ function getUniquePlayersById(originalArray) {
                       {{ player.p_stats[0].duels.total }}
                     </p>
                   </div>
-                    <div
+                  <div
                     v-if="player.p_stats[0]"
                     class="absolute h-[40px] z-0"
                     :style="[
@@ -1305,9 +1297,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'total_duels' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
-  
-                <div class="flex w-100 tooltip" v-if=" playerStats === 'duel_won'">
+
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'duel_won'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1345,9 +1349,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'duel_won' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
- 
-                <div class="flex w-100 tooltip" v-if=" playerStats === 'foul_committed' ">
+
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'foul_committed'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1385,9 +1401,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'foul_committed' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if=" playerStats === 'pen_saved'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'pen_saved'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1425,9 +1453,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'pen_saved' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
-    
-                <div class="flex w-100 tooltip" v-if="playerStats === 'drib_past'">
+
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'drib_past'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1465,9 +1505,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'drib_past' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'pen_committed'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'pen_committed'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1505,9 +1557,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'pen_committed' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'yellow_card'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'yellow_card'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1545,9 +1609,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'yellow_card' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'red_card'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'red_card'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1585,9 +1661,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'red_card' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'foul_drawn'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'foul_drawn'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1625,9 +1713,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'foul_drawn' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'pen_won'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'pen_won'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1665,9 +1765,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'pen_won' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'key_passes'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'key_passes'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1705,6 +1817,15 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'key_passes' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
                 <div class="flex w-100 tooltip" v-if="playerStats === 'passes'">
@@ -1745,9 +1866,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'passes' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'pen_scored'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'pen_scored'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1785,9 +1918,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'pen_scored' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'pen_missed'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'pen_missed'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1825,9 +1970,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'pen_missed' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'shots_total'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'shots_total'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1865,9 +2022,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'shots_total' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'shots_on_goal'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'shots_on_goal'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1905,9 +2074,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'shots_on_goal' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'offsides'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'offsides'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1945,9 +2126,21 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'offsides' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
                 </div>
 
-                <div class="flex w-100 tooltip" v-if="playerStats === 'hit_post'">
+                <div
+                  class="flex w-100 tooltip"
+                  v-if="playerStats === 'hit_post'"
+                >
                   <span v-if="player.p_stats[0]" class="tooltiptext"
                     >infield:
                     {{ player.p_stats[0].other.minutes_played }}'</span
@@ -1985,7 +2178,16 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                </div> 
+                   <div
+                    v-else-if="
+                      !player.p_stats[0] &&
+                      playerStats === 'hit_post' &&
+                      selectedLeague.includes(player.league) &&
+                      (player.localTeam === teamId ? showHome : showAway)
+                    "
+                    class="stats-cell p-1 relative mx-auto"
+                  ></div>
+                </div>
 
                 <div class="w-12 text-center" v-if="player.p_stats[0] === null">
                   0
@@ -1997,6 +2199,14 @@ function getUniquePlayersById(originalArray) {
       </div>
     </div>
   </div>
+  <!-- <div>
+  <div  v-for="stats of finalStats">
+
+    {{ stats }}
+
+ 
+  </div>
+</div> -->
 </template>
 
 <style scoped>
@@ -2157,7 +2367,7 @@ function getUniquePlayersById(originalArray) {
 .tooltip .tooltiptext {
   visibility: hidden;
   /* width: 120px; */
-  background-color: #555;
+  background-color: #000000;
   color: #fff;
   text-align: center;
   border-radius: 2px;
