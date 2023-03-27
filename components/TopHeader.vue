@@ -22,7 +22,7 @@ const toggleMenue = function () {
 };
 const goto = (value) => {
   console.log(value);
-  // navigateTo(`auth/${value}`);
+  navigateTo(`/auth/${value}`);
 };
 </script>
 <template>
@@ -160,7 +160,19 @@ const goto = (value) => {
 
         <div class="flex">
           <a href="/" class="w-full text-white py-3 leading-4 duration-100"
-            >About</a
+            >Blogs</a
+          >
+        </div>
+
+        <div class="flex">
+          <a href="/auth/login" class="w-full text-white py-3 leading-4 duration-100"
+            >Login</a
+          >
+        </div>
+
+        <div class="flex">
+          <a href="/auth/register" class="w-full text-white py-3 leading-4 duration-100"
+            >Register</a
           >
         </div>
       </div>

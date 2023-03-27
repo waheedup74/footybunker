@@ -267,11 +267,9 @@ const goPlayerStats = function (p_id) {
 const switchVenue = (value) => {
   if (value === "home") {
     showHome.value = !showHome.value;
-    console.log("home called");
   }
   if (value === "away") {
     showAway.value = !showAway.value;
-    console.log("away called");
   }
 };
 </script>

@@ -13,11 +13,8 @@ const showAway = ref(true);
 const selectedLeague = ref([]);
 
 const team = ref({});
-const teamSeasonPlayersData = ref([]);
 
 const newTeamStats = ref({});
-const newTeamFixtures = ref({});
-const newTeamFixturesidListString = ref("");
 
 const todayDate = ref("");
 const months6Before = ref("");
@@ -72,7 +69,6 @@ onBeforeMount(async () => {
     if (newTeamStats.value.data.data.length > 20) {
       newTeamStats.value.data.data = newTeamStats.value.data.data.slice(0, 20);
     }
-    console.log("data array", newTeamStats.value.data.data);
     newTeamStats.value.data.data.map((e) => {
       e.lineup.data.map((p) => {
         if (p.team_id === teamId) {
@@ -88,7 +84,6 @@ onBeforeMount(async () => {
       });
       teamPlayers.value = [...lineupPlayers.value, ...benchPlayers.value];
       allPlayers.value = [...lineup.value, ...bench.value];
-      console.log("teamplayers", teamPlayers.value);
       e.teamPlayers = teamPlayers.value;
       lineupPlayers.value = [];
       benchPlayers.value = [];
@@ -178,10 +173,6 @@ const goto = function (team) {
   navigateTo(`/teamStats-${team}`);
 };
 
-const goPlayerStats = function (p_id) {
-  navigateTo(`/player-${p_id}`);
-};
-
 const switchVenue = (value) => {
   if (value === "home") {
     showHome.value = !showHome.value;
@@ -215,8 +206,8 @@ function getUniquePlayersById(originalArray) {
       </span>
       <a href="/" class="self-center">Premier League</a>
     </div>
-       <!-- add section -->
-       <div
+    <!-- add section -->
+    <div
       class="bg-rose-500 text-white rounded-lg py-2 px-2 my-5 transition delay-150 duration-300 ease-in-out"
     >
       <div class="flex justify-between py-5">
@@ -275,7 +266,7 @@ function getUniquePlayersById(originalArray) {
 
         <div v-if="tab_id === 'A'">
           <div
-            class="grid gap-1 text-sm grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between items-center"
+            class="grid gap-2 text-sm grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between items-center"
           >
             <div
               class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
@@ -521,97 +512,177 @@ function getUniquePlayersById(originalArray) {
             class="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between items-center cursor-pointer"
           >
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'passes'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('passes')"
             >
               Passes
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'tackles'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('tackles')"
             >
               Tackles
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'corners'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]" 
               @click="toggleTeamStats('corners')"
             >
               Corners
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'shotsTotal'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('shotsTotal')"
             >
               Shots - Total
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
-              @click="toggleTeamStats('shotsOnTarget')"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'shotsOnTarget'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"  
+            @click="toggleTeamStats('shotsOnTarget')"
             >
               Shots - On Target
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'shotsOffTarget'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]" 
               @click="toggleTeamStats('shotsOffTarget')"
             >
               Shots - Off Target
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'ShotsOutsideBox'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]" 
               @click="toggleTeamStats('ShotsOutsideBox')"
             >
               Shots - Outside Box
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'ShotsInsideBox'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]" 
               @click="toggleTeamStats('ShotsInsideBox')"
             >
               Shots - Inside Box
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'offside'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]" 
               @click="toggleTeamStats('offside')"
             >
               Offsides
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'yellowCard'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('yellowCard')"
             >
               Yellow Cards
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'redCard'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('redCard')"
             >
               Red Cards
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'penalties'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('penalties')"
             >
               Penalties
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'throwIns'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('throwIns')"
             >
               Throw Ins
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'freeKicks'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('freeKicks')"
             >
               Free Kicks
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'goalKicks'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('goalKicks')"
             >
               Goal Kicks
             </div>
             <div
-              class="p-1 border bg-white text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              :class="[
+                showValue === 'saves'
+                  ? 'bg-[#0d406a] text-white font-medium'
+                  : 'bg-white',
+              ]"
               @click="toggleTeamStats('saves')"
             >
               Saves
@@ -620,7 +691,7 @@ function getUniquePlayersById(originalArray) {
         </div>
       </div>
 
-      <div class="mt-4 md:mt-7">
+      <div class="mt-4 md:mt-7" v-if="showStats === 'player'">
         <div class="mb-4">
           <h5
             class="text-gray-600 font-bold text-xs uppercase mr-5 w-32 mb-2 2xl:mb-0"
@@ -696,362 +767,489 @@ function getUniquePlayersById(originalArray) {
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
         <div class="relative rounded w-[1200px]" v-if="newTeamStats.data">
           <div class="mt-5" v-if="showStats === 'team'">
-            <div
+            <!-- <div
               class="bg-[#0d406a] text-white p-5 text-3xl mb-5 capitalize"
               v-if="team.data"
             >
               {{ team.data.data.name }} Stats
-            </div>
-
+            </div> -->
             <div class="flex relative">
-              <div class="w-44 border p-1">Leagues</div>
+              <div class="flex w-40 h-[40px] border border-black">
+                <p class="pl-1 self-center font-bold">League</p>
+              </div>
 
-              <div
-                class="data-cell p-1 cursor-pointer tooltip"
-                v-for="l in newTeamStats.data.data"
-                :key="l"
-              >
-                <span class="tooltiptext">{{ l.league.data.name }}</span>
-                <img :src="l.league.data.logo_path" class="w-4 md:w-5" alt="" />
+              <div v-for="t in newTeamStats.data.data">
+                <div
+                  class="stats-cell p-1 relative mx-auto cursor-pointer"
+                  v-if="
+                    t.localteam_id === teamId &&
+                    selectedLeague.includes(t.league_id) &&
+                    (t.localteam_id === teamId ? showHome : showAway)
+                  "
+                  @click="goto(t.visitorteam_id)"
+                >
+                  <img
+                    :src="t.league.data.logo_path"
+                    class="w-6 md:w-7 mx-auto"
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="stats-cell p-1 relative mx-auto cursor-pointer"
+                  v-else-if="
+                    t.visitorteam_id === teamId &&
+                    selectedLeague.includes(t.league_id) &&
+                    (t.localteam_id === teamId ? showHome : showAway)
+                  "
+                  @click="goto(t.localteam_id)"
+                >
+                  <img
+                    :src="t.league.data.logo_path"
+                    class="w-6 md:w-7 mx-auto"
+                    alt=""
+                  />
+                </div>
               </div>
             </div>
 
             <div class="flex relative">
-              <div class="w-44 border p-1">Against</div>
+              <div class="flex w-40 h-[40px] border border-black">
+                <p class="pl-1 self-center font-bold">Against</p>
+              </div>
 
-              <div
-                class="data-cell p-1"
-                v-for="l in newTeamStats.data.data"
-                :key="l"
-              >
-                <span
-                  class="cursor-pointer tooltip"
-                  v-if="l.visitorteam_id !== teamId"
-                  @click="goto(l.visitorteam_id)"
+              <div v-for="t in newTeamStats.data.data">
+                <div
+                  class="stats-cell p-1 relative mx-auto cursor-pointer"
+                  v-if="
+                    t.localteam_id === teamId &&
+                    selectedLeague.includes(t.league_id) &&
+                    (t.localteam_id === teamId ? showHome : showAway)
+                  "
+                  @click="goto(t.visitorteam_id)"
                 >
-                  <span class="tooltiptext">{{ l.visitorTeam.data.name }}</span>
-                  <img :src="l.visitorTeam.data.logo_path" class="w-4 md:w-5" />
-                </span>
-                <span
-                  class="cursor-pointer tooltip"
-                  v-if="l.localteam_id !== teamId"
-                  @click="goto(l.localteam_id)"
+                  <img
+                    :src="t.visitorTeam.data.logo_path"
+                    class="w-6 md:w-7 mx-auto"
+                    alt=""
+                  />
+                  <span
+                    class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
+                    >H</span
+                  >
+                </div>
+                <div
+                  class="stats-cell p-1 relative mx-auto cursor-pointer"
+                  v-else-if="
+                    t.visitorteam_id === teamId &&
+                    selectedLeague.includes(t.league_id) &&
+                    (t.localteam_id === teamId ? showHome : showAway)
+                  "
+                  @click="goto(t.localteam_id)"
                 >
-                  <span class="tooltiptext">{{ l.localTeam.data.name }}</span>
-                  <img :src="l.localTeam.data.logo_path" class="w-4 md:w-5" />
-                </span>
+                  <img
+                    :src="t.localTeam.data.logo_path"
+                    class="w-6 md:w-7 mx-auto"
+                    alt=""
+                  />
+                  <span
+                    class="absolute bottom-0 right-1 text-[0.6rem] font-medium"
+                    >A</span
+                  >
+                </div>
               </div>
             </div>
 
             <div>
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'passes' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Passes</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Passes</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.passes.total }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'tackles' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Tackles</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Tackles</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.tackles }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'corners' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Corners</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Corners</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.corners }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'shotsTotal' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Shots - Total</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Shots - Total</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.shots.total }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'shotsOnTarget' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Shots - On target</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Shots - On target</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.shots.ongoal }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'shotsOffTarget' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Shots - Off target</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Shots - Off target</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.shots.offgoal }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'ShotsInsideBox' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Shots - Inside Box</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Shots - Inside box</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.shots.insidebox }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'ShotsOutsideBox' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Shots - Outside Box</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Shots - Outside box</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.shots.outsidebox }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'fouls' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Fouls</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Fouls</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.fouls }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'offside' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Offside</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Offside</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.offsides }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'yellowCard' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Yellow Cards</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Yellow Cards</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.yellowcards }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'redCard' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Red Cards</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Red Cards</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.redcards }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'penalties' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Penalties</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Penalties</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.penalties }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'throwIns' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Throw-Ins</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Throw-Ins</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.throw_in }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'freeKicks' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Free Kicks</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Free Kicks</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.free_kick }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'goalKicks' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Goal Kicks</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Goal Kicks</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.goal_kick }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
-                class="flex relative"
+                class="flex realtive"
                 v-if="showValue === 'saves' || showValue === ''"
               >
-                <div class="w-44 border p-1 font-bold">Saves</div>
+                <div class="flex w-40 h-[40px] border border-black">
+                  <p class="pl-1 self-center font-bold">Saves</p>
+                </div>
                 <div
-                  class="data-cell p-1"
+                  class="flex stats-cell"
                   v-for="stat in newTeamStats.data.data"
                   :key="stat"
                 >
-                  <span v-for="s in stat.stats.data" :key="s">
-                    <span v-if="s.team_id === teamId" class="font-bold">
+                  <div class="flex" v-for="s in stat.stats.data" :key="s">
+                    <div
+                      class="self-center w-[40px] text-lg font-semibold"
+                      v-if="s.team_id === teamId"
+                    >
                       {{ s.saves }}
-                    </span>
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="pt-20" v-if="showStats === 'player'">
+          <div class="mt-5" v-if="showStats === 'player'">
             <div v-if="newTeamStats.data">
               <div class="flex">
                 <div class="w-40 md:w-64"></div>
@@ -1204,7 +1402,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'tackles' &&
@@ -1253,7 +1451,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'blocks' &&
@@ -1305,7 +1503,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'total_duels' &&
@@ -1357,7 +1555,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'duel_won' &&
@@ -1409,7 +1607,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'foul_committed' &&
@@ -1461,7 +1659,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'pen_saved' &&
@@ -1513,7 +1711,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'drib_past' &&
@@ -1565,7 +1763,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'pen_committed' &&
@@ -1617,7 +1815,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'yellow_card' &&
@@ -1669,7 +1867,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'red_card' &&
@@ -1721,7 +1919,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'foul_drawn' &&
@@ -1773,7 +1971,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'pen_won' &&
@@ -1825,7 +2023,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'key_passes' &&
@@ -1874,7 +2072,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'passes' &&
@@ -1926,7 +2124,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'pen_scored' &&
@@ -1978,7 +2176,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'pen_missed' &&
@@ -2030,7 +2228,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'shots_total' &&
@@ -2082,7 +2280,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'shots_on_goal' &&
@@ -2134,7 +2332,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'offsides' &&
@@ -2186,7 +2384,7 @@ function getUniquePlayersById(originalArray) {
                   >
                     <span class="invisible">0</span>
                   </div>
-                   <div
+                  <div
                     v-else-if="
                       !player.p_stats[0] &&
                       playerStats === 'hit_post' &&
@@ -2210,80 +2408,16 @@ function getUniquePlayersById(originalArray) {
 </template>
 
 <style scoped>
-.test-bg {
-  background-color: #aed5f5;
-}
-.stat-btn {
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  border: 1px solid #0d406a;
-  background-color: #ffffff;
-  color: #0d406a;
-  text-align: center;
-}
-
-.stat-btn--opp {
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  border: 1px solid #ff0000;
-  background-color: #ffffff;
-  color: #ff0000;
-  text-align: center;
-}
-
-.stat {
-  border-bottom: 1px solid #ebebeb;
-  display: flex;
-  position: relative;
-}
-
-.stat-btn:hover {
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  border: 1px solid #0d406a;
-  background-color: #0d406a;
-  color: #fff;
-  text-align: center;
-}
-
-.stat-btn--opp:hover {
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
-  border: 1px solid #ff0000;
-  background-color: #ff0000;
-  color: #ffffff;
-  text-align: center;
-}
-
-.stat {
-  border-bottom: 1px solid #ebebeb;
-  display: flex;
-  position: relative;
-}
-
-.data-cell {
-  display: flex;
-  align-items: center;
-  width: 3rem !important;
-  border: 0.5px solid rgba(0, 0, 0, 0.1);
-}
 
 .stats-cell {
   width: 40px;
   height: 40px;
+  text-align: center;
   border: 1px solid #000;
 }
 
 .player-name-cell {
   border: 1px solid #000;
-}
-
-.data-cell-img {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3rem !important;
-  /* border: 0.5px solid rgba(0, 0, 0, 0.1); */
 }
 
 /* Basic styling */
@@ -2360,8 +2494,7 @@ function getUniquePlayersById(originalArray) {
 /* tooltip css */
 .tooltip {
   position: relative;
-  /* display: inline-block; */
-  /* border-bottom: 1px dotted black; */
+
 }
 
 .tooltip .tooltiptext {
@@ -2380,17 +2513,6 @@ function getUniquePlayersById(originalArray) {
   opacity: 0;
   transition: opacity 0.3s;
 }
-
-/* .tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-} */
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
