@@ -17,33 +17,30 @@ const gotoRegister = (value) => {
         Login
       </div>
       <div class="my-10 px-5">
-    
-          <input
-            class="mb-10 text-black md:text-xl w-full border-b-2 focus:outline-none focus:border-[#0d406a]"
-            type="text"
-            placeholder="Username"
-          />
-          <input
-            class="mb-10 text-black md:text-xl w-full border-b-2 focus:outline-none focus:border-[#0d406a]"
-            type="password"
-            placeholder="Password"
-          />
-          <button
-            class="w-full rounded-full bg-[#0d406a] py-2 md:text-2xl text-white"
-            @click="gotoRegister('home')"
-          >
+        <input
+          class="mb-10 text-black md:text-xl w-full border-b-2 focus:outline-none focus:border-[#0d406a]"
+          type="text"
+          placeholder="Username"
+        />
+        <input
+          class="mb-10 text-black md:text-xl w-full border-b-2 focus:outline-none focus:border-[#0d406a]"
+          type="password"
+          placeholder="Password"
+        />
+        <button
+          class="w-full rounded-full bg-[#0d406a] py-2 md:text-2xl text-white"
+          aria-label="login"
+          @click="gotoRegister('home')"
+        >
           Login
-            <!-- <a href="/"> Login </a> -->
-          </button>
-          <div class="text-center mt-8">
-            Do not have an account yet?
-            <a
-              @click="gotoRegister('register')"
-              class="border-b-2 cursor-pointer"
-              >Register</a
-            >
-          </div>
-      
+          <!-- <a href="/"> Login </a> -->
+        </button>
+        <div class="text-center mt-8">
+          Do not have an account yet?
+          <a @click="gotoRegister('register')" class="border-b-2 cursor-pointer"
+            >Register</a
+          >
+        </div>
       </div>
     </div>
   </div>

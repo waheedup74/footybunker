@@ -5,7 +5,7 @@ export default {
     ],
     head: {
       link: [
-        { rel: "icon", type: "image/x-icon", href: "/fb_fav.png" },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         // {
         //   rel: "stylesheet",
         //   href: "https://fonts.googleapis.com/css2?family=Oxygen&display=swap",

@@ -36,7 +36,7 @@ const goto = (value) => {
       class="self-center relative hidden md:flex md:items-center text-[1.1rem]"
     >
       <a
-        href=""
+        href="/"
         class="text-white px-4 py-3 leading-4 duration-100 hover:bg-[#024c8a]"
         >Home</a
       >
@@ -72,7 +72,7 @@ const goto = (value) => {
         </div>
       </div>
       <a
-        href=""
+        href="/"
         class="text-white px-4 py-3 leading-4 duration-100 hover:bg-[#024c8a]"
         >Blogs</a
       >
@@ -82,17 +82,23 @@ const goto = (value) => {
     <div class="ml-auto flex self-center">
       <button
         class="invisible md:visible text-white mr-3 font-medium text-sm md:text-base sm:text-[10px]"
+        aria-label="login"
         @click="goto('login')"
       >
         Login
       </button>
       <button
         class="relative invisible md:visible inline-flex items-center px-4 py-2 border border-white font-medium rounded-md text-white shadow-sm hover:bg-white hover:text-[#0d406a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-sm md:text-base"
+        aria-label="register"
         @click="goto('register')"
       >
         Sign Up
       </button>
-      <button class="ml-4 md:hidden flex" @click="toggleMenue()">
+      <button
+        class="ml-4 md:hidden flex"
+        aria-label="leagues"
+        @click="toggleMenue()"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="self-center h-6 w-6 lg:w-8 lg:h-8 text-white"
@@ -165,13 +171,17 @@ const goto = (value) => {
         </div>
 
         <div class="flex">
-          <a href="/auth/login" class="w-full text-white py-3 leading-4 duration-100"
+          <a
+            href="/auth/login"
+            class="w-full text-white py-3 leading-4 duration-100"
             >Login</a
           >
         </div>
 
         <div class="flex">
-          <a href="/auth/register" class="w-full text-white py-3 leading-4 duration-100"
+          <a
+            href="/auth/register"
+            class="w-full text-white py-3 leading-4 duration-100"
             >Register</a
           >
         </div>
