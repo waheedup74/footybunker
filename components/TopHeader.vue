@@ -35,26 +35,31 @@ const goto = (value) => {
     <div
       class="self-center relative hidden md:flex md:items-center text-[1.1rem]"
     >
-      <a
-        href="/"
-        class="text-white px-4 py-3 leading-4 duration-100 hover:bg-[#024c8a]"
-        >Home</a
-      >
+      <div>
+        <a
+          href="/"
+          class="text-white px-4 py-3 leading-4 duration-100 hover:bg-[#024c8a]"
+          >Home</a
+        >
+      </div>
+
       <div class="relative">
         <div
-          class="flex text-white px-4 py-2 hover:bg-[#024c8a] cursor-pointer"
+          class="flex text-white px-4 py-3 hover:bg-[#024c8a] cursor-pointer"
           @click="toggleDropdown()"
         >
-          <span class="mr-4"> Leagues </span>
-          <svg
-            class="fill-white w-[1.5rem] self-center"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-            />
-          </svg>
+          <div class="mr-4">Leagues</div>
+          <div class="self-center">
+            <svg
+              class="fill-white w-[1.1rem] self-center"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+              />
+            </svg>
+          </div>
         </div>
         <div
           v-if="allLeagues && leagues.data"
@@ -71,11 +76,13 @@ const goto = (value) => {
           </span>
         </div>
       </div>
-      <a
-        href="/"
-        class="text-white px-4 py-3 leading-4 duration-100 hover:bg-[#024c8a]"
-        >Blogs</a
-      >
+      <div>
+        <a
+          href="/"
+          class="text-white px-4 py-3 leading-4 duration-100 hover:bg-[#024c8a]"
+          >Blogs</a
+        >
+      </div>
 
       <!-- <div class=""></div> -->
     </div>
