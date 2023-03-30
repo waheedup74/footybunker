@@ -104,17 +104,6 @@ const teamStats = (team_id) => {
         >
           MATCH
         </div>
-        <!-- <div
-          @click="changeTopTabs('odds')"
-          :class="[
-            top_tab_id === 'odds'
-              ? 'bg-[#0d406a] font-medium'
-              : 'bg-white text-black',
-          ]"
-          class="mr-3 px-5 py-2 bg-[#0d406a] text-white text-center cursor-pointer rounded"
-        >
-          ODDS
-        </div> -->
         <div
           @click="changeTopTabs('h2h')"
           :class="[
@@ -186,22 +175,10 @@ const teamStats = (team_id) => {
         :visitorTeam="fixture.data.data.visitorTeam.data"
       />
     </div>
-
-    <!-- <p>
-      {{ fixture.data.data.localTeam.data }}
-    </p>
-
-    <p>
-      {{ fixture.data.data.visitorTeam.data }}
-    </p> -->
   </div>
 </template>
 
 <style scoped>
-* {
-  font-family: Arial, sans-serif;
-}
-
 /* progress::-moz-progress-bar {
  
 } */
@@ -212,81 +189,3 @@ const teamStats = (team_id) => {
   background-position: center;
 } */
 </style>
-<!-- <div class="p-5 bg-rose-400">test section</div>
-    {{ localTeamFormation }}
-    {{ visitorTeamFormation }}
-
-    <div v-for="local in localTeamFormation" class="relative">
-      <div v-for="l in parseInt(local)" class="inline-grid grid-cols-4">
-        <div class="bg-red-400 px-3">{{ l }}</div>
-      </div>
-    </div>
-
-    <div class="py-5 bg-green-500"></div>
-    <div v-for="local in visitorTeamFormation">
-      <div v-for="l in parseInt(local)" class="inline-grid">
-        <div>{{ l }}</div>
-      </div>
-    </div> -->
-<!-- <div class="flex">
-        <div class="w-full bg-gray-400">
-          <div
-            :style="{ width: localTeamStats.possessiontime }"
-            :class="
-              localTeamStats.possessiontime > visitorTeamStats.possessiontime
-                ? 'bg-rose-400'
-                : ''
-            "
-          >
-            1
-          </div>
-        </div>
-        <div class="w-full bg-gray-400">
-          <div
-            :style="{ width: visitorTeamStats.possessiontime }"
-            :class="
-              visitorTeamStats.possessiontime > localTeamStats.possessiontime
-                ? 'bg-rose-400'
-                : ''
-            "
-          >
-            2
-          </div>
-        </div>
-      </div> -->
-<!-- <div class="w-full bg-gray-400">
-        <div
-          :style="{ width: localTeamStats.possessiontime }"
-          :class="
-            localTeamStats.possessiontime > visitorTeamStats.possessiontime
-              ? 'bg-rose-400'
-              : ''
-          "
-        >
-          jjhfhfjfj
-        </div>
-      </div> -->
-
-<!-- <div class="football-field">
-        <div class="flex justify-evenly mb-4">
-          <div class="bg-yellow-400 w-5">jjf</div>
-        </div>
-        <div class="flex justify-evenly mb-4">
-          <div class=" w-5">jjf</div>
-          <div class="w-5">jjf</div>
-          <div class="bg-yellow-400 w-5">jjf</div>
-          <div class="bg-blue-400 w-5">jjf</div>
-        </div>
-        <div class="flex justify-evenly mb-4">
-          <div class="w-5">jjf</div>
-          <div class="bg-blue-400 w-5">jjf</div>
-          <div class="bg-yellow-400 w-5">jjf</div>
-        </div>
-        <div class="flex justify-evenly mb-4">
-          <div class="bg-yellow-400 w-5">jjf</div>
-        </div>
-        <div class="flex justify-evenly mb-4">
-          <div class="bg-blue-400 w-5">jjf</div>
-          <div class="bg-yellow-400 w-5">jjf</div>
-        </div>
-      </div> -->

@@ -92,9 +92,10 @@ onBeforeMount(async () => {
     uniquePlayers.value.forEach((player, index) => {
       finalStats.value.push({
         playerId: player.player_id,
-        player: player.player.data,
+        player: player.player?.data,
         matchesData: [],
       });
+
       newTeamStats.value.data.data.map((match) => {
         let team_Player = null;
         match.teamPlayers.map((teamPlayer) => {
@@ -196,6 +197,9 @@ function getUniquePlayersById(originalArray) {
 </script>
 
 <template>
+  <!-- <div v-if="newTeamStats.data">
+    {{ newTeamStats.data }}
+  </div> -->
   <div class="w-11/12 md:w-4/5 mx-auto py-8">
     <div class="flex justify-start text-gray-600">
       <a href="/" class="flex self-center mr-3"
@@ -512,7 +516,7 @@ function getUniquePlayersById(originalArray) {
             class="grid gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 justify-between items-center cursor-pointer"
           >
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'passes'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -523,7 +527,7 @@ function getUniquePlayersById(originalArray) {
               Passes
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'tackles'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -534,18 +538,18 @@ function getUniquePlayersById(originalArray) {
               Tackles
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'corners'
                   ? 'bg-[#0d406a] text-white font-medium'
                   : 'bg-white',
-              ]" 
+              ]"
               @click="toggleTeamStats('corners')"
             >
               Corners
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'shotsTotal'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -556,62 +560,62 @@ function getUniquePlayersById(originalArray) {
               Shots - Total
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'shotsOnTarget'
                   ? 'bg-[#0d406a] text-white font-medium'
                   : 'bg-white',
-              ]"  
-            @click="toggleTeamStats('shotsOnTarget')"
+              ]"
+              @click="toggleTeamStats('shotsOnTarget')"
             >
               Shots - On Target
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'shotsOffTarget'
                   ? 'bg-[#0d406a] text-white font-medium'
                   : 'bg-white',
-              ]" 
+              ]"
               @click="toggleTeamStats('shotsOffTarget')"
             >
               Shots - Off Target
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'ShotsOutsideBox'
                   ? 'bg-[#0d406a] text-white font-medium'
                   : 'bg-white',
-              ]" 
+              ]"
               @click="toggleTeamStats('ShotsOutsideBox')"
             >
               Shots - Outside Box
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'ShotsInsideBox'
                   ? 'bg-[#0d406a] text-white font-medium'
                   : 'bg-white',
-              ]" 
+              ]"
               @click="toggleTeamStats('ShotsInsideBox')"
             >
               Shots - Inside Box
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'offside'
                   ? 'bg-[#0d406a] text-white font-medium'
                   : 'bg-white',
-              ]" 
+              ]"
               @click="toggleTeamStats('offside')"
             >
               Offsides
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'yellowCard'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -622,7 +626,7 @@ function getUniquePlayersById(originalArray) {
               Yellow Cards
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'redCard'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -633,7 +637,7 @@ function getUniquePlayersById(originalArray) {
               Red Cards
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'penalties'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -644,7 +648,7 @@ function getUniquePlayersById(originalArray) {
               Penalties
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'throwIns'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -655,7 +659,7 @@ function getUniquePlayersById(originalArray) {
               Throw Ins
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'freeKicks'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -666,7 +670,7 @@ function getUniquePlayersById(originalArray) {
               Free Kicks
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'goalKicks'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -677,7 +681,7 @@ function getUniquePlayersById(originalArray) {
               Goal Kicks
             </div>
             <div
-            class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
+              class="p-1 border text-center text-sm border-[#0d406a] hover:bg-[#0d406a] hover:text-white hover:cursor-pointer"
               :class="[
                 showValue === 'saves'
                   ? 'bg-[#0d406a] text-white font-medium'
@@ -765,7 +769,7 @@ function getUniquePlayersById(originalArray) {
 
       <!-- below section for testing  -->
       <div class="pb-16 text-xs overflow-x-auto overflow-visible">
-        <div class="relative rounded w-[1200px]" v-if="newTeamStats.data">
+        <div class="relative rounded w-[1200px]" v-if="newTeamStats?.data">
           <div class="mt-5" v-if="showStats === 'team'">
             <!-- <div
               class="bg-[#0d406a] text-white p-5 text-3xl mb-5 capitalize"
@@ -1300,14 +1304,14 @@ function getUniquePlayersById(originalArray) {
               <div class="flex w-40 md:w-64 h-[40px] player-name-cell">
                 <img
                   class="p-1 mr-1 h-8 self-center"
-                  :src="stats.player.image_path"
+                  :src="stats.player?.image_path"
                   alt=""
                 />
                 <div class="self-center p-1 hidden md:inline-flex">
-                  {{ stats.player.display_name }}
+                  {{ stats.player?.display_name }}
                 </div>
                 <div class="self-center p-1 inline-flex md:hidden">
-                  {{ stats.player.common_name }}
+                  {{ stats.player?.common_name }}
                 </div>
               </div>
               <div v-for="player of stats.matchesData">
@@ -2408,7 +2412,6 @@ function getUniquePlayersById(originalArray) {
 </template>
 
 <style scoped>
-
 .stats-cell {
   width: 40px;
   height: 40px;
@@ -2494,7 +2497,6 @@ function getUniquePlayersById(originalArray) {
 /* tooltip css */
 .tooltip {
   position: relative;
-
 }
 
 .tooltip .tooltiptext {

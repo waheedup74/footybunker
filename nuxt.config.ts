@@ -6,19 +6,16 @@ export default {
     head: {
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        // {
-        //   rel: "stylesheet",
-        //   href: "https://fonts.googleapis.com/css2?family=Oxygen&display=swap",
-        // },
-        {
-          rel:"preconnect",
-          href:"https://fonts.googleapis.com"
-        },
-        {
-          href: "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,600;0,700;1,500&display=swap",
-          rel:"stylesheet"
-        }
+        // <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
       ],
+      css: [
+        "~/assets/css/global.css",
+    ],
     },
+    runtimeConfig: {
+      public: {
+        apiBase: process.env.NUXT_API_SECRET
+      }
+    }
   }
 

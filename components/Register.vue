@@ -1,4 +1,5 @@
 <script setup>
+// const { apiBase } = useRuntimeConfig();
 const gotoLogin = (value) => {
   if (value === "login") {
     navigateTo("/auth/login");
