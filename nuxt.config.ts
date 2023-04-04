@@ -3,6 +3,9 @@ export default {
     // generate: {
     //   fallback: "custom_sap_fallbackpage.html"
     // },
+    router: {
+      base: '/your-dynamic-route/'
+    },
     modules: [
     "@nuxtjs/tailwindcss",
   
