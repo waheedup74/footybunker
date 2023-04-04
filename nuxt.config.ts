@@ -1,8 +1,8 @@
 export default {
-    ssr: false,
-    generate: {
-      fallback: "custom_sap_fallbackpage.html"
-    },
+    // ssr: false,
+    // generate: {
+    //   fallback: "custom_sap_fallbackpage.html"
+    // },
     modules: [
     "@nuxtjs/tailwindcss",
   
