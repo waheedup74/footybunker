@@ -30,7 +30,16 @@ const viewDetails = function (localTeam, visitorTeam, id) {
             <p>{{ match.time.starting_at.date }}</p>
           </div>
 
-          <div class="w-full mr-4">
+          <div
+            class="w-full mr-4"
+            @click="
+              viewDetails(
+                match.localTeam.data.name,
+                match.visitorTeam.data.name,
+                match.id
+              )
+            "
+          >
             <div
               class="flex justify-between py-1"
               :class="[

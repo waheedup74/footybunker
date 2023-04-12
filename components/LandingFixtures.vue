@@ -149,7 +149,16 @@ const teamStats = (teamName, team_id) => {
                 <p class="text-sm">{{ f.time.starting_at.time }}</p>
               </div>
 
-              <div class="w-full self-center mr-5">
+              <div
+                class="w-full self-center mr-5 cursor-pointer"
+                @click="
+                  viewDetails(
+                    f.localTeam.data.name,
+                    f.visitorTeam.data.name,
+                    f.id
+                  )
+                "
+              >
                 <div class="flex justify-between">
                   <div class="flex p-2 cursor-pointer">
                     <img
@@ -222,7 +231,16 @@ const teamStats = (teamName, team_id) => {
                 <p class="text-sm">{{ f.time.starting_at.time }}</p>
               </div>
 
-              <div class="w-full self-center mr-5">
+              <div
+                class="w-full self-center mr-5 cursor-pointer"
+                @click="
+                  viewDetails(
+                    f.localTeam.data.name,
+                    f.visitorTeam.data.name,
+                    f.id
+                  )
+                "
+              >
                 <div class="flex justify-between">
                   <div class="flex p-2 cursor-pointer">
                     <img
@@ -301,7 +319,16 @@ const teamStats = (teamName, team_id) => {
                 </p>
               </div>
 
-              <div class="w-full self-center mr-5">
+              <div
+                class="w-full self-center mr-5 cursor-pointer"
+                @click="
+                  viewDetails(
+                    f.localTeam.data.name,
+                    f.visitorTeam.data.name,
+                    f.id
+                  )
+                "
+              >
                 <div class="flex justify-between">
                   <div class="flex p-2">
                     <img
