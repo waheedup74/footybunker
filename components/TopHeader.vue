@@ -12,8 +12,6 @@ onBeforeMount(async () => {
 const getLeagueId = (league, id) => {
   allLeagues.value = !allLeagues;
   navigateTo(`/${addHyphen(league)}-standings-${id}`);
-  // navigateTo(`/${id}-standings`);
-  console.log("what do you got", addHyphen(league), id);
   showmenu.value = false;
 };
 

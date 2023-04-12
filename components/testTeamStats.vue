@@ -31,6 +31,8 @@ const uniquePlayers = ref([]);
 
 const finalStats = ref([]);
 
+const { addHyphen } = useUtilities();
+
 let today = new Date();
 
 const getDate = function (date) {
@@ -54,7 +56,7 @@ onBeforeMount(async () => {
   // new work
   team.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/teams/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+      `https://soccer.sportmonks.com/api/v2.0/teams/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=league`
   );
   newTeamStats.value = await useFetch(
     () =>
@@ -171,8 +173,12 @@ const showPlayerStats = function (value) {
 };
 
 const teamStats = (teamName, team_id) => {
-  navigateTo(`${teamName}-stats-${team_id}`);
+  navigateTo(`${addHyphen(teamName)}-stats-${team_id}`);
 };
+
+// const leagueStandings = (league, league_id) => {
+//   navigateTo(`${addHyphen(league)}-standings-${league_id}`);
+// };
 
 const switchVenue = (value) => {
   if (value === "home") {
@@ -197,18 +203,25 @@ function getUniquePlayersById(originalArray) {
 </script>
 
 <template>
-  <!-- <div v-if="newTeamStats.data">
-    {{ newTeamStats.data }}
-  </div> -->
   <div class="w-11/12 md:w-4/5 mx-auto py-8">
-    <div class="flex justify-start text-gray-600">
+    <div class="flex justify-start text-gray-600" v-if="team.data">
       <a href="/" class="flex self-center mr-3"
         ><img src="@/assets/home.png" alt="icon" class="opacity-50"
       /></a>
       <span class="mr-3 self-center">
         <img src="@/assets/right.png" class="opacity-50" alt="icon" />
       </span>
-      <a href="/" class="self-center">Premier League</a>
+      <a href="/" class="self-center">Primer League</a>
+      <!-- <a
+        @click="
+          leagueStandings(
+            team.data.data.league.data.name,
+            team.data.data.league.data.current_season_id
+          )
+        "
+        class="self-center cursor-pointer"
+        >{{ team.data.data.league.data.name }}</a
+      > -->
     </div>
     <!-- add section -->
     <div

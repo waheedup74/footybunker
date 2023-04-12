@@ -3,7 +3,7 @@ const route = useRoute();
 const matches = ref({});
 const fixture = ref({});
 const commentary = ref({});
-
+const { addHyphen } = useUtilities();
 const localTeam = ref(0);
 const visitorTeam = ref(0);
 
@@ -43,7 +43,7 @@ const changeTopTabs = function (tab, type) {
 };
 
 const teamStats = (teamName, team_id) => {
-  navigateTo(`${teamName}-stats-${team_id}`);
+  navigateTo(`${addHyphen(teamName)}-stats-${team_id}`);
 };
 </script>
 

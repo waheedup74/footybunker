@@ -11,7 +11,7 @@ const gotoRegister = (value) => {
 <template>
   <div class="flex flex-col h-screen justify-center items-center">
     <div
-      class="w-10/12 md:w-3/12 flex flex-col justify-center items-center bg-white rounded-lg border border-balck"
+      class="w-10/12 md:w-3/12 flex flex-col justify-center items-center bg-white rounded border border-balck"
     >
       <div class="w-full text-center py-5 text-2xl md:text-3xl border-b-2">
         Login
@@ -28,7 +28,7 @@ const gotoRegister = (value) => {
           placeholder="Password"
         />
         <button
-          class="w-full rounded-full bg-[#0d406a] py-2 md:text-2xl text-white"
+          class="w-full rounded bg-[#0d406a] py-2 md:text-2xl text-white"
           aria-label="login"
           @click="gotoRegister('home')"
         >

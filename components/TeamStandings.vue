@@ -1,12 +1,14 @@
 <script setup>
 const route = useRoute();
 
+const { addHyphen } = useUtilities();
+
 const { data: teams, error: testError } = useFetch(
   `https://soccer.sportmonks.com/api/v2.0/standings/season/${route.params.season}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=standings.team`
 );
 
-const goto = function (team) {
-  navigateTo(`/teamStats-${team}`);
+const goto = function (teamName, team_id) {
+  navigateTo(`${addHyphen(teamName)}-stats-${team_id}`);
 };
 </script>
 
@@ -48,7 +50,7 @@ const goto = function (team) {
           <tr
             v-for="team in teams.data[0]?.standings.data"
             :key="team.team_id"
-            @click="goto(team.team_id)"
+            @click="goto(team.team_name, team.team_id)"
             class="border cursor-pointer py-4"
           >
             <td>

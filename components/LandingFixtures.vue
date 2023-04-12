@@ -189,7 +189,7 @@ const teamStats = (teamName, team_id) => {
               </div>
               <div class="self-center">
                 <button
-                  class="py-1 px-4 border rounded hover:bg-[#0d406a] hover:text-white"
+                  class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
                   @click="
                     viewDetails(
                       f.localTeam.data.name,
@@ -263,7 +263,7 @@ const teamStats = (teamName, team_id) => {
 
               <div class="self-center">
                 <button
-                  class="py-1 px-4 border rounded hover:bg-[#0d406a] hover:text-white"
+                  class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
                   @click="
                     viewDetails(
                       f.localTeam.data.name,
@@ -342,7 +342,7 @@ const teamStats = (teamName, team_id) => {
 
               <div class="self-center">
                 <button
-                  class="py-1 px-4 border rounded hover:bg-[#0d406a] hover:text-white"
+                  class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
                   @click="
                     viewDetails(
                       f.localTeam.data.name,
