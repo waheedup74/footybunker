@@ -145,7 +145,8 @@ const teamStats = (teamName, team_id) => {
               </div>
 
               <div class="self-center mr-2">
-                <p class="text-sm">{{ f.time.starting_at.time.slice(0, 5) }}</p>
+                <!-- <p class="text-sm">{{ f.time.starting_at.time.slice(0, 5) }}</p> -->
+                <p class="text-sm">{{ f.time.starting_at.time }}</p>
               </div>
 
               <div class="w-full self-center mr-5">
@@ -187,7 +188,7 @@ const teamStats = (teamName, team_id) => {
                   </div>
                 </div>
               </div>
-              <div class="self-center">
+              <!-- <div class="self-center">
                 <button
                   class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
                   @click="
@@ -200,7 +201,7 @@ const teamStats = (teamName, team_id) => {
                 >
                   Preview
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -218,7 +219,7 @@ const teamStats = (teamName, team_id) => {
                 />
               </div>
               <div class="self-center mr-2">
-                <p class="text-sm">{{ f.time.starting_at.time.slice(0, 5) }}</p>
+                <p class="text-sm">{{ f.time.starting_at.time }}</p>
               </div>
 
               <div class="w-full self-center mr-5">
@@ -261,7 +262,7 @@ const teamStats = (teamName, team_id) => {
                 </div>
               </div>
 
-              <div class="self-center">
+              <!-- <div class="self-center">
                 <button
                   class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
                   @click="
@@ -274,7 +275,7 @@ const teamStats = (teamName, team_id) => {
                 >
                   Preview
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -296,7 +297,7 @@ const teamStats = (teamName, team_id) => {
               </div>
               <div class="self-center mr-2">
                 <p class="text-sm">
-                  {{ f.time.starting_at.time.slice(0, 5) }}
+                  {{ f.time.starting_at.time }}
                 </p>
               </div>
 
@@ -340,7 +341,7 @@ const teamStats = (teamName, team_id) => {
                 </div>
               </div>
 
-              <div class="self-center">
+              <!-- <div class="self-center">
                 <button
                   class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
                   @click="
@@ -353,7 +354,7 @@ const teamStats = (teamName, team_id) => {
                 >
                   Preview
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>

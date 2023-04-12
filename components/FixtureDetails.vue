@@ -80,7 +80,8 @@ const teamStats = (teamName, team_id) => {
       </div>
       <div class="text-center font-medium self-center">
         <div>
-          {{ fixture.data.data.time.starting_at.date_time.slice(0, 16) }}
+          {{ fixture.data.data.time.starting_at.date_time }}
+          <!-- {{ fixture.data.data.time.starting_at.date_time.slice(0, 16) }} -->
         </div>
         <div class="text-4xl md:text-6xl lining-nums">
           {{ fixture.data.data.scores.localteam_score }} -

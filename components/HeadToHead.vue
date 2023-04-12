@@ -73,7 +73,7 @@ const viewDetails = function (localTeam, visitorTeam, id) {
             </div>
           </div>
 
-          <div class="self-center text-center">
+          <!--   <div class="self-center text-center">
             <button
               class="py-1 px-4 border rounded hover:bg-[#0d406a] hover:text-white"
               @click="
@@ -86,7 +86,7 @@ const viewDetails = function (localTeam, visitorTeam, id) {
             >
               Preview
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
