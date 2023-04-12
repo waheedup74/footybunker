@@ -2,15 +2,18 @@
 const allLeagues = ref(false);
 const leagues = ref({});
 const showmenu = ref(false);
+const { addHyphen } = useUtilities();
 onBeforeMount(async () => {
   leagues.value = await useFetch(
     () =>
       `https://soccer.sportmonks.com/api/v2.0/leagues?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
   );
 });
-const getLeagueId = (id) => {
+const getLeagueId = (league, id) => {
   allLeagues.value = !allLeagues;
-  navigateTo(`/${id}-standings`);
+  navigateTo(`/${addHyphen(league)}-standings-${id}`);
+  // navigateTo(`/${id}-standings`);
+  console.log("what do you got", addHyphen(league), id);
   showmenu.value = false;
 };
 
@@ -67,7 +70,7 @@ const goto = (value) => {
         >
           <span v-for="l in leagues.data.data" :key="l.id">
             <a
-              @click="getLeagueId(l.current_season_id)"
+              @click="getLeagueId(l.name, l.current_season_id)"
               class="flex items-center border bg-white cursor-pointer rounded p-3 hover:text-[#0d406a] hover:bg-gray-200"
             >
               <img :src="l.logo_path" class="h-7 mr-3" alt="logo" />

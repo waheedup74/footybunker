@@ -3,7 +3,7 @@ const route = useRoute();
 const matches = ref({});
 const fixture = ref({});
 const commentary = ref({});
-const fixtureId = parseInt(route.params.fixture);
+
 const localTeam = ref(0);
 const visitorTeam = ref(0);
 
@@ -18,6 +18,11 @@ const visitorTeamFormation = ref({});
 // );
 
 onBeforeMount(async () => {
+  let fixtureId = route.params.fixture;
+  if (isNaN(route.params.fixture)) {
+    let split = fixtureId.split("-");
+    fixtureId = split[split.length - 1];
+  }
   fixture.value = await useFetch(
     () =>
       `https://soccer.sportmonks.com/api/v2.0/fixtures/${fixtureId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,events,referee,lineup.player.country,substitutions.player.country,venue,highlights`
@@ -37,9 +42,8 @@ const changeTopTabs = function (tab, type) {
   top_tab_id.value = tab;
 };
 
-const teamStats = (team_id) => {
-  navigateTo(`teamStats-${team_id}`);
-  // console.log("what is id?", team_id);
+const teamStats = (teamName, team_id) => {
+  navigateTo(`${teamName}-stats-${team_id}`);
 };
 </script>
 
@@ -57,7 +61,12 @@ const teamStats = (team_id) => {
     <div class="grid grid-cols-3 border-b pb-6" v-if="fixture.data">
       <div
         class="text-center self-center cursor-pointer"
-        @click="teamStats(fixture.data.data.localteam_id)"
+        @click="
+          teamStats(
+            fixture.data.data.localTeam.data.name,
+            fixture.data.data.localteam_id
+          )
+        "
       >
         <img
           :src="fixture.data.data.localTeam.data.logo_path"
@@ -70,7 +79,9 @@ const teamStats = (team_id) => {
         </p>
       </div>
       <div class="text-center font-medium self-center">
-        <div>{{ fixture.data.data.time.starting_at.date_time }}</div>
+        <div>
+          {{ fixture.data.data.time.starting_at.date_time.slice(0, 16) }}
+        </div>
         <div class="text-4xl md:text-6xl lining-nums">
           {{ fixture.data.data.scores.localteam_score }} -
           {{ fixture.data.data.scores.visitorteam_score }}
@@ -78,7 +89,12 @@ const teamStats = (team_id) => {
       </div>
       <div
         class="text-center self-center cursor-pointer"
-        @click="teamStats(fixture.data.data.visitorteam_id)"
+        @click="
+          teamStats(
+            fixture.data.data.visitorTeam.data.name,
+            fixture.data.data.visitorteam_id
+          )
+        "
       >
         <img
           :src="fixture.data.data.visitorTeam.data.logo_path"

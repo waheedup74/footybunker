@@ -66,8 +66,8 @@ onBeforeMount(async () => {
       (a, b) =>
         new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
     );
-    if (newTeamStats.value.data.data.length > 20) {
-      newTeamStats.value.data.data = newTeamStats.value.data.data.slice(0, 20);
+    if (newTeamStats.value.data.data.length > 25) {
+      newTeamStats.value.data.data = newTeamStats.value.data.data.slice(0, 25);
     }
     newTeamStats.value.data.data.map((e) => {
       e.lineup.data.map((p) => {
@@ -170,8 +170,8 @@ const showPlayerStats = function (value) {
   playerStats.value = value;
 };
 
-const goto = function (team) {
-  navigateTo(`/teamStats-${team}`);
+const teamStats = (teamName, team_id) => {
+  navigateTo(`${teamName}-stats-${team_id}`);
 };
 
 const switchVenue = (value) => {
@@ -790,7 +790,7 @@ function getUniquePlayersById(originalArray) {
                     selectedLeague.includes(t.league_id) &&
                     (t.localteam_id === teamId ? showHome : showAway)
                   "
-                  @click="goto(t.visitorteam_id)"
+                  @click="teamStats(t.visitorTeam.data.name, t.visitorteam_id)"
                 >
                   <img
                     :src="t.league.data.logo_path"
@@ -805,7 +805,7 @@ function getUniquePlayersById(originalArray) {
                     selectedLeague.includes(t.league_id) &&
                     (t.localteam_id === teamId ? showHome : showAway)
                   "
-                  @click="goto(t.localteam_id)"
+                  @click="teamStats(t.localTeam.data.name, t.localteam_id)"
                 >
                   <img
                     :src="t.league.data.logo_path"
@@ -829,7 +829,7 @@ function getUniquePlayersById(originalArray) {
                     selectedLeague.includes(t.league_id) &&
                     (t.localteam_id === teamId ? showHome : showAway)
                   "
-                  @click="goto(t.visitorteam_id)"
+                  @click="teamStats(t.visitorTeam.data.name, t.visitorteam_id)"
                 >
                   <img
                     :src="t.visitorTeam.data.logo_path"
@@ -848,7 +848,7 @@ function getUniquePlayersById(originalArray) {
                     selectedLeague.includes(t.league_id) &&
                     (t.localteam_id === teamId ? showHome : showAway)
                   "
-                  @click="goto(t.localteam_id)"
+                  @click="teamStats(t.localTeam.data.name, t.localteam_id)"
                 >
                   <img
                     :src="t.localTeam.data.logo_path"
@@ -1265,7 +1265,9 @@ function getUniquePlayersById(originalArray) {
                       selectedLeague.includes(t.league_id) &&
                       (t.localteam_id === teamId ? showHome : showAway)
                     "
-                    @click="goto(t.visitorteam_id)"
+                    @click="
+                      teamStats(t.visitorTeam.data.name, t.visitorteam_id)
+                    "
                   >
                     <img
                       :src="t.visitorTeam.data.logo_path"
@@ -1284,7 +1286,7 @@ function getUniquePlayersById(originalArray) {
                       selectedLeague.includes(t.league_id) &&
                       (t.localteam_id === teamId ? showHome : showAway)
                     "
-                    @click="goto(t.localteam_id)"
+                    @click="teamStats(t.localTeam.data.name, t.localteam_id)"
                   >
                     <img
                       :src="t.localTeam.data.logo_path"
@@ -2416,11 +2418,11 @@ function getUniquePlayersById(originalArray) {
   width: 40px;
   height: 40px;
   text-align: center;
-  border: 1px solid #000;
+  border: 1px solid gray;
 }
 
 .player-name-cell {
-  border: 1px solid #000;
+  border: 1px solid gray;
 }
 
 /* Basic styling */

@@ -2,9 +2,14 @@
 const props = defineProps({
   allMatches: Array,
 });
+const { addHyphen } = useUtilities();
 
-const showDetails = (id) => {
-  navigateTo(`match-${id}`);
+// const showDetails = (id) => {
+//   navigateTo(`match-${id}`);
+// };
+
+const viewDetails = function (localTeam, visitorTeam, id) {
+  navigateTo(`${addHyphen(localTeam)}-vs-${addHyphen(visitorTeam)}-${id}`);
 };
 </script>
 <template>
@@ -20,12 +25,12 @@ const showDetails = (id) => {
         <div
           class="flex justify-start mb-3 p-1 text-xs rounded border hover:bg-slate-300 hover:cursor-pointer"
           :class="index % 2 === 0 ? 'bg-slate-100' : ''"
-          @click="showDetails(match.id)"
         >
           <div class="self-center w-20">
             <p>{{ match.time.starting_at.date }}</p>
           </div>
-          <div class="w-full md:w-3/5">
+
+          <div class="w-full mr-4">
             <div
               class="flex justify-between py-1"
               :class="[
@@ -66,6 +71,21 @@ const showDetails = (id) => {
                 <p class="self-center">{{ match.scores.visitorteam_score }}</p>
               </div>
             </div>
+          </div>
+
+          <div class="self-center text-center">
+            <button
+              class="py-1 px-4 border rounded hover:bg-[#0d406a] hover:text-white"
+              @click="
+                viewDetails(
+                  match.localTeam.data.name,
+                  match.visitorTeam.data.name,
+                  match.id
+                )
+              "
+            >
+              Preview
+            </button>
           </div>
         </div>
       </div>
