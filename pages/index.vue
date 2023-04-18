@@ -1,6 +1,6 @@
 <script setup>
 useHead({
-  title: "Footybunker",
+  title: "Footybunker-Betbuilder",
 });
 </script>
 <template>
