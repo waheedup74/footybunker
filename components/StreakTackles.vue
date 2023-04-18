@@ -35,26 +35,28 @@ const calculateTackles = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.other.tacklkes > 3 &&
+          player.stats.other.tackles > 2 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.other.tacklkes > 3 &&
+          player.stats.other.tackles > 2 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -71,26 +73,28 @@ const calculateTackles = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.other.tackles > 3 &&
+          player.stats.other.tackles > 2 &&
           player.team_id === props.visitorteam.id
         ) {
           vtLineup.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.other.tackles > 3 &&
+          player.stats.other.tackles > 2 &&
           player.team_id === props.visitorteam.id
         ) {
           vtBench.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -101,34 +105,38 @@ const calculateTackles = function (team, type) {
     const result = tacklesStreakVT.value.filter(
       (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
     );
-    // console.log(result);
     playerTacklesStreakVT.value = result;
   }
 };
 </script>
 <template>
-  <div v-if="playerTacklesStreakVT.length > 0">
-    <div v-for="p in playerTacklesStreakVT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has made <strong>3+ tackles</strong> in
-        last 3 <strong> {{ props.visitorteam.name }}</strong> matches.
-      </p>
-    </div>
-  </div>
-  <div v-else>
-    There is no tackle streaks {{ props.localteam.name }} team players.
-  </div>
-
   <div v-if="playerTacklesStreakLT.length > 0">
-    <div v-for="p in playerTacklesStreakLT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has made <strong>3+ tackles</strong> in
-        last 3 <strong>{{ props.localteam.name }}</strong> matches.
-      </p>
+    <div v-for="p in playerTacklesStreakLT" class="my-2 border border-b-black">
+      <div class="flex">
+        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+        <p>
+          <strong> {{ p.pn }} </strong> has made <strong>2+ tackles</strong> in
+          last 3 <strong>{{ props.localteam.name }}</strong> matches.
+        </p>
+      </div>
     </div>
   </div>
   <div v-else>
     There is no tackle streaks {{ props.visitorteam.name }} team players.
+  </div>
+  <div v-if="playerTacklesStreakVT.length > 0">
+    <div v-for="p in playerTacklesStreakVT" class="my-2 border border-b-black">
+      <div class="flex">
+        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+        <p>
+          <strong> {{ p.pn }} </strong> has made <strong>2+ tackles</strong> in
+          last 3 <strong> {{ props.visitorteam.name }}</strong> matches.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div v-else>
+    There is no tackle streaks {{ props.localteam.name }} team players.
   </div>
 </template>
 <style scoped></style>

@@ -42,6 +42,7 @@ const calculateOffsides = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -55,6 +56,7 @@ const calculateOffsides = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -78,6 +80,7 @@ const calculateOffsides = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -91,6 +94,7 @@ const calculateOffsides = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -108,11 +112,14 @@ const calculateOffsides = function (team, type) {
 </script>
 <template>
   <div v-if="playerOffsideStreakVT.length > 0">
-    <div v-for="p in playerOffsideStreakVT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has made <strong>1+ offsides</strong> in
-        last 3 <strong> {{ props.visitorteam.name }}</strong> matches.
-      </p>
+    <div v-for="p in playerOffsideStreakVT" class="my-2 border border-b-black">
+      <div class="flex">
+        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+        <p>
+          <strong> {{ p.pn }} </strong> has made <strong>1+ offsides</strong> in
+          last 3 <strong> {{ props.visitorteam.name }}</strong> matches.
+        </p>
+      </div>
     </div>
   </div>
   <div v-else>
@@ -120,11 +127,14 @@ const calculateOffsides = function (team, type) {
   </div>
 
   <div v-if="playerOffsideStreakLT.length > 0">
-    <div v-for="p in playerOffsideStreakLT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has made <strong>1+ offsides</strong> in
-        last 3 <strong>{{ props.localteam.name }}</strong> matches.
-      </p>
+    <div v-for="p in playerOffsideStreakLT" class="my-2 border border-b-black">
+      <div class="flex">
+        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+        <p>
+          <strong> {{ p.pn }} </strong> has made <strong>1+ offsides</strong> in
+          last 3 <strong>{{ props.localteam.name }}</strong> matches.
+        </p>
+      </div>
     </div>
   </div>
   <div v-else>

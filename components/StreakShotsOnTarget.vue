@@ -42,6 +42,7 @@ const calculateFouls = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -55,6 +56,7 @@ const calculateFouls = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -78,6 +80,7 @@ const calculateFouls = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -91,6 +94,7 @@ const calculateFouls = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -107,31 +111,43 @@ const calculateFouls = function (team, type) {
 };
 </script>
 <template>
+  <div v-if="playerShotsOnTargetStreakLT.length > 0">
+    <div
+      v-for="p in playerShotsOnTargetStreakLT"
+      class="my-2 border border-b-black"
+    >
+      <div class="flex">
+        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+        <p>
+          <strong> {{ p.pn }} </strong> has made
+          <strong>1+ shots on target</strong> in last 3
+          <strong>{{ props.localteam.name }}</strong> matches.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div v-else>
+    There is no shot on target streaks {{ props.localteam.name }} team players.
+  </div>
+
   <div v-if="playerShotsOnTargetStreakVT.length > 0">
-    <div v-for="p in playerShotsOnTargetStreakVT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has made
-        <strong>1+ shots on target</strong> in last 3
-        <strong> {{ props.visitorteam.name }}</strong> matches.
-      </p>
+    <div
+      v-for="p in playerShotsOnTargetStreakVT"
+      class="my-2 border border-b-black"
+    >
+      <div class="flex">
+        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+        <p>
+          <strong> {{ p.pn }} </strong> has made
+          <strong>1+ shots on target</strong> in last 3
+          <strong> {{ props.visitorteam.name }}</strong> matches.
+        </p>
+      </div>
     </div>
   </div>
   <div v-else>
     There is no shots on target streaks {{ props.visitorteam.name }} team
     players.
-  </div>
-
-  <div v-if="playerShotsOnTargetStreakLT.length > 0">
-    <div v-for="p in playerShotsOnTargetStreakLT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has made
-        <strong>1+ shots on target</strong> in last 3
-        <strong>{{ props.localteam.name }}</strong> matches.
-      </p>
-    </div>
-  </div>
-  <div v-else>
-    There is no shot on target streaks {{ props.localteam.name }} team players.
   </div>
 </template>
 <style scoped></style>

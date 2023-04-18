@@ -35,7 +35,7 @@ const months6Before = ref("");
 let today = new Date();
 
 const getDate = function (date) {
-  let dd = String(date.getDate()).padStart(2, "0");
+  let dd = String(date.getDate() - 1).padStart(2, "0");
   let mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
   let yyyy = date.getFullYear();
 
@@ -47,8 +47,6 @@ const subtract6Months = function (date) {
 };
 months6Before.value = getDate(subtract6Months(new Date()));
 todayDate.value = getDate(today);
-
-// console.log("env variable", config);
 
 onMounted(async () => {
   localTeamStats.value = await useFetch(
@@ -75,11 +73,11 @@ onMounted(async () => {
   }
   localTeamFixtures.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${localTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,,lineup,bench`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${localTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,,lineup.player,bench.player`
   );
   visitorTeamFixtures.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${visitorTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,lineup,bench`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${visitorTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,lineup.player,bench.player`
   );
   localTeamFixtures.value.data.data.sort(
     (a, b) =>
@@ -114,26 +112,28 @@ const calculatePasses = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.passing.passes > 70 &&
+          player.stats.passing.passes >= 70 &&
           player.team_id === props.localTeam.id
         ) {
           ltLineup.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.passing.passes > 70 &&
+          player.stats.passing.passes >= 70 &&
           player.team_id === props.localTeam.id
         ) {
           ltBench.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -150,26 +150,28 @@ const calculatePasses = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.passing.passes > 70 &&
+          player.stats.passing.passes >= 70 &&
           player.team_id === props.visitorTeam.id
         ) {
           vtLineup.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.passing.passes > 70 &&
+          player.stats.passing.passes >= 70 &&
           player.team_id === props.visitorTeam.id
         ) {
           vtBench.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -183,78 +185,46 @@ const calculatePasses = function (team, type) {
     playerPassesStreakVT.value = result;
   }
 };
-// const valWhichRepeat = (arr, count) =>
-//   [...new Set(arr)].filter((x) => arr.filter((a.) => a === x).length >= count);
-
-// console.log("ahdjkadh afhajkfhk", valWhichRepeat(passesStreakLT.value, 3));
-// const calculateTackles = function (team, type) {
-//   if (type === "l") {
-//     for (const match of team.data.data) {
-//       for (const player of match.lineup.data) {
-//         if (
-//           player.stats.other.tackles > 3 &&
-//           player.team_id === props.localTeam.id
-//         ) {
-//           tackleStreakLT.value.push({
-//             tid: player.team_id,
-//             pid: player.player_id,
-//             pn: player.player_name,
-//             date: match.time.starting_at.date,
-//             tackle: player.stats.other.tackles,
-//           });
-//         }
-//       }
-//     }
-//   }
-//   if (type === "v") {
-//     for (const match of team.data.data) {
-//       for (const player of match.lineup.data) {
-//         if (
-//           player.stats.other.tackles > 3 &&
-//           player.team_id === props.visitorTeam.id
-//         ) {
-//           tackleStreakVT.value.push({
-//             tid: player.team_id,
-//             pid: player.player_id,
-//             pn: player.player_name,
-//             date: match.time.starting_at.date,
-//             tackle: player.stats.other.tackles,
-//           });
-//         }
-//       }
-//     }
-//   }
-// };
 </script>
 <template>
   <div v-if="localTeamFixtures.data && visitorTeamFixtures.data">
     <section class="mb-5">
       <h2 class="bg-rose-300 text-center py-4 text-2xl">Passes Streaks</h2>
-      <div v-if="playerPassesStreakVT.length > 0">
-        <div v-for="p in playerPassesStreakVT" class="my-2 bg-purple-200">
-          <p>
-            <strong> {{ p.pn }} </strong> has made
-            <strong>70+ passes</strong> in last 3
-            <strong> {{ props.visitorTeam.name }}</strong> matches.
-          </p>
-        </div>
-      </div>
-      <div v-else>
-        There is no passes streaks {{ props.visitorTeam.name }} team players.
-      </div>
-      <!-- <div class="bg-black text-white">{{ passesStreakLT }}</div> -->
-
       <div v-if="playerPassesStreakLT.length > 0">
-        <div v-for="p in playerPassesStreakLT" class="my-2 bg-purple-200">
-          <p>
-            <strong> {{ p.pn }} </strong> has made
-            <strong>70+ passes</strong> in last 3
-            <strong>{{ props.localTeam.name }}</strong> matches.
-          </p>
+        <div
+          v-for="p in playerPassesStreakLT"
+          class="my-2 border border-b-black"
+        >
+          <div class="flex">
+            <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+            <p>
+              <strong> {{ p.pn }} </strong> has made
+              <strong>70+ passes</strong> in last 3
+              <strong>{{ props.localTeam.name }}</strong> matches.
+            </p>
+          </div>
         </div>
       </div>
       <div v-else>
         There is no passes streaks {{ props.localTeam.name }} team players.
+      </div>
+      <div v-if="playerPassesStreakVT.length > 0">
+        <div
+          v-for="p in playerPassesStreakVT"
+          class="my-2 border border-b-black"
+        >
+          <div class="flex">
+            <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+            <p>
+              <strong> {{ p.pn }} </strong> has made
+              <strong>70+ passes</strong> in last 3
+              <strong> {{ props.visitorTeam.name }}</strong> matches.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        There is no passes streaks {{ props.visitorTeam.name }} team players.
       </div>
     </section>
     <section class="my-5">

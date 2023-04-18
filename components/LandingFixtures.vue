@@ -149,16 +149,7 @@ const teamStats = (teamName, team_id) => {
                 <p class="text-sm">{{ f.time.starting_at.time }}</p>
               </div>
 
-              <div
-                class="w-full self-center mr-5 cursor-pointer"
-                @click="
-                  viewDetails(
-                    f.localTeam.data.name,
-                    f.visitorTeam.data.name,
-                    f.id
-                  )
-                "
-              >
+              <div class="w-full self-center mr-5">
                 <div class="flex justify-between">
                   <div class="flex p-2 cursor-pointer">
                     <img
@@ -197,7 +188,7 @@ const teamStats = (teamName, team_id) => {
                   </div>
                 </div>
               </div>
-              <!-- <div class="self-center">
+              <div class="self-center">
                 <button
                   class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
                   @click="
@@ -210,7 +201,7 @@ const teamStats = (teamName, team_id) => {
                 >
                   Preview
                 </button>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -231,16 +222,7 @@ const teamStats = (teamName, team_id) => {
                 <p class="text-sm">{{ f.time.starting_at.time }}</p>
               </div>
 
-              <div
-                class="w-full self-center mr-5 cursor-pointer"
-                @click="
-                  viewDetails(
-                    f.localTeam.data.name,
-                    f.visitorTeam.data.name,
-                    f.id
-                  )
-                "
-              >
+              <div class="w-full self-center mr-5">
                 <div class="flex justify-between">
                   <div class="flex p-2 cursor-pointer">
                     <img
@@ -280,7 +262,7 @@ const teamStats = (teamName, team_id) => {
                 </div>
               </div>
 
-              <!-- <div class="self-center">
+              <div class="self-center">
                 <button
                   class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
                   @click="
@@ -293,7 +275,7 @@ const teamStats = (teamName, team_id) => {
                 >
                   Preview
                 </button>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -319,16 +301,7 @@ const teamStats = (teamName, team_id) => {
                 </p>
               </div>
 
-              <div
-                class="w-full self-center mr-5 cursor-pointer"
-                @click="
-                  viewDetails(
-                    f.localTeam.data.name,
-                    f.visitorTeam.data.name,
-                    f.id
-                  )
-                "
-              >
+              <div class="w-full self-center mr-5">
                 <div class="flex justify-between">
                   <div class="flex p-2">
                     <img
@@ -368,7 +341,7 @@ const teamStats = (teamName, team_id) => {
                 </div>
               </div>
 
-              <!-- <div class="self-center">
+              <div class="self-center">
                 <button
                   class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
                   @click="
@@ -381,7 +354,7 @@ const teamStats = (teamName, team_id) => {
                 >
                   Preview
                 </button>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>

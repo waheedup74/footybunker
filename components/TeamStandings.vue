@@ -7,6 +7,10 @@ const { data: teams, error: testError } = useFetch(
   `https://soccer.sportmonks.com/api/v2.0/standings/season/${route.params.season}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=standings.team`
 );
 
+useHead({
+  title: route.params.league.replace(/-/g, " ") + " " + "standings Betbuilder",
+});
+
 const goto = function (teamName, team_id) {
   navigateTo(`${addHyphen(teamName)}-stats-${team_id}`);
 };

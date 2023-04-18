@@ -72,23 +72,37 @@ const calculateStreaks = function (team, type) {
 <template>
   <h2 class="bg-rose-300 text-center py-4 text-2xl">Team Tackle Streaks</h2>
   <div class="my-4">
-    <div class="mb-2 bg-green-200 p-2" v-if="ltTotalTackle > 14">
-      <p>
-        <strong>{{ props.localteam.name }}</strong> has made
-        <strong> 14+</strong> tackles in last 3 games.
-      </p>
+    <div class="my-2 border border-b-black" v-if="ltTotalTackle > 14">
+      <div class="flex">
+        <img
+          :src="props.localteam.logo_path"
+          class="self-center h-6 w-6 mr-3"
+          alt="player"
+        />
+        <p>
+          <strong>{{ props.localteam.name }}</strong> has made
+          <strong> 14+</strong> tackles in last 3 games.
+        </p>
+      </div>
     </div>
-    <div class="mb-2 p-2" v-else>
+    <div class="my-2 border border-b-black" v-else>
       There is no <strong>14</strong> tackle streak of
       {{ props.localteam.name }}
     </div>
-    <div class="mb-2 bg-rose-200 p-2" v-if="ltTotalTackle > 14">
-      <p>
-        <strong>{{ props.visitorteam.name }}</strong> has made
-        <strong> 14+</strong> tackles in last 3 games.
-      </p>
+    <div class="my-2 border border-b-black" v-if="ltTotalTackle > 14">
+      <div class="flex">
+        <img
+          :src="props.visitorteam.logo_path"
+          class="self-center h-6 w-6 mr-3"
+          alt="player"
+        />
+        <p>
+          <strong>{{ props.visitorteam.name }}</strong> has made
+          <strong> 14+</strong> tackles in last 3 games.
+        </p>
+      </div>
     </div>
-    <div class="mb-2 p-2" v-else>
+    <div class="my-2 border border-b-black" v-else>
       There is no <strong>14</strong> tackle streak of
       {{ props.visitorteam.name }}
     </div>
@@ -96,23 +110,38 @@ const calculateStreaks = function (team, type) {
 
   <h2 class="bg-rose-300 text-center py-4 text-2xl">Team Offsides Streaks</h2>
   <div class="my-4">
-    <div class="mb-2 bg-green-200 p-2" v-if="ltTotalOffsides > 3">
-      <p>
-        <strong>{{ props.localteam.name }}</strong> has made
-        <strong> 3+</strong> offsides in last 3 games.
-      </p>
+    <div class="my-2 border border-b-black" v-if="ltTotalOffsides > 3">
+      <div class="flex">
+        <img
+          :src="props.localteam.logo_path"
+          class="self-center h-6 w-6 mr-3"
+          alt="player"
+        />
+
+        <p>
+          <strong>{{ props.localteam.name }}</strong> has made
+          <strong> 3+</strong> offsides in last 3 games.
+        </p>
+      </div>
     </div>
-    <div class="mb-2 p-2" v-else>
+    <div class="my-2 border border-b-black" v-else>
       There is no <strong>3+</strong> offsides streak of
       {{ props.localteam.name }}
     </div>
-    <div class="mb-2 bg-rose-200 p-2" v-if="vtTotalOffsides > 3">
-      <p>
-        <strong>{{ props.visitorteam.name }}</strong> has made
-        <strong> 3+</strong> offsides in last 3 games.
-      </p>
+    <div class="my-2 border border-b-black" v-if="vtTotalOffsides > 3">
+      <div class="flex">
+        <img
+          :src="props.visitorteam.logo_path"
+          class="self-center h-6 w-6 mr-3"
+          alt="player"
+        />
+        <p>
+          <strong>{{ props.visitorteam.name }}</strong> has made
+          <strong> 3+</strong> offsides in last 3 games.
+        </p>
+      </div>
     </div>
-    <div class="mb-2 p-2" v-else>
+    <div class="my-2 border border-b-black" v-else>
       There is no <strong>3+</strong> offsides streak of
       {{ props.visitorteam.name }}
     </div>
@@ -120,23 +149,37 @@ const calculateStreaks = function (team, type) {
 
   <h2 class="bg-rose-300 text-center py-4 text-2xl">Team Shots Streaks</h2>
   <div class="my-4">
-    <div class="mb-2 bg-green-200 p-2" v-if="ltTotalShots > 24">
-      <p>
-        <strong>{{ props.localteam.name }}</strong> has made
-        <strong> 24+</strong> shots in last 3 games.
-      </p>
+    <div class="my-2 border border-b-black" v-if="ltTotalShots > 24">
+      <div class="flex">
+        <img
+          :src="props.localteam.logo_path"
+          class="self-center h-6 w-6 mr-3"
+          alt="player"
+        />
+        <p>
+          <strong>{{ props.localteam.name }}</strong> has made
+          <strong> 24+</strong> shots in last 3 games.
+        </p>
+      </div>
     </div>
-    <div class="mb-2 p-2" v-else>
+    <div class="my-2 border border-b-black" v-else>
       There is no <strong>3+</strong> offsides streak of
       {{ props.localteam.name }}
     </div>
-    <div class="mb-2 bg-rose-200 p-2" v-if="vtTotalShots > 24">
-      <p>
-        <strong>{{ props.visitorteam.name }}</strong> has made
-        <strong> 24+</strong> shots in last 3 games.
-      </p>
+    <div class="my-2 border border-b-black" v-if="vtTotalShots > 24">
+      <div class="flex">
+        <img
+          :src="props.visitorteam.logo_path"
+          class="self-center h-6 w-6 mr-3"
+          alt="player"
+        />
+        <p>
+          <strong>{{ props.visitorteam.name }}</strong> has made
+          <strong> 24+</strong> shots in last 3 games.
+        </p>
+      </div>
     </div>
-    <div class="mb-2 p-2" v-else>
+    <div class="my-2 border border-b-black" v-else>
       There is no <strong>24+</strong> shots streak of
       {{ props.visitorteam.name }}
     </div>

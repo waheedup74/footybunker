@@ -33,6 +33,10 @@ const finalStats = ref([]);
 
 const { addHyphen } = useUtilities();
 
+useHead({
+  title: route.params.name.replace(/-/g, " ") + " " + "stats Betbuilder",
+});
+
 let today = new Date();
 
 const getDate = function (date) {
@@ -69,7 +73,7 @@ onBeforeMount(async () => {
         new Date(b.time.starting_at.date) - new Date(a.time.starting_at.date)
     );
     if (newTeamStats.value.data.data.length > 25) {
-      newTeamStats.value.data.data = newTeamStats.value.data.data.slice(0, 20);
+      newTeamStats.value.data.data = newTeamStats.value.data.data.slice(0, 25);
     }
     newTeamStats.value.data.data.map((e) => {
       e.lineup.data.map((p) => {
@@ -2485,11 +2489,11 @@ function getUniquePlayersById(originalArray) {
   width: 40px;
   height: 40px;
   text-align: center;
-  border: 1px solid #000;
+  border: 1px solid #404040;
 }
 
 .player-name-cell {
-  border: 1px solid #000;
+  border: 1px solid #404040;
 }
 
 /* Basic styling */

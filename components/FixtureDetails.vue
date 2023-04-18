@@ -11,6 +11,17 @@ const top_tab_id = ref("match");
 const localTeamFormation = ref({});
 const visitorTeamFormation = ref({});
 
+useHead({
+  title:
+    route.params.local.replace(/-/g, " ") +
+    " v " +
+    route.params.visitor.replace(/-/g, " ") +
+    " " +
+    route.params.fixture.replace(/-/g, " ") +
+    " " +
+    "Betbuilder",
+});
+
 // // GET Team fixture stats using and Team Id and range of dates
 // const { data: fixDetail, error: fixturesError } = useFetch(
 //   () =>
@@ -37,6 +48,10 @@ onBeforeMount(async () => {
     );
   }
 });
+
+const testFunction = () => {
+  return "this is test function";
+};
 
 const changeTopTabs = function (tab, type) {
   top_tab_id.value = tab;

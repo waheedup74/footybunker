@@ -30,16 +30,7 @@ const viewDetails = function (localTeam, visitorTeam, id) {
             <p>{{ match.time.starting_at.date }}</p>
           </div>
 
-          <div
-            class="w-full mr-4"
-            @click="
-              viewDetails(
-                match.localTeam.data.name,
-                match.visitorTeam.data.name,
-                match.id
-              )
-            "
-          >
+          <div class="w-full mr-4">
             <div
               class="flex justify-between py-1"
               :class="[
@@ -82,7 +73,7 @@ const viewDetails = function (localTeam, visitorTeam, id) {
             </div>
           </div>
 
-          <!--   <div class="self-center text-center">
+          <div class="self-center text-center">
             <button
               class="py-1 px-4 border rounded hover:bg-[#0d406a] hover:text-white"
               @click="
@@ -95,7 +86,7 @@ const viewDetails = function (localTeam, visitorTeam, id) {
             >
               Preview
             </button>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>

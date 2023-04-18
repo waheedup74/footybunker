@@ -35,26 +35,28 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.cards.yellowcards > 3 &&
+          player.stats.cards.yellowcards > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.cards.yellowcards > 3 &&
+          player.stats.cards.yellowcards > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -78,6 +80,7 @@ const calculateFouls = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -91,6 +94,7 @@ const calculateFouls = function (team, type) {
             tid: player.team_id,
             pid: player.player_id,
             pn: player.player_name,
+            pic: player.player.data?.image_path,
             date: match.time.starting_at.date,
           });
         }
@@ -107,30 +111,41 @@ const calculateFouls = function (team, type) {
 };
 </script>
 <template>
-  <div v-if="playerYellowCardStreakVT.length > 0">
-    <div v-for="p in playerYellowCardStreakVT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has got
-        <strong>1+ yellow cards</strong> in last 3
-        <strong> {{ props.visitorteam.name }}</strong> matches.
-      </p>
-    </div>
-  </div>
-  <div v-else>
-    There is no yellow card streak of {{ props.visitorteam.name }} team players.
-  </div>
-
   <div v-if="playerYellowCardStreakLT.length > 0">
-    <div v-for="p in playerYellowCardStreakLT" class="mb-5 bg-rose-200">
-      <p>
-        <strong> {{ p.pn }} </strong> has got
-        <strong>1+ yellow cards</strong> in last 3
-        <strong>{{ props.localteam.name }}</strong> matches.
-      </p>
+    <div
+      v-for="p in playerYellowCardStreakLT"
+      class="my-2 border border-b-black"
+    >
+      <div class="flex">
+        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+        <p>
+          <strong> {{ p.pn }} </strong> has got
+          <strong>1+ yellow cards</strong> in last 3
+          <strong>{{ props.localteam.name }}</strong> matches.
+        </p>
+      </div>
     </div>
   </div>
   <div v-else>
     There is no yellow card streak of {{ props.localteam.name }} team players.
+  </div>
+  <div v-if="playerYellowCardStreakVT.length > 0">
+    <div
+      v-for="p in playerYellowCardStreakVT"
+      class="my-2 border border-b-black"
+    >
+      <div class="flex">
+        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+        <p>
+          <strong> {{ p.pn }} </strong> has got
+          <strong>1+ yellow cards</strong> in last 3
+          <strong> {{ props.visitorteam.name }}</strong> matches.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div v-else>
+    There is no yellow card streak of {{ props.visitorteam.name }} team players.
   </div>
 </template>
 <style scoped></style>
