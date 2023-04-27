@@ -112,7 +112,7 @@ const calculateGoals = function (team, type) {
 </script>
 <template>
   <div v-if="playerAssistStreakLT.length > 0">
-    <div v-for="p in playerAssistStreakLT" class="my-2 border border-b-black">
+    <div v-for="p in playerAssistStreakLT" class="my-2 border-b border-black">
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
         <p>
@@ -126,7 +126,7 @@ const calculateGoals = function (team, type) {
     There is no goal streaks {{ props.visitorteam.name }} team players.
   </div>
   <div v-if="playerAssistStreakVT.length > 0">
-    <div v-for="p in playerAssistStreakVT" class="my-2 border border-b-black">
+    <div v-for="p in playerAssistStreakVT" class="my-2 border-b border-black">
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
         <p>

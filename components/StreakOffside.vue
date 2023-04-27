@@ -112,7 +112,7 @@ const calculateOffsides = function (team, type) {
 </script>
 <template>
   <div v-if="playerOffsideStreakVT.length > 0">
-    <div v-for="p in playerOffsideStreakVT" class="my-2 border border-b-black">
+    <div v-for="p in playerOffsideStreakVT" class="my-2 border-b border-black">
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
         <p>
@@ -127,7 +127,7 @@ const calculateOffsides = function (team, type) {
   </div>
 
   <div v-if="playerOffsideStreakLT.length > 0">
-    <div v-for="p in playerOffsideStreakLT" class="my-2 border border-b-black">
+    <div v-for="p in playerOffsideStreakLT" class="my-2 border-b border-black">
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
         <p>

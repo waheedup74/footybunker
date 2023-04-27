@@ -72,7 +72,7 @@ const calculateStreaks = function (team, type) {
 <template>
   <h2 class="bg-rose-300 text-center py-4 text-2xl">Team Tackle Streaks</h2>
   <div class="my-4">
-    <div class="my-2 border border-b-black" v-if="ltTotalTackle > 14">
+    <div class="my-2 border-b border-black" v-if="ltTotalTackle > 14">
       <div class="flex">
         <img
           :src="props.localteam.logo_path"
@@ -85,11 +85,11 @@ const calculateStreaks = function (team, type) {
         </p>
       </div>
     </div>
-    <div class="my-2 border border-b-black" v-else>
+    <div class="my-2 border-b border-black" v-else>
       There is no <strong>14</strong> tackle streak of
       {{ props.localteam.name }}
     </div>
-    <div class="my-2 border border-b-black" v-if="ltTotalTackle > 14">
+    <div class="my-2 border-b border-black" v-if="ltTotalTackle > 14">
       <div class="flex">
         <img
           :src="props.visitorteam.logo_path"
@@ -102,7 +102,7 @@ const calculateStreaks = function (team, type) {
         </p>
       </div>
     </div>
-    <div class="my-2 border border-b-black" v-else>
+    <div class="my-2 border-b border-black" v-else>
       There is no <strong>14</strong> tackle streak of
       {{ props.visitorteam.name }}
     </div>
@@ -110,7 +110,7 @@ const calculateStreaks = function (team, type) {
 
   <h2 class="bg-rose-300 text-center py-4 text-2xl">Team Offsides Streaks</h2>
   <div class="my-4">
-    <div class="my-2 border border-b-black" v-if="ltTotalOffsides > 3">
+    <div class="my-2 border-b border-black" v-if="ltTotalOffsides > 3">
       <div class="flex">
         <img
           :src="props.localteam.logo_path"
@@ -124,11 +124,11 @@ const calculateStreaks = function (team, type) {
         </p>
       </div>
     </div>
-    <div class="my-2 border border-b-black" v-else>
+    <div class="my-2 border-b border-black" v-else>
       There is no <strong>3+</strong> offsides streak of
       {{ props.localteam.name }}
     </div>
-    <div class="my-2 border border-b-black" v-if="vtTotalOffsides > 3">
+    <div class="my-2 border-b border-black" v-if="vtTotalOffsides > 3">
       <div class="flex">
         <img
           :src="props.visitorteam.logo_path"
@@ -141,7 +141,7 @@ const calculateStreaks = function (team, type) {
         </p>
       </div>
     </div>
-    <div class="my-2 border border-b-black" v-else>
+    <div class="my-2 border-b border-black" v-else>
       There is no <strong>3+</strong> offsides streak of
       {{ props.visitorteam.name }}
     </div>
@@ -149,7 +149,7 @@ const calculateStreaks = function (team, type) {
 
   <h2 class="bg-rose-300 text-center py-4 text-2xl">Team Shots Streaks</h2>
   <div class="my-4">
-    <div class="my-2 border border-b-black" v-if="ltTotalShots > 24">
+    <div class="my-2 border-b border-black" v-if="ltTotalShots > 24">
       <div class="flex">
         <img
           :src="props.localteam.logo_path"
@@ -162,11 +162,11 @@ const calculateStreaks = function (team, type) {
         </p>
       </div>
     </div>
-    <div class="my-2 border border-b-black" v-else>
+    <div class="my-2 border-b border-black" v-else>
       There is no <strong>3+</strong> offsides streak of
       {{ props.localteam.name }}
     </div>
-    <div class="my-2 border border-b-black" v-if="vtTotalShots > 24">
+    <div class="my-2 border-b border-black" v-if="vtTotalShots > 24">
       <div class="flex">
         <img
           :src="props.visitorteam.logo_path"
@@ -179,7 +179,7 @@ const calculateStreaks = function (team, type) {
         </p>
       </div>
     </div>
-    <div class="my-2 border border-b-black" v-else>
+    <div class="my-2 border-b border-black" v-else>
       There is no <strong>24+</strong> shots streak of
       {{ props.visitorteam.name }}
     </div>

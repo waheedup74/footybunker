@@ -193,7 +193,7 @@ const calculatePasses = function (team, type) {
       <div v-if="playerPassesStreakLT.length > 0">
         <div
           v-for="p in playerPassesStreakLT"
-          class="my-2 border border-b-black"
+          class="my-2 border-b border-black"
         >
           <div class="flex">
             <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
@@ -211,7 +211,7 @@ const calculatePasses = function (team, type) {
       <div v-if="playerPassesStreakVT.length > 0">
         <div
           v-for="p in playerPassesStreakVT"
-          class="my-2 border border-b-black"
+          class="my-2 border-b border-black"
         >
           <div class="flex">
             <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />

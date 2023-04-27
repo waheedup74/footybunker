@@ -136,7 +136,7 @@ const teamStats = (teamName, team_id) => {
             v-for="f in fixtures.data.data"
           >
             <div class="flex p-2">
-              <div class="self-center mr-2">
+              <div class="self-center mr-2 md:mr-6">
                 <img
                   :src="f.league.data.logo_path"
                   class="w-10"
@@ -144,45 +144,42 @@ const teamStats = (teamName, team_id) => {
                 />
               </div>
 
-              <div class="self-center mr-2">
-                <!-- <p class="text-sm">{{ f.time.starting_at.time.slice(0, 5) }}</p> -->
-                <p class="text-sm">{{ f.time.starting_at.time }}</p>
+              <div class="self-center mr-2 md:mr-6">
+                <p class="text-sm">{{ f.time.starting_at.time.slice(0, 5) }}</p>
               </div>
 
               <div class="w-full self-center mr-5">
-                <div class="flex justify-between">
-                  <div class="flex p-2 cursor-pointer">
-                    <img
-                      :src="f.localTeam.data.logo_path"
-                      class="w-4 mr-2"
-                      alt="logo"
-                    />
-                    <a
-                      class="text-sm"
-                      @click="teamStats(f.localTeam.data.name, f.localteam_id)"
-                    >
-                      {{ f.localTeam.data.name }}</a
-                    >
-                  </div>
+                <div class="flex justify-between mb-3">
+                  <img
+                    :src="f.localTeam.data.logo_path"
+                    class="w-4 h-4 md:w-6 md:h-6 mr-2"
+                    alt="logo"
+                  />
+                  <a
+                    class="text-sm hover:underline decoration-1 cursor-pointer"
+                    @click="teamStats(f.localTeam.data.name, f.localteam_id)"
+                  >
+                    {{ f.localTeam.data.name }}</a
+                  >
+
                   <div class="ml-auto text-sm self-center">
                     {{ f.scores.localteam_score }}
                   </div>
                 </div>
                 <div class="flex justify-between">
-                  <div class="flex p-2 cursor-pointer">
-                    <img
-                      :src="f.visitorTeam.data.logo_path"
-                      class="w-4 mr-2"
-                      alt="logo"
-                    />
-                    <a
-                      class="text-sm"
-                      @click="
-                        teamStats(f.visitorTeam.data.name, f.visitorteam_id)
-                      "
-                      >{{ f.visitorTeam.data.name }}</a
-                    >
-                  </div>
+                  <img
+                    :src="f.visitorTeam.data.logo_path"
+                    class="w-4 h-4 md:w-6 md:h-6 mr-2"
+                    alt="logo"
+                  />
+                  <a
+                    class="text-sm hover:underline decoration-1 cursor-pointer"
+                    @click="
+                      teamStats(f.visitorTeam.data.name, f.visitorteam_id)
+                    "
+                    >{{ f.visitorTeam.data.name }}</a
+                  >
+
                   <div class="ml-auto text-sm self-center">
                     {{ f.scores.visitorteam_score }}
                   </div>
@@ -211,57 +208,55 @@ const teamStats = (teamName, team_id) => {
             v-for="f in fixtures.data.data"
           >
             <div class="flex p-2">
-              <div class="self-center mr-2">
+              <div class="self-center mr-2 md:mr-6">
                 <img
                   :src="f.league.data.logo_path"
                   class="w-10"
                   :alt="f.league.data.name"
                 />
               </div>
-              <div class="self-center mr-2">
-                <p class="text-sm">{{ f.time.starting_at.time }}</p>
+
+              <div class="self-center mr-2 md:mr-6">
+                <p class="text-sm">{{ f.time.starting_at.time.slice(0, 5) }}</p>
               </div>
 
               <div class="w-full self-center mr-5">
-                <div class="flex justify-between">
-                  <div class="flex p-2 cursor-pointer">
-                    <img
-                      :src="f.localTeam.data.logo_path"
-                      class="w-4 mr-2"
-                      alt="logo"
-                    />
-                    <a
-                      class="text-sm"
-                      @click="teamStats(f.localTeam.data.name, f.localteam_id)"
-                    >
-                      {{ f.localTeam.data.name }}</a
-                    >
-                  </div>
+                <div class="flex justify-between mb-3">
+                  <img
+                    :src="f.localTeam.data.logo_path"
+                    class="w-4 h-4 md:w-6 md:h-6 mr-2"
+                    alt="logo"
+                  />
+                  <a
+                    class="text-sm hover:underline decoration-1 cursor-pointer"
+                    @click="teamStats(f.localTeam.data.name, f.localteam_id)"
+                  >
+                    {{ f.localTeam.data.name }}</a
+                  >
+
                   <div class="ml-auto text-sm self-center">
                     {{ f.scores.localteam_score }}
                   </div>
                 </div>
                 <div class="flex justify-between">
-                  <div class="flex p-2 cursor-pointer">
-                    <img
-                      :src="f.visitorTeam.data.logo_path"
-                      class="w-4 mr-2"
-                      alt="logo"
-                    />
-                    <a
-                      class="text-sm"
-                      @click="
-                        teamStats(f.visitorTeam.data.name, f.visitorteam_id)
-                      "
-                      >{{ f.visitorTeam.data.name }}</a
-                    >
-                  </div>
+                  <img
+                    :src="f.visitorTeam.data.logo_path"
+                    class="w-4 h-4 md:w-6 md:h-6 mr-2"
+                    alt="logo"
+                  />
+                  <a
+                    class="text-sm hover:underline decoration-1 cursor-pointer"
+                    @click="
+                      teamStats(f.visitorTeam.data.name, f.visitorteam_id)
+                    "
+                    >{{ f.visitorTeam.data.name }}</a
+                  >
+
                   <div class="ml-auto text-sm self-center">
                     {{ f.scores.visitorteam_score }}
                   </div>
                 </div>
               </div>
-
               <div class="self-center">
                 <button
                   class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"
@@ -281,66 +276,59 @@ const teamStats = (teamName, team_id) => {
         </div>
         <div v-if="tab_id === 'C'">
           <div
-            class="w-full border mb-3 shadow-lg hover:shadow-[#9acaf1] cursor-pointer"
+            class="w-full border mb-3 shadow-lg hover:shadow-[#9acaf1]"
             v-for="f in fixtures.data.data"
-            @click="
-              viewDetails(f.localTeam.data.name, f.visitorTeam.data.name, f.id)
-            "
           >
             <div class="flex p-2">
-              <div class="self-center mr-2">
+              <div class="self-center mr-2 md:mr-6">
                 <img
                   :src="f.league.data.logo_path"
                   class="w-10"
                   :alt="f.league.data.name"
                 />
               </div>
-              <div class="self-center mr-2">
-                <p class="text-sm">
-                  {{ f.time.starting_at.time }}
-                </p>
+
+              <div class="self-center mr-2 md:mr-6">
+                <p class="text-sm">{{ f.time.starting_at.time.slice(0, 5) }}</p>
               </div>
 
               <div class="w-full self-center mr-5">
-                <div class="flex justify-between">
-                  <div class="flex p-2">
-                    <img
-                      :src="f.localTeam.data.logo_path"
-                      class="w-4 mr-2"
-                      alt="logo"
-                    />
-                    <a
-                      class="text-sm"
-                      @click="teamStats(f.localTeam.data.name, f.localteam_id)"
-                    >
-                      {{ f.localTeam.data.name }}</a
-                    >
-                  </div>
+                <div class="flex justify-between mb-3">
+                  <img
+                    :src="f.localTeam.data.logo_path"
+                    class="w-4 h-4 md:w-6 md:h-6 mr-2"
+                    alt="logo"
+                  />
+                  <a
+                    class="text-sm hover:underline decoration-1 cursor-pointer"
+                    @click="teamStats(f.localTeam.data.name, f.localteam_id)"
+                  >
+                    {{ f.localTeam.data.name }}</a
+                  >
+
                   <div class="ml-auto text-sm self-center">
                     {{ f.scores.localteam_score }}
                   </div>
                 </div>
                 <div class="flex justify-between">
-                  <div class="flex p-2">
-                    <img
-                      :src="f.visitorTeam.data.logo_path"
-                      class="w-4 mr-2"
-                      alt="logo"
-                    />
-                    <a
-                      class="text-sm"
-                      @click="
-                        teamStats(f.visitorTeam.data.name, f.visitorteam_id)
-                      "
-                      >{{ f.visitorTeam.data.name }}</a
-                    >
-                  </div>
+                  <img
+                    :src="f.visitorTeam.data.logo_path"
+                    class="w-4 h-4 md:w-6 md:h-6 mr-2"
+                    alt="logo"
+                  />
+                  <a
+                    class="text-sm hover:underline decoration-1 cursor-pointer"
+                    @click="
+                      teamStats(f.visitorTeam.data.name, f.visitorteam_id)
+                    "
+                    >{{ f.visitorTeam.data.name }}</a
+                  >
+
                   <div class="ml-auto text-sm self-center">
                     {{ f.scores.visitorteam_score }}
                   </div>
                 </div>
               </div>
-
               <div class="self-center">
                 <button
                   class="py-1 px-4 text-sm border rounded hover:bg-[#0d406a] hover:text-white"

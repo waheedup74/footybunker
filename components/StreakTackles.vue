@@ -111,7 +111,7 @@ const calculateTackles = function (team, type) {
 </script>
 <template>
   <div v-if="playerTacklesStreakLT.length > 0">
-    <div v-for="p in playerTacklesStreakLT" class="my-2 border border-b-black">
+    <div v-for="p in playerTacklesStreakLT" class="my-2 border-b border-black">
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
         <p>
@@ -125,7 +125,7 @@ const calculateTackles = function (team, type) {
     There is no tackle streaks {{ props.visitorteam.name }} team players.
   </div>
   <div v-if="playerTacklesStreakVT.length > 0">
-    <div v-for="p in playerTacklesStreakVT" class="my-2 border border-b-black">
+    <div v-for="p in playerTacklesStreakVT" class="my-2 border-b border-black">
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
         <p>

@@ -114,7 +114,7 @@ const calculateFouls = function (team, type) {
   <div v-if="playerTotalShotsStreakLT.length > 0">
     <div
       v-for="p in playerTotalShotsStreakLT"
-      class="my-2 border border-b-black"
+      class="my-2 border-b border-black"
     >
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
@@ -131,7 +131,7 @@ const calculateFouls = function (team, type) {
   <div v-if="playerTotalShotsStreakVT.length > 0">
     <div
       v-for="p in playerTotalShotsStreakVT"
-      class="my-2 border border-b-black"
+      class="my-2 border-b border-black"
     >
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />

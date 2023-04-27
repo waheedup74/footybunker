@@ -785,14 +785,14 @@ function getUniquePlayersById(originalArray) {
                 :id="league.data.data.id"
                 :name="league.data.data.id"
                 type="checkbox"
-                class="h-4 w-4 border-gray-300 rounded league-filter"
+                class="h-4 w-4 border-gray-300 rounded league-filter cursor-pointer"
                 :checked="true"
                 :value="league.data.data.id"
                 v-model="selectedLeague"
               />
               <label
                 :for="league.data.data.id"
-                class="ml-2 block text-sm text-gray-700"
+                class="ml-2 block text-sm text-gray-700 cursor-pointer"
               >
                 {{ league.data.data.name }}
               </label>
@@ -811,12 +811,15 @@ function getUniquePlayersById(originalArray) {
                 id="venueCheck1"
                 name="venueCheck1"
                 type="checkbox"
-                class="h-4 w-4 border-gray-300 rounded venue-filter"
+                class="h-4 w-4 border-gray-300 rounded venue-filter cursor-pointer"
                 data-venue-id="h"
                 :checked="showHome"
                 @change="switchVenue('home')"
               />
-              <label for="venueCheck1" class="ml-2 block text-sm text-gray-700">
+              <label
+                for="venueCheck1"
+                class="ml-2 block text-sm text-gray-700 cursor-pointer"
+              >
                 Home
               </label>
             </div>
@@ -825,12 +828,15 @@ function getUniquePlayersById(originalArray) {
                 id="venueCheck2"
                 name="venueCheck2"
                 type="checkbox"
-                class="h-4 w-4 border-gray-300 rounded venue-filter"
+                class="h-4 w-4 border-gray-300 rounded venue-filter cursor-pointer"
                 data-venue-id="a"
                 :checked="showAway"
                 @change="switchVenue('away')"
               />
-              <label for="venueCheck2" class="ml-2 block text-sm text-gray-700">
+              <label
+                for="venueCheck2"
+                class="ml-2 block text-sm text-gray-700 cursor-pointer"
+              >
                 Away
               </label>
             </div>

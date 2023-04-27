@@ -17,7 +17,7 @@ useHead({
     " v " +
     route.params.visitor.replace(/-/g, " ") +
     " " +
-    route.params.fixture.replace(/-/g, " ") +
+    route.params.fixture.replace("-", " ").replace(/\d+$/, "") +
     " " +
     "Betbuilder",
 });
@@ -48,10 +48,6 @@ onBeforeMount(async () => {
     );
   }
 });
-
-const testFunction = () => {
-  return "this is test function";
-};
 
 const changeTopTabs = function (tab, type) {
   top_tab_id.value = tab;
@@ -95,8 +91,7 @@ const teamStats = (teamName, team_id) => {
       </div>
       <div class="text-center font-medium self-center">
         <div>
-          {{ fixture.data.data.time.starting_at.date_time }}
-          <!-- {{ fixture.data.data.time.starting_at.date_time.slice(0, 16) }} -->
+          {{ fixture.data.data.time.starting_at.date_time.slice(0, 16) }}
         </div>
         <div class="text-4xl md:text-6xl lining-nums">
           {{ fixture.data.data.scores.localteam_score }} -
