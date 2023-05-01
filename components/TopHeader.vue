@@ -22,7 +22,6 @@ const toggleMenue = function () {
   showmenu.value = !showmenu.value;
 };
 const goto = (value) => {
-  console.log(value);
   navigateTo(`/auth/${value}`);
 };
 </script>

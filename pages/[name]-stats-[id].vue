@@ -1,5 +1,5 @@
 <template>
   <div>
-    <TestTeamStats />
+    <TeamStats />
   </div>
 </template>
