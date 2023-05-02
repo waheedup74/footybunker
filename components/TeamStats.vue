@@ -48,13 +48,8 @@ const getDate = function (date) {
   return yyyy + "-" + mm + "-" + dd;
 };
 
-const removeOneDayToDate = (date) => {
-  date.setDate(date.getDate() - 1);
-
-  return date;
-};
 const subtract6Months = function (date) {
-  date.setMonth(date.getMonth() - 11);
+  date.setMonth(date.getMonth() - 12);
   return date;
 };
 
@@ -68,11 +63,11 @@ onBeforeMount(async () => {
   // new work
   team.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/teams/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=league`
+      `https://soccer.sportmonks.com/api/v2.0/teams/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=league&tz=BST`
   );
   newTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam&tz=BST`
   );
 
   if (newTeamStats.value.data) {
@@ -152,7 +147,7 @@ onBeforeMount(async () => {
     leaguesList.value = await Promise.all(
       uniqueIds.map(async (id) => {
         const response = await useFetch(
-          `https://soccer.sportmonks.com/api/v2.0/leagues/${id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+          `https://soccer.sportmonks.com/api/v2.0/leagues/${id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&tz=BST`
         );
         return response;
       })

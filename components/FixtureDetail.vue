@@ -11,7 +11,7 @@ const tab_id = ref("A");
 onMounted(async () => {
   commentary.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/commentaries/fixture/${props.fixture.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+      `https://soccer.sportmonks.com/api/v2.0/commentaries/fixture/${props.fixture.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&tz=BST`
   );
 });
 onBeforeMount(() => {
