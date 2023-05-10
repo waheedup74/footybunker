@@ -36,7 +36,7 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.shots.shots_total >= 1 &&
+          player.stats.shots.shots_total > 2 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
@@ -50,7 +50,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.shots.shots_total >= 1 &&
+          player.stats.shots.shots_total > 2 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
@@ -74,7 +74,7 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.shots.shots_total >= 1 &&
+          player.stats.shots.shots_total > 2 &&
           player.team_id === props.visitorteam.id
         ) {
           vtLineup.push({
@@ -88,7 +88,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.shots.shots_total >= 1 &&
+          player.stats.shots.shots_total > 2 &&
           player.team_id === props.visitorteam.id
         ) {
           vtBench.push({
@@ -112,39 +112,48 @@ const calculateFouls = function (team, type) {
 };
 </script>
 <template>
-  <div v-if="playerTotalShotsStreakLT.length > 0">
-    <div
-      v-for="p in playerTotalShotsStreakLT"
-      class="my-2 border-b border-black"
-    >
-      <div class="flex">
-        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
-        <p>
-          <strong> {{ p.pn }} </strong> has made <strong>1+ shots</strong> in
-          last 3 <strong>{{ props.localteam.name }}</strong> matches.
-        </p>
+  <section
+    v-if="
+      playerTotalShotsStreakLT.length > 0 || playerTotalShotsStreakVT.length > 0
+    "
+    class="my-5"
+  >
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">Shots Streaks</h2>
+
+    <div v-if="playerTotalShotsStreakLT.length > 0">
+      <div
+        v-for="p in playerTotalShotsStreakLT"
+        class="my-2 border-b border-black"
+      >
+        <div class="flex">
+          <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+          <p>
+            <strong> {{ p.pn }} </strong> has made <strong>2+ shots</strong> in
+            last 3 <strong>{{ props.localteam.name }}</strong> matches.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else>
-    There is no shots streaks {{ props.localteam.name }} team players.
-  </div>
-  <div v-if="playerTotalShotsStreakVT.length > 0">
-    <div
-      v-for="p in playerTotalShotsStreakVT"
-      class="my-2 border-b border-black"
-    >
-      <div class="flex">
-        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
-        <p>
-          <strong> {{ p.pn }} </strong> has made <strong>1+ shots</strong> in
-          last 3 <strong> {{ props.visitorteam.name }}</strong> matches.
-        </p>
+    <div v-else>
+      There is no shots streaks {{ props.localteam.name }} team players.
+    </div>
+    <div v-if="playerTotalShotsStreakVT.length > 0">
+      <div
+        v-for="p in playerTotalShotsStreakVT"
+        class="my-2 border-b border-black"
+      >
+        <div class="flex">
+          <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+          <p>
+            <strong> {{ p.pn }} </strong> has made <strong>2+ shots</strong> in
+            last 3 <strong> {{ props.visitorteam.name }}</strong> matches.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else>
-    There is no shots streaks {{ props.visitorteam.name }} team players.
-  </div>
+    <div v-else>
+      There is no shots streaks {{ props.visitorteam.name }} team players.
+    </div>
+  </section>
 </template>
 <style scoped></style>

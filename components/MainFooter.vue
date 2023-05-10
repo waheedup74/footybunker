@@ -1,8 +1,12 @@
 <template>
-  <div class="mt-auto fixed bottom-0 w-full z-50 px-8 bg-black">
-    <div class="flex justify-between">
+  <div class="mt-auto fixed bottom-0 w-full z-50 px-2 md:px-8 bg-black">
+    <div class="flex flex-col md:flex-row justify-between">
       <div class="py-3 z-auto">
-        <img src="@/assets/footer.png" class="h-10" alt="app-logo" />
+        <img
+          src="@/assets/footer.png"
+          class="h-10 mx-auto md:mx-0"
+          alt="app-logo"
+        />
       </div>
       <div class="self-center text-white">
         <div>

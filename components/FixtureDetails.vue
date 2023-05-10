@@ -188,7 +188,7 @@ const teamStats = (teamName, team_id) => {
     </div>
 
     <div class="mt-5 bg-green-500 py-5 text-center text-white text-2xl mb-10">
-      <h1>Player Streaks</h1>
+      <h1>Streaks</h1>
     </div>
     <div v-if="fixture.data">
       <PlayerStreaks

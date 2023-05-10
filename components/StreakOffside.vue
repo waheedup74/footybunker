@@ -36,7 +36,7 @@ const calculateOffsides = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.other.offsides >= 1 &&
+          player.stats.other.offsides > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
@@ -50,7 +50,7 @@ const calculateOffsides = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.other.offsides >= 1 &&
+          player.stats.other.offsides > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
@@ -74,7 +74,7 @@ const calculateOffsides = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.other.offsides >= 1 &&
+          player.stats.other.offsides > 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtLineup.push({
@@ -88,7 +88,7 @@ const calculateOffsides = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.other.offsides >= 1 &&
+          player.stats.other.offsides > 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtBench.push({
@@ -112,36 +112,49 @@ const calculateOffsides = function (team, type) {
 };
 </script>
 <template>
-  <div v-if="playerOffsideStreakVT.length > 0">
-    <div v-for="p in playerOffsideStreakVT" class="my-2 border-b border-black">
-      <div class="flex">
-        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
-        <p>
-          <strong> {{ p.pn }} </strong> has made
-          <strong>1 or more then 1 offsides</strong> in last 3
-          <strong> {{ props.visitorteam.name }}</strong> matches.
-        </p>
-      </div>
-    </div>
-  </div>
-  <div v-else>
-    There is no offside streaks {{ props.localteam.name }} team players.
-  </div>
+  <section
+    v-if="playerOffsideStreakVT.length > 0 || playerOffsideStreakLT.length > 0"
+    class="my-5"
+  >
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">Offside Streaks</h2>
 
-  <div v-if="playerOffsideStreakLT.length > 0">
-    <div v-for="p in playerOffsideStreakLT" class="my-2 border-b border-black">
-      <div class="flex">
-        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
-        <p>
-          <strong> {{ p.pn }} </strong> has made
-          <strong>1 or more than 1 offsides</strong> in last 3
-          <strong>{{ props.localteam.name }}</strong> matches.
-        </p>
+    <div v-if="playerOffsideStreakVT.length > 0">
+      <div
+        v-for="p in playerOffsideStreakVT"
+        class="my-2 border-b border-black"
+      >
+        <div class="flex">
+          <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+          <p>
+            <strong> {{ p.pn }} </strong> has made
+            <strong>1+ offsides</strong> in last 3
+            <strong> {{ props.visitorteam.name }}</strong> matches.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else>
-    There is no offside streaks {{ props.visitorteam.name }} team players.
-  </div>
+    <div v-else>
+      There is no offside streaks {{ props.localteam.name }} team players.
+    </div>
+
+    <div v-if="playerOffsideStreakLT.length > 0">
+      <div
+        v-for="p in playerOffsideStreakLT"
+        class="my-2 border-b border-black"
+      >
+        <div class="flex">
+          <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+          <p>
+            <strong> {{ p.pn }} </strong> has made
+            <strong>1+ offsides</strong> in last 3
+            <strong>{{ props.localteam.name }}</strong> matches.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      There is no offside streaks {{ props.visitorteam.name }} team players.
+    </div>
+  </section>
 </template>
 <style scoped></style>

@@ -36,7 +36,7 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.shots.shots_on_goal >= 1 &&
+          player.stats.shots.shots_on_goal > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
@@ -50,7 +50,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.shots.shots_on_goal >= 1 &&
+          player.stats.shots.shots_on_goal > 1 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
@@ -74,7 +74,7 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.shots.shots_on_goal >= 1 &&
+          player.stats.shots.shots_on_goal > 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtLineup.push({
@@ -88,7 +88,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.shots.shots_on_goal >= 1 &&
+          player.stats.shots.shots_on_goal > 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtBench.push({
@@ -112,43 +112,55 @@ const calculateFouls = function (team, type) {
 };
 </script>
 <template>
-  <div v-if="playerShotsOnTargetStreakLT.length > 0">
-    <div
-      v-for="p in playerShotsOnTargetStreakLT"
-      class="my-2 border-b border-black"
-    >
-      <div class="flex">
-        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
-        <p>
-          <strong> {{ p.pn }} </strong> has made
-          <strong>1+ shots on target</strong> in last 3
-          <strong>{{ props.localteam.name }}</strong> matches.
-        </p>
+  <section
+    v-if="
+      playerShotsOnTargetStreakLT.length > 0 ||
+      playerShotsOnTargetStreakVT.length > 0
+    "
+    class="my-5"
+  >
+    <h2 class="bg-rose-300 text-center py-4 text-2xl">
+      Shots on Target Streaks
+    </h2>
+    <div v-if="playerShotsOnTargetStreakLT.length > 0">
+      <div
+        v-for="p in playerShotsOnTargetStreakLT"
+        class="my-2 border-b border-black"
+      >
+        <div class="flex">
+          <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+          <p>
+            <strong> {{ p.pn }} </strong> has made
+            <strong>1+ shots on target</strong> in last 3
+            <strong>{{ props.localteam.name }}</strong> matches.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else>
-    There is no shot on target streaks {{ props.localteam.name }} team players.
-  </div>
+    <div v-else>
+      There is no shot on target streaks {{ props.localteam.name }} team
+      players.
+    </div>
 
-  <div v-if="playerShotsOnTargetStreakVT.length > 0">
-    <div
-      v-for="p in playerShotsOnTargetStreakVT"
-      class="my-2 border-b border-black"
-    >
-      <div class="flex">
-        <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
-        <p>
-          <strong> {{ p.pn }} </strong> has made
-          <strong>1+ shots on target</strong> in last 3
-          <strong> {{ props.visitorteam.name }}</strong> matches.
-        </p>
+    <div v-if="playerShotsOnTargetStreakVT.length > 0">
+      <div
+        v-for="p in playerShotsOnTargetStreakVT"
+        class="my-2 border-b border-black"
+      >
+        <div class="flex">
+          <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
+          <p>
+            <strong> {{ p.pn }} </strong> has made
+            <strong>1+ shots on target</strong> in last 3
+            <strong> {{ props.visitorteam.name }}</strong> matches.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else>
-    There is no shots on target streaks {{ props.visitorteam.name }} team
-    players.
-  </div>
+    <div v-else>
+      There is no shots on target streaks {{ props.visitorteam.name }} team
+      players.
+    </div>
+  </section>
 </template>
 <style scoped></style>

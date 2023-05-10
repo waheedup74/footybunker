@@ -114,7 +114,7 @@ const calculatePasses = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.passing.passes >= 30 &&
+          player.stats.passing.passes >= 50 &&
           player.team_id === props.localTeam.id
         ) {
           ltLineup.push({
@@ -128,7 +128,7 @@ const calculatePasses = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.passing.passes >= 30 &&
+          player.stats.passing.passes >= 50 &&
           player.team_id === props.localTeam.id
         ) {
           ltBench.push({
@@ -152,7 +152,7 @@ const calculatePasses = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.passing.passes >= 30 &&
+          player.stats.passing.passes >= 50 &&
           player.team_id === props.visitorTeam.id
         ) {
           vtLineup.push({
@@ -166,7 +166,7 @@ const calculatePasses = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.passing.passes >= 30 &&
+          player.stats.passing.passes >= 50 &&
           player.team_id === props.visitorTeam.id
         ) {
           vtBench.push({
@@ -190,7 +190,10 @@ const calculatePasses = function (team, type) {
 </script>
 <template>
   <div v-if="localTeamFixtures.data && visitorTeamFixtures.data">
-    <section class="mb-5">
+    <section
+      class="mb-5"
+      v-if="playerPassesStreakVT.length > 0 || playerPassesStreakLT.length > 0"
+    >
       <h2 class="bg-rose-300 text-center py-4 text-2xl">Passes Streaks</h2>
       <div v-if="playerPassesStreakLT.length > 0">
         <div
@@ -201,7 +204,7 @@ const calculatePasses = function (team, type) {
             <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
             <p>
               <strong> {{ p.pn }} </strong> has made
-              <strong>30+ passes</strong> in last 3
+              <strong>50+ passes</strong> in last 3
               <strong>{{ props.localTeam.name }}</strong> matches.
             </p>
           </div>
@@ -219,7 +222,7 @@ const calculatePasses = function (team, type) {
             <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
             <p>
               <strong> {{ p.pn }} </strong> has made
-              <strong>30+ passes</strong> in last 3
+              <strong>50+ passes</strong> in last 3
               <strong> {{ props.visitorTeam.name }}</strong> matches.
             </p>
           </div>
@@ -229,87 +232,62 @@ const calculatePasses = function (team, type) {
         There is no passes streaks {{ props.visitorTeam.name }} team players.
       </div>
     </section>
-    <section class="my-5">
-      <h2 class="bg-rose-300 text-center py-4 text-2xl">Tackles Streaks</h2>
-      <StreakTackles
-        :localteam="lt"
-        :visitorteam="vt"
-        :local-team-data="localTeamFixtures"
-        :visitor-team-data="visitorTeamFixtures"
-      />
-    </section>
 
-    <section class="my-5">
-      <h2 class="bg-rose-300 text-center py-4 text-2xl">Foul Streaks</h2>
-      <StreakFouls
-        :localteam="lt"
-        :visitorteam="vt"
-        :local-team-data="localTeamFixtures"
-        :visitor-team-data="visitorTeamFixtures"
-      />
-    </section>
+    <StreakTackles
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
 
-    <section class="my-5">
-      <h2 class="bg-rose-300 text-center py-4 text-2xl">Yellow Card Streaks</h2>
-      <StreakYellowCard
-        :localteam="lt"
-        :visitorteam="vt"
-        :local-team-data="localTeamFixtures"
-        :visitor-team-data="visitorTeamFixtures"
-      />
-    </section>
+    <StreakFouls
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
 
-    <section class="my-5">
-      <h2 class="bg-rose-300 text-center py-4 text-2xl">Shots Streaks</h2>
-      <StreakAllShots
-        :localteam="lt"
-        :visitorteam="vt"
-        :local-team-data="localTeamFixtures"
-        :visitor-team-data="visitorTeamFixtures"
-      />
-    </section>
+    <StreakYellowCard
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
 
-    <section class="my-5">
-      <h2 class="bg-rose-300 text-center py-4 text-2xl">
-        Shots on Target Streaks
-      </h2>
-      <StreakShotsOnTarget
-        :localteam="lt"
-        :visitorteam="vt"
-        :local-team-data="localTeamFixtures"
-        :visitor-team-data="visitorTeamFixtures"
-      />
-    </section>
+    <StreakAllShots
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
 
-    <section class="my-5">
-      <h2 class="bg-rose-300 text-center py-4 text-2xl">Offside Streaks</h2>
-      <StreakOffside
-        :localteam="lt"
-        :visitorteam="vt"
-        :local-team-data="localTeamFixtures"
-        :visitor-team-data="visitorTeamFixtures"
-      />
-    </section>
+    <StreakShotsOnTarget
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
 
-    <section class="my-5">
-      <h2 class="bg-rose-300 text-center py-4 text-2xl">Goal Streaks</h2>
-      <StreakGoal
-        :localteam="lt"
-        :visitorteam="vt"
-        :local-team-data="localTeamFixtures"
-        :visitor-team-data="visitorTeamFixtures"
-      />
-    </section>
+    <StreakOffside
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
 
-    <section class="my-5">
-      <h2 class="bg-rose-300 text-center py-4 text-2xl">Assist Streaks</h2>
-      <StreakAssist
-        :localteam="lt"
-        :visitorteam="vt"
-        :local-team-data="localTeamFixtures"
-        :visitor-team-data="visitorTeamFixtures"
-      />
-    </section>
+    <StreakGoal
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
+
+    <StreakAssist
+      :localteam="lt"
+      :visitorteam="vt"
+      :local-team-data="localTeamFixtures"
+      :visitor-team-data="visitorTeamFixtures"
+    />
 
     <section class="my-5">
       <StreakTotalPasses
