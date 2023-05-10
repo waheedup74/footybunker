@@ -1,7 +1,11 @@
 <template>
-  <div>
+  <div class="h-screen overflow-y-scroll pb-10">
     <TopHeader />
     <slot />
+
+    <div class="bottom-0">
+      <MainFooter />
+    </div>
   </div>
 </template>
 

@@ -2590,7 +2590,7 @@ function getUniquePlayersById(originalArray) {
   border-radius: 2px;
   padding: 5px 3px;
   position: absolute;
-  z-index: 1;
+  /* z-index: 1; */
   top: 125%;
   left: 50%;
   margin-left: -60px;

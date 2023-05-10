@@ -31,11 +31,12 @@ const calculateFouls = function (team, type) {
   const ltBench = [];
   const vtLineup = [];
   const vtBench = [];
+  // fouls original value is "> 2"
   if (type === "l") {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.fouls.committed > 2 &&
+          player.stats.fouls.committed == 1 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
@@ -49,7 +50,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.fouls.committed > 2 &&
+          player.stats.fouls.committed == 1 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
@@ -73,7 +74,7 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.fouls.committed > 2 &&
+          player.stats.fouls.committed == 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtLineup.push({
@@ -87,7 +88,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.fouls.committed > 2 &&
+          player.stats.fouls.committed == 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtBench.push({
@@ -116,7 +117,7 @@ const calculateFouls = function (team, type) {
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
         <p>
-          <strong> {{ p.pn }} </strong> has made <strong>2+ fouls</strong> in
+          <strong> {{ p.pn }} </strong> has made <strong>1 fouls</strong> in
           last 3 <strong>{{ props.localteam.name }}</strong> matches.
         </p>
       </div>
@@ -131,7 +132,7 @@ const calculateFouls = function (team, type) {
       <div class="flex">
         <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
         <p>
-          <strong> {{ p.pn }} </strong> has made <strong>2+ fouls</strong> in
+          <strong> {{ p.pn }} </strong> has made <strong>1 fouls</strong> in
           last 3 <strong> {{ props.visitorteam.name }}</strong> matches.
         </p>
       </div>

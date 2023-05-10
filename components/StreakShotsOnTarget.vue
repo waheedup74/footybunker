@@ -31,11 +31,12 @@ const calculateFouls = function (team, type) {
   const ltBench = [];
   const vtLineup = [];
   const vtBench = [];
+  // shots on target original value is "> 1"
   if (type === "l") {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.shots.shots_on_goal > 1 &&
+          player.stats.shots.shots_on_goal >= 1 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
@@ -49,7 +50,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.shots.shots_on_goal > 1 &&
+          player.stats.shots.shots_on_goal >= 1 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
@@ -73,7 +74,7 @@ const calculateFouls = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.shots.shots_on_goal > 1 &&
+          player.stats.shots.shots_on_goal >= 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtLineup.push({
@@ -87,7 +88,7 @@ const calculateFouls = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.shots.shots_on_goal > 1 &&
+          player.stats.shots.shots_on_goal >= 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtBench.push({
