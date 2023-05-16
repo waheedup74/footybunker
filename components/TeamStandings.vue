@@ -1,5 +1,6 @@
 <script setup>
 const route = useRoute();
+const config = useRuntimeConfig();
 
 const { addHyphen } = useUtilities();
 
@@ -14,6 +15,7 @@ useHead({
 const goto = function (teamName, team_id) {
   navigateTo(`${addHyphen(teamName)}-stats-${team_id}`);
 };
+console.log(config.public);
 </script>
 
 <template>

@@ -36,7 +36,7 @@ const calculateTackles = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.other.tackles > 2 &&
+          player.stats.other.tackles >= 1 &&
           player.team_id === props.localteam.id
         ) {
           ltLineup.push({
@@ -50,7 +50,7 @@ const calculateTackles = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.other.tackles > 2 &&
+          player.stats.other.tackles >= 1 &&
           player.team_id === props.localteam.id
         ) {
           ltBench.push({
@@ -74,7 +74,7 @@ const calculateTackles = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.other.tackles > 2 &&
+          player.stats.other.tackles >= 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtLineup.push({
@@ -88,7 +88,7 @@ const calculateTackles = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.other.tackles > 2 &&
+          player.stats.other.tackles >= 1 &&
           player.team_id === props.visitorteam.id
         ) {
           vtBench.push({
@@ -125,7 +125,7 @@ const calculateTackles = function (team, type) {
             <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
             <p>
               <strong> {{ p.pn }} </strong> has made
-              <strong>2+ tackles</strong> in last 3
+              <strong>1 or more than 1 tackles</strong> in last 3
               <strong>{{ props.localteam.name }}</strong> matches.
             </p>
           </div>
@@ -143,7 +143,7 @@ const calculateTackles = function (team, type) {
             <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
             <p>
               <strong> {{ p.pn }} </strong> has made
-              <strong>2+ tackles</strong> in last 3
+              <strong>1 or more than 1 tackles</strong> in last 3
               <strong> {{ props.visitorteam.name }}</strong> matches.
             </p>
           </div>

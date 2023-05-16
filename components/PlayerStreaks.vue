@@ -114,7 +114,7 @@ const calculatePasses = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.passing.passes >= 50 &&
+          player.stats.passing.passes >= 40 &&
           player.team_id === props.localTeam.id
         ) {
           ltLineup.push({
@@ -128,7 +128,7 @@ const calculatePasses = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.passing.passes >= 50 &&
+          player.stats.passing.passes >= 40 &&
           player.team_id === props.localTeam.id
         ) {
           ltBench.push({
@@ -152,7 +152,7 @@ const calculatePasses = function (team, type) {
     for (const match of team) {
       for (const player of match.lineup.data) {
         if (
-          player.stats.passing.passes >= 50 &&
+          player.stats.passing.passes >= 40 &&
           player.team_id === props.visitorTeam.id
         ) {
           vtLineup.push({
@@ -166,7 +166,7 @@ const calculatePasses = function (team, type) {
       }
       for (const player of match.bench.data) {
         if (
-          player.stats.passing.passes >= 50 &&
+          player.stats.passing.passes >= 40 &&
           player.team_id === props.visitorTeam.id
         ) {
           vtBench.push({
@@ -204,7 +204,7 @@ const calculatePasses = function (team, type) {
             <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
             <p>
               <strong> {{ p.pn }} </strong> has made
-              <strong>50+ passes</strong> in last 3
+              <strong>40+ passes</strong> in last 3
               <strong>{{ props.localTeam.name }}</strong> matches.
             </p>
           </div>
@@ -222,7 +222,7 @@ const calculatePasses = function (team, type) {
             <img :src="p.pic" class="self-center h-6 w-6 mr-3" alt="player" />
             <p>
               <strong> {{ p.pn }} </strong> has made
-              <strong>50+ passes</strong> in last 3
+              <strong>40+ passes</strong> in last 3
               <strong> {{ props.visitorTeam.name }}</strong> matches.
             </p>
           </div>
