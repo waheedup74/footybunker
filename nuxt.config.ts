@@ -1,5 +1,5 @@
 export default {
-  ssr: false,
+  // ssr: false,
   // generate: {
   //   fallback: "custom_sap_fallbackpage.html"
   // },
@@ -19,11 +19,17 @@ export default {
       "~/assets/css/global.css",
     ],
   },
-  publicRuntimeConfig: {
+
+  runtimeConfig: {
     public: {
-      apiKey: process.env.API_KEY
-    }
+      api_token: process.env.API_TOKEN
+    },
 
   }
+  // publicRuntimeConfig: {
+  //   public: {
+  //     public_variable: process.env.PUBLIC_VARIABLE
+  //   }
+  // }
 }
 

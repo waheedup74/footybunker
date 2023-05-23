@@ -1,11 +1,15 @@
 <script setup>
 const route = useRoute();
 const { addHyphen } = useUtilities();
+const config = useRuntimeConfig();
 let tab_id = ref("A");
 const todayDate = ref("");
 const dayName = ref("");
 const fixtures = ref({});
 
+const api = config.api_token;
+
+// console.log("what is env variable", config);
 let today = new Date();
 let dayAfterTomorrow = new Date(today);
 dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
@@ -59,7 +63,7 @@ function getDates(day) {
 onBeforeMount(async () => {
   fixtures.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/date/${todayDate.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam,league.country&tz=BST`
+      `https://soccer.sportmonks.com/api/v2.0/fixtures/date/${todayDate.value}?api_token=${api}&include=localTeam,visitorTeam,league.country&tz=BST`
   );
 });
 
