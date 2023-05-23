@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen overflow-y-scroll pb-10">
+  <div class="h-screen overflow-y-scroll pb-20">
     <TopHeader />
     <slot />
 
