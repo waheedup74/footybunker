@@ -1,5 +1,5 @@
 export default {
-  // ssr: false,
+  ssr: false,
   // generate: {
   //   fallback: "custom_sap_fallbackpage.html"
   // },
