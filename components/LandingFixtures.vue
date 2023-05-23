@@ -7,9 +7,9 @@ const todayDate = ref("");
 const dayName = ref("");
 const fixtures = ref({});
 
-const api = config.api_token;
+// const api = config.api_token;
 
-console.log("what is env variable", config.api_token);
+// console.log("what is env variable api", api);
 let today = new Date();
 let dayAfterTomorrow = new Date(today);
 dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
