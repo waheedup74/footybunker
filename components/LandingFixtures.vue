@@ -7,9 +7,6 @@ const todayDate = ref("");
 const dayName = ref("");
 const fixtures = ref({});
 
-// const api = config.api_token;
-
-// console.log("what is env variable api", api);
 let today = new Date();
 let dayAfterTomorrow = new Date(today);
 dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
@@ -28,7 +25,7 @@ let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
 let yyyy = today.getFullYear();
 
 todayDate.value = yyyy + "-" + mm + "-" + dd;
-// todayDate.value = "2023-02-7";
+// todayDate.value = "2023-05-23";
 
 function getDates(day) {
   if (day === "today") {
@@ -62,10 +59,10 @@ function getDates(day) {
 
 onBeforeMount(async () => {
   fixtures.value = await useFetch(
-    () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/date/${todayDate.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam,league.country&tz=BST`
+    () => `http://betbuilders.net:5000/v1/api/fixtures/${todayDate.value}`
   );
 });
+// https://soccer.sportmonks.com/api/v2.0/fixtures/date/${todayDate.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam,league.country&tz=BST`
 
 const changeTabs = function (tab, day) {
   if (day === "today") {

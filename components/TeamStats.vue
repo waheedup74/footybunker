@@ -60,14 +60,12 @@ onBeforeMount(async () => {
   months6Before.value = getDate(subtract6Months(new Date()));
   todayDate.value = getDate(today);
 
-  // new work
   team.value = await useFetch(
-    () =>
-      `https://soccer.sportmonks.com/api/v2.0/teams/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=league&tz=BST`
+    () => `http://betbuilders.net:5000/v1/api/team/${teamId}`
   );
   newTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${teamId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,league,lineup.player,bench.player,localTeam,visitorTeam&tz=BST`
+      `http://betbuilders.net:5000/v1/api/team-stats/${months6Before.value}/${todayDate.value}/${teamId}`
   );
 
   if (newTeamStats.value.data) {
@@ -147,13 +145,12 @@ onBeforeMount(async () => {
     leaguesList.value = await Promise.all(
       uniqueIds.map(async (id) => {
         const response = await useFetch(
-          `https://soccer.sportmonks.com/api/v2.0/leagues/${id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&tz=BST`
+          `http://betbuilders.net:5000/v1/api/single-league/${id}`
         );
         return response;
       })
     );
   }
-  // new work
 });
 
 const changeTabs = (tab, section) => {
@@ -2590,7 +2587,7 @@ function getUniquePlayersById(originalArray) {
   border-radius: 2px;
   padding: 5px 3px;
   position: absolute;
-  /* z-index: 1; */
+  z-index: 50;
   top: 125%;
   left: 50%;
   margin-left: -60px;

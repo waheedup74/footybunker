@@ -10,8 +10,7 @@ const visitorTeamStats = ref({});
 const tab_id = ref("A");
 onMounted(async () => {
   commentary.value = await useFetch(
-    () =>
-      `https://soccer.sportmonks.com/api/v2.0/commentaries/fixture/${props.fixture.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&tz=BST`
+    () => `http://betbuilders.net:5000/v1/api/commentaries/${props.fixture.id}`
   );
 });
 onBeforeMount(() => {
@@ -658,7 +657,7 @@ const changeTabs = function (tab, type) {
       </div>
     </div>
     <div v-if="tab_id === 'D'">
-      <div v-if="commentary.data">
+      <div class="mt-5" v-if="commentary.data">
         <FixtureCommentary :commentary="commentary.data.data" />
       </div>
     </div>

@@ -106,7 +106,7 @@ const calculateFouls = function (team, type) {
     const result = foulStreakVT.value.filter(
       (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
     );
-    // console.log(result);
+
     playerFoulStreakVT.value = result;
   }
 };

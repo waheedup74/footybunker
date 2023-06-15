@@ -106,7 +106,7 @@ const calculateGoals = function (team, type) {
     const result = goalStreakVT.value.filter(
       (v) => (hash[v.pid] = (hash[v.pid] || 0) + 1) === 3
     );
-    // console.log(result);
+
     playerGoalStreakVT.value = result;
   }
 };

@@ -5,10 +5,10 @@ const showmenu = ref(false);
 const { addHyphen } = useUtilities();
 onBeforeMount(async () => {
   leagues.value = await useFetch(
-    () =>
-      `https://soccer.sportmonks.com/api/v2.0/leagues?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J`
+    () => `http://betbuilders.net:5000/v1/api/leagues`
   );
 });
+
 const getLeagueId = (league, id) => {
   allLeagues.value = !allLeagues;
   navigateTo(`/${addHyphen(league)}-standings-${id}`);

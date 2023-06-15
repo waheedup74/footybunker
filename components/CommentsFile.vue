@@ -715,16 +715,6 @@
             </div>
           </div> -->
 
-<!-- // let showAd = ref(true);
-// const { data: team, error } = useFetch(
-//   "https://soccer.sportmonks.com/api/v2.0/teams/14?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J"
-// );
-
-// GET All Leagues by Team ID
-// const { data: leagues, error: testError } = useFetch(
-//   "https://soccer.sportmonks.com/api/v2.0/teams/19/history?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J"
-// ); -->
-
 <!-- <div class="flex relative">
             <div class="w-44"></div>
             <div

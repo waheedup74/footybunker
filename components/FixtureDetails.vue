@@ -29,8 +29,7 @@ onBeforeMount(async () => {
     fixtureId = split[split.length - 1];
   }
   fixture.value = await useFetch(
-    () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/${fixtureId}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,events,referee,lineup.player.country,substitutions.player.country,venue,highlights&tz=BST`
+    () => `http://betbuilders.net:5000/v1/api/fixture-detail/${fixtureId}`
   );
 
   if (fixture.value.data) {
@@ -38,7 +37,7 @@ onBeforeMount(async () => {
     visitorTeam.value = fixture.value?.data.data.visitorteam_id;
     matches.value = await useFetch(
       () =>
-        `https://soccer.sportmonks.com/api/v2.0/head2head/${localTeam.value}/${visitorTeam.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=localTeam,visitorTeam&tz=BST`
+        `http://betbuilders.net:5000/v1/api/h2hFixtures/${localTeam.value}/${visitorTeam.value}`
     );
   }
 });

@@ -43,7 +43,7 @@ const getDate = function (date) {
   return yyyy + "-" + mm + "-" + dd;
 };
 const subtract6Months = function (date) {
-  date.setMonth(date.getMonth() - 6);
+  date.setMonth(date.getMonth() - 10);
   return date;
 };
 months6Before.value = getDate(subtract6Months(new Date()));
@@ -52,7 +52,7 @@ todayDate.value = getDate(today);
 onMounted(async () => {
   localTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${props.localTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&tz=BST`
+      `http://betbuilders.net:5000/v1/api/range-fixtures/${months6Before.value}/${todayDate.value}/${props.localTeam.id}`
   );
   if (localTeamStats.value.data) {
     for (const match of localTeamStats.value.data.data) {
@@ -62,7 +62,7 @@ onMounted(async () => {
   }
   visitorTeamStats.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/between/${months6Before.value}/${todayDate.value}/${props.visitorTeam.id}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&tz=BST`
+      `http://betbuilders.net:5000/v1/api/range-fixtures/${months6Before.value}/${todayDate.value}/${props.visitorTeam.id}`
   );
   if (visitorTeamStats.value.data) {
     for (const match of visitorTeamStats.value.data.data) {
@@ -72,13 +72,14 @@ onMounted(async () => {
       visitorTeamFixturesidList.value
     );
   }
+
   localTeamFixtures.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${localTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,,lineup.player,bench.player&tz=BST`
+      `http://betbuilders.net:5000/v1/api/fixtures-list/${localTeamFixturesidListString.value}`
   );
   visitorTeamFixtures.value = await useFetch(
     () =>
-      `https://soccer.sportmonks.com/api/v2.0/fixtures/multi/${visitorTeamFixturesidListString.value}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=stats,localTeam,visitorTeam,lineup.player,bench.player&tz=BST`
+      `http://betbuilders.net:5000/v1/api/fixtures-list/${visitorTeamFixturesidListString.value}`
   );
   localTeamFixtures.value.data.data.sort(
     (a, b) =>

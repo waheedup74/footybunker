@@ -5,7 +5,7 @@ const config = useRuntimeConfig();
 const { addHyphen } = useUtilities();
 
 const { data: teams, error: testError } = useFetch(
-  `https://soccer.sportmonks.com/api/v2.0/standings/season/${route.params.season}?api_token=yJa5UcHQ0V22MXG9wlpQ3vtf8ucr6GzJJdd0IShA2j5wOSatggY783JolO6J&include=standings.team&tz=BST`
+  `http://betbuilders.net:5000/v1/api/leagues/${route.params.season}`
 );
 
 useHead({
@@ -15,7 +15,6 @@ useHead({
 const goto = function (teamName, team_id) {
   navigateTo(`${addHyphen(teamName)}-stats-${team_id}`);
 };
-console.log(config.public);
 </script>
 
 <template>
